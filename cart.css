@@ -1,0 +1,119 @@
+/* Base Styles */
+body {
+    font-family: 'Roboto', sans-serif; /* Updated to use Roboto */
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Light background */
+}
+
+/* Header */
+.header {
+    background-color: #4caf50; /* Pink header */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+.header .logo img {
+    height: 40px; /* Logo height */
+}
+
+.header .nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px; /* Space between links */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.header .nav a:hover {
+    color: #00bfa5; /* Green hover color */
+}
+
+/* Main Container */
+.main {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #ffffff; /* White background for main content */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Title */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #4caf50; /* Pink color */
+}
+
+/* Cart Items */
+#cart-items {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 10px 0;
+}
+
+.cart-item img {
+    width: 50px; /* Fixed width for images */
+    height: auto;
+    margin-right: 15px;
+}
+
+.product-info {
+    flex-grow: 1; /* Take available space */
+}
+
+.product-info h4 {
+    margin: 0; /* Remove default margin */
+    color: #333; /* Dark text for product name */
+}
+
+.product-info .price {
+    color: #00bfa5; /* Green price */
+    font-weight: bold;
+}
+
+/* Buttons */
+button {
+    background-color: #4caf50; /* Pink button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition */
+    margin-right: 10px; /* Space between buttons */
+}
+
+button:hover {
+    background-color: #4caf50; /* Darker pink on hover */
+}
+
+/* Empty Cart Message */
+.empty-cart {
+    text-align: center;
+    color: #4caf50; /* Pink color */
+    font-size: 20px;
+    margin-top: 40px;
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .cart-item {
+        flex-direction: column; /* Stack items on small screens */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .product-info {
+        margin-bottom: 10px; /* Space below product info */
+    }
+}
