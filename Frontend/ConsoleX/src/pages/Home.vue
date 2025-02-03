@@ -1,5 +1,5 @@
 <template lang="">
-    <div>
+    <div id="backbone">
         <div class="header">
    <div class="logo">
     <img alt="Konzolvilág Logo" height="40" src="#"/> <!--Logót berakni at assets mappába majd referálni ide-->
@@ -193,6 +193,9 @@ export default{
 </script>
 
 <style scoped>
+.backbone{
+    background-color: white;
+}
 .header {
     background-color: #fff;
     padding: 10px 20px;
