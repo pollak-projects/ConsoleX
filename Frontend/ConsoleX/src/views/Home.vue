@@ -193,7 +193,7 @@ export default{
 </script>
 
 <style scoped>
-    .header {
+.header {
     background-color: #fff;
     padding: 10px 20px;
     border-bottom: 1px solid #ddd;
