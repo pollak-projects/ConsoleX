@@ -1,9 +1,8 @@
 <template>
-  <Fooldal/>
+  <Home></Home>
 </template>
 
 <script setup>
-import Fooldal from './Fooldal.vue';
 import Home from './Home.vue';
  
 </script>
