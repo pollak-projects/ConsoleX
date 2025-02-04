@@ -5,7 +5,7 @@
 - Keskeny Kevin
 - Juhász Gergő
 
-**Languages we us:**
+**Languages we use:**
 - Vueifiy 3
 - NodeJs
 - Prisma
