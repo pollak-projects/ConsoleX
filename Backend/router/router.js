@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+/*import { createRouter, createWebHashHistory } from 'vue-router';
 import Fooldal from './views/Fooldal.vue';
 import Cart from './views/Cart.vue';
 
@@ -20,4 +20,4 @@ const router = createRouter({
   routes
 });
 
-export default router;
+export default router;*/
