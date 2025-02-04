@@ -1,9 +1,8 @@
 <template>
-  <Fooldal/>
+  <Games/>
 </template>
 
 <script setup>
-
 </script>
 
 <style>
