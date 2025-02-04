@@ -1,9 +1,9 @@
 <template>
-  <Fooldal/>
+  <Games/>
 </template>
 
 <script setup>
-import Fooldal from './Fooldal.vue';
+import Games from './Games.vue';
  
 </script>
 
