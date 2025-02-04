@@ -15,11 +15,9 @@
       </header>
       <nav class="nav">
         <a href="#">Akció</a>
-        <a href="#">Használt</a>
         <a href="#">PlayStation</a>
         <a href="#">Xbox</a>
         <a href="#">PC</a>
-        <a href="#">PlayStation</a>
       </nav>
       <main class="main">
         <aside class="sidebar">
