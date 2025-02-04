@@ -1,11 +1,15 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <div id="app">
+    <router-view></router-view> <!-- Itt jelennek meg a komponensek -->
+  </div>
 </template>
 
-<script setup>
-  //
+<script>
+export default {
+  name: 'App'
+};
 </script>
+
+<style>
+/* Alap stílusok */
+</style>
