@@ -1,40 +1,50 @@
 <template>
-  <div>
+  <div class="games-container">
     <header class="header">
       <img alt="Konzolvilág logo" src="https://placehold.co/150x50" />
-      <div class="search-bar">
-        <input v-model="searchQuery" placeholder="Keresés" type="text" />
-        <button @click="search">
-          <i class="fas fa-search"></i>
-        </button>
+      <div class="search-container">
+        <input 
+          type="text" 
+          v-model="searchQuery" 
+          placeholder="Keresés játékok között..."
+          @input="filterProducts"
+        />
       </div>
-      <!-- Kosár gomb, amely átirányít a Cart.vue oldalra -->
-      <router-link to="/cart">
-        <button class="cart-button">
-          Kosár
-        </button>
-      </router-link>
+      <div class="navigation">
+        <router-link to="/games" class="nav-link">Játékok</router-link>
+        <router-link to="/login" class="nav-link">Bejelentkezés</router-link>
+        <router-link to="/" class="nav-link">Főoldal</router-link>
+        <router-link to="/register" class="nav-link">Regisztráció</router-link>
+        <router-link to="/cart" class="nav-link">Kosár</router-link>
+      </div>
     </header>
-    <nav class="nav">
-      <a href="#">Akció</a>
-      <a href="#">PlayStation</a>
-      <a href="#">Xbox</a>
-      <a href="#">PC</a>
-    </nav>
+
     <main class="main">
-      <aside class="sidebar">
+      <div class="sidebar">
         <h2>Szűrők</h2>
-        <label v-for="filter in filters" :key="filter">
-          <input type="checkbox" v-model="selectedFilters" :value="filter" />
-          {{ filter }}
-        </label>
-      </aside>
+        <div class="filter-category">
+          <h3>Kategória</h3>
+          <label v-for="filter in categories" :key="filter">
+            <input type="checkbox" v-model="selectedCategories" :value="filter" />
+            {{ filter }}
+          </label>
+        </div>
+        <div class="filter-category">
+          <h3>Ár</h3>
+          <label v-for="range in priceRanges" :key="range">
+            <input type="radio" v-model="selectedPriceRange" :value="range" />
+            {{ range }}
+          </label>
+        </div>
+      </div>
+
       <section class="content">
         <img alt="PS5 Pro advertisement" src="https://placehold.co/800x200" />
         <h1>Játékok</h1>
         <p>1–24 / 880 termék PS5 játékok kategóriában</p>
+
         <div class="products">
-          <div class="product" v-for="product in products" :key="product.id">
+          <div class="product" v-for="product in filteredProducts" :key="product.id">
             <img :alt="product.name" :src="product.image" />
             <h2>{{ product.name }}</h2>
             <p class="price">{{ product.price }} Ft</p>
@@ -54,119 +64,143 @@ export default {
   data() {
     return {
       searchQuery: '',
-      filters: ['Új termékek', 'Használt termékek', 'Raktáron', 'Előrendelhető'],
-      selectedFilters: [],
+      categories: ['Akció', 'PlayStation', 'Xbox', 'PC'],
+      selectedCategories: [],
+      priceRanges: ['0-10,000 Ft', '10,000-20,000 Ft', '20,000+ Ft'],
+      selectedPriceRange: null,
       products: [
         { id: 1, name: "Marvel's Spider-Man 2", price: 19990, image: "https://placehold.co/200x300" },
         { id: 2, name: "Marvel's Spider-Man 2 (használt)", price: 15990, image: "https://placehold.co/200x300" },
         { id: 3, name: "Marvel's Spider-Man Miles Morales Ultimate Edition", price: 19990, image: "https://placehold.co/200x300" },
         { id: 4, name: "Marvel's Spider-Man: Miles Morales", price: 17990, image: "https://placehold.co/200x300" },
-      ]
+      ],
+      filteredProducts: [],
     };
   },
-  methods: {
-    // Keresés metódus, a már meglévő funkció
-    search() {
-      console.log("Searching for:", this.searchQuery);
+  computed: {
+    filteredProducts() {
+      let filtered = this.products;
+
+      if (this.searchQuery) {
+        filtered = filtered.filter(product =>
+          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+
+      if (this.selectedCategories.length) {
+        filtered = filtered.filter(product =>
+          this.selectedCategories.some(category => product.name.includes(category))
+        );
+      }
+
+      if (this.selectedPriceRange) {
+        const [min, max] = this.selectedPriceRange.split('-').map(Number);
+        filtered = filtered.filter(product => product.price >= min && (max ? product.price <= max : true));
+      }
+
+      return filtered;
     },
-    // Kosárba helyezés metódusa, a már meglévő funkció
+  },
+  methods: {
     addToCart(product) {
       console.log("Added to cart:", product.name);
-    }
-  }
+    },
+    filterProducts() {
+      this.filteredProducts = this.products.filter(product =>
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+  },
+  mounted() {
+    this.filteredProducts = this.products;
+  },
 };
 </script>
 
 <style scoped>
-  /* A stílusokat a gombhoz és az oldal többi eleméhez igazítjuk */
-
-  .cart-button {
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .cart-button:hover {
-    background-color: #45a049;
-  }
-
   body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
+    color: #333;
   }
 
   .header {
     background-color: #fff;
-    padding: 10px 20px;
+    color: #333;
+    padding: 20px 30px;
     display: flex;
+    justify-content: space-between; /* A navigációt jobbra helyezi */
     align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 3px solid #ddd;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   .header img {
-    height: 50px;
+    height: 60px;
   }
 
-  .header .search-bar {
+  .search-container {
+    flex: 1;
     display: flex;
-    align-items: center;
+    justify-content: center; /* Középre igazítja a keresőt */
   }
 
-  .header .search-bar input {
+  .search-container input {
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px;
-    outline: none;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    width: 250px;
   }
 
-  .header .search-bar button {
-    padding: 10px;
-    border: none;
-    background-color: #e91e63;
-    color: #fff;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-  }
-
-  .nav {
-    background-color: #fff;
-    padding: 10px 20px;
+  .navigation {
     display: flex;
-    justify-content: space-around;
-    border-bottom: 1px solid #ddd;
+    gap: 30px;
   }
 
-  .nav a {
+  .nav-link {
     color: #333;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.3s, transform 0.3s;
   }
 
-  .nav a:hover {
-    background-color: #f5f5f5;
+  .nav-link:hover {
+    color: #e91e63;
+    transform: scale(1.1);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   }
 
   .main {
     display: flex;
     padding: 20px;
+    max-width: 1400px; /* Tágabb elrendezés */
+    margin: 0 auto;
   }
 
   .sidebar {
-    width: 20%;
+    width: 25%;
     padding: 20px;
     background-color: #fff;
+    border-radius: 8px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    margin-right: 20px;
   }
 
   .sidebar h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .filter-category {
+    margin-bottom: 20px;
+  }
+
+  .filter-category h3 {
     font-size: 18px;
     margin-bottom: 10px;
   }
@@ -177,13 +211,19 @@ export default {
   }
 
   .content {
-    width: 80%;
-    padding: 20px;
+    flex: 1;
+  }
+
+  .content img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 20px;
   }
 
   .content h1 {
-    font-size: 24px;
+    font-size: 28px;
     margin-bottom: 10px;
+    font-weight: 600;
   }
 
   .content .products {
@@ -248,9 +288,11 @@ export default {
     .main {
       flex-direction: column;
     }
+
     .sidebar, .content {
       width: 100%;
     }
+
     .product {
       width: 48%;
     }
