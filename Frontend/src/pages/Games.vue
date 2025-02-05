@@ -41,7 +41,7 @@
       <section class="content">
         <img alt="PS5 Pro advertisement" src="https://placehold.co/800x200" />
         <h1>Játékok</h1>
-        <p>1–24 / 880 termék PS5 játékok kategóriában</p>
+        <p>1–24 / 880 termék a Játékok kategóriában</p>
 
         <div class="products">
           <div class="product" v-for="product in filteredProducts" :key="product.id">
