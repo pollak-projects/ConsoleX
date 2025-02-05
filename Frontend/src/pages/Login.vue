@@ -1,13 +1,16 @@
 <template>
-    <div>
-        <LoginComponets></LoginComponets>
-    </div>
-</template>
-<script>
-export default {
-    
-}
-</script>
-<style>
-    
-</style>
+    <v-app>
+      <v-container>
+        <LoginComponents />
+      </v-container>
+    </v-app>
+  </template>
+  
+  <script>
+  export default {
+    components: {
+      LoginComponents,
+    },
+  };
+  </script>
+  
