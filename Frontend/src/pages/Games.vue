@@ -11,9 +11,8 @@
         />
       </div>
       <div class="navigation">
-        <router-link to="/games" class="nav-link">Játékok</router-link>
+        <router-link to="/main" class="nav-link">Főoldal</router-link>
         <router-link to="/login" class="nav-link">Bejelentkezés</router-link>
-        <router-link to="/" class="nav-link">Főoldal</router-link>
         <router-link to="/register" class="nav-link">Regisztráció</router-link>
         <router-link to="/cart" class="nav-link">Kosár</router-link>
       </div>
