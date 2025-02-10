@@ -1,7 +1,7 @@
 <template>
   <div class="games-container">
     <header class="header">
-      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" />
+      <img alt="Konzolvilág logo" src="https://placehold.co/150x50"  id="navlogo"/>
       <div class="search-container">
         <input 
           type="text" 
@@ -180,6 +180,13 @@ export default {
     padding: 20px;
     max-width: 1400px; /* Tágabb elrendezés */
     margin: 0 auto;
+  }
+
+  .navlogo{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   .sidebar {

@@ -1,20 +1,5 @@
 <template>
   <div id="app">
-    <div id="navbar">
-      <div id="navcomponent" style="padding: 10px;">
-      <img src="#" alt="Logo">
-      <b>ConsoleX</b>
-      </div>
-      <div id="navcomponent" style="justify-content: flex-end;">
-        <div id="navbuttons">
-      <button>Home</button>
-      <button>About</button>
-      <button>Products</button>
-      <button>Contacts</button>
-        </div>
-      </div>
-
-    </div>
     <router-view></router-view> <!-- Itt jelennek meg a komponensek -->
   </div>
 </template>
