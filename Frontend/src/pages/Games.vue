@@ -1,11 +1,11 @@
 <template>
   <div class="games-container">
     <header class="header">
-      <img alt="Konzolvilág logo" src="https://placehold.co/150x50"  id="navlogo"/>
+      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" id="navlogo" />
       <div class="search-container">
-        <input 
-          type="text" 
-          v-model="searchQuery" 
+        <input
+          type="text"
+          v-model="searchQuery"
           placeholder="Keresés játékok között..."
           @input="filterProducts"
         />
@@ -24,16 +24,47 @@
         <div class="filter-category">
           <h3>Kategória</h3>
           <label v-for="filter in categories" :key="filter">
-            <input type="checkbox" v-model="selectedCategories" :value="filter" />
+            <input type="checkbox" v-model="selectedCategories" :value="filter" @change="filterProducts" />
             {{ filter }}
           </label>
         </div>
         <div class="filter-category">
           <h3>Ár</h3>
-          <label v-for="range in priceRanges" :key="range">
-            <input type="radio" v-model="selectedPriceRange" :value="range" />
-            {{ range }}
-          </label>
+          <div class="slider-container">
+            <input
+              type="range"
+              v-model="selectedPriceMin"
+              :max="maxPrice"
+              :step="500"
+              @input="filterProducts"
+            />
+            <input
+              type="range"
+              v-model="selectedPriceMax"
+              :max="maxPrice"
+              :step="500"
+              @input="filterProducts"
+            />
+            <div class="price-range">
+              <input class="input-price"
+                type="number"
+                v-model="selectedPriceMin"
+                @input="updatePriceFromInput('min')"
+                :max="selectedPriceMax"
+                min="0"
+                step="500"
+              />Ft
+              <span> - </span>
+              <input class="input-price"
+                type="number"
+                v-model="selectedPriceMax"
+                @input="updatePriceFromInput('max')"
+                :min="selectedPriceMin"
+                max="25000"
+                step="500"
+              />Ft
+            </div>
+          </div>
         </div>
       </div>
 
@@ -58,6 +89,9 @@
   </div>
 </template>
 
+
+
+
 <script>
 export default {
   data() {
@@ -65,13 +99,17 @@ export default {
       searchQuery: '',
       categories: ['Akció', 'PlayStation', 'Xbox', 'PC'],
       selectedCategories: [],
-      priceRanges: ['0-10,000 Ft', '10,000-20,000 Ft', '20,000+ Ft'],
-      selectedPriceRange: null,
+      selectedPriceMin: 0, // Minimum ár
+      selectedPriceMax: 25000, // Maximum ár
+      maxPrice: 25000, // Maximális ár, amit a csúszkákhoz használunk
       products: [
-        { id: 1, name: "Marvel's Spider-Man 2", price: 19990, image: "https://placehold.co/200x300" },
-        { id: 2, name: "Marvel's Spider-Man 2 (használt)", price: 15990, image: "https://placehold.co/200x300" },
-        { id: 3, name: "Marvel's Spider-Man Miles Morales Ultimate Edition", price: 19990, image: "https://placehold.co/200x300" },
-        { id: 4, name: "Marvel's Spider-Man: Miles Morales", price: 17990, image: "https://placehold.co/200x300" },
+        { id: 1, name: "Marvel's Spider-Man 2", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
+        { id: 2, name: "Marvel's Spider-Man 2 (használt)", price: 15990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
+        { id: 3, name: "Marvel's Spider-Man Miles Morales Ultimate Edition", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
+        { id: 4, name: "Marvel's Spider-Man: Miles Morales", price: 17990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
+        { id: 5, name: "Call of Duty: Modern Warfare II", price: 24990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
+        { id: 6, name: "FIFA 24", price: 15990, image: "https://placehold.co/200x300", category: ['PC', 'Sport'] },
+        { id: 7, name: "Halo Infinite", price: 19990, image: "https://placehold.co/200x300", category: ['Xbox', 'Akció'] },
       ],
       filteredProducts: [],
     };
@@ -80,22 +118,22 @@ export default {
     filteredProducts() {
       let filtered = this.products;
 
+      // Keresés
       if (this.searchQuery) {
         filtered = filtered.filter(product =>
           product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
 
+      // Kategóriák szűrése
       if (this.selectedCategories.length) {
         filtered = filtered.filter(product =>
-          this.selectedCategories.some(category => product.name.includes(category))
+          this.selectedCategories.every(category => product.category.includes(category))
         );
       }
 
-      if (this.selectedPriceRange) {
-        const [min, max] = this.selectedPriceRange.split('-').map(Number);
-        filtered = filtered.filter(product => product.price >= min && (max ? product.price <= max : true));
-      }
+      // Ár szűrés
+      filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
 
       return filtered;
     },
@@ -105,9 +143,7 @@ export default {
       console.log("Added to cart:", product.name);
     },
     filterProducts() {
-      this.filteredProducts = this.products.filter(product =>
-        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      // A csúszkák és egyéb szűrők alapján frissíti a filteredProducts tömböt
     },
   },
   mounted() {
@@ -115,6 +151,8 @@ export default {
   },
 };
 </script>
+
+
 
 <style scoped>
   body {
@@ -308,5 +346,12 @@ export default {
     .product {
       width: 100%;
     }
+  }
+
+  .input-price{
+    border: 1px solid;
+    border-color: #ddd;
+    height: 20px;
+    width: 100px;
   }
 </style>

@@ -27,4 +27,7 @@ export default {
   text-align: right;
 }
 
+body{
+  font-family:'Segoe UI';
+}
 </style>
