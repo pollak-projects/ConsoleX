@@ -1,6 +1,6 @@
 <template>
   <div class="main-container fade-in">
-    <header class="main-header">
+    <header class="main-header fade-in-header">
       <img alt="ConsoleX logo" src="https://placehold.co/150x50" class="logo" />
       <div class="main-navigation">
         <router-link to="/games" class="main-nav-link">Játékok</router-link>
@@ -127,6 +127,22 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+/* Fejléc animáció */
+@keyframes fadeInHeader {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-header {
+  animation: fadeInHeader 1s ease-out forwards;
 }
 
 /* Hero Section */

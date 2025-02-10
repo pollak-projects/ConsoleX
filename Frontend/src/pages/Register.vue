@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="auth-container">
+      <!-- Fejléc -->
       <header class="header">
         <img alt="Konzolvilág logo" src="https://placehold.co/150x50" id="navlogo" />
         <div class="navigation">
@@ -10,7 +11,8 @@
         </div>
       </header>
   
-      <div class="auth-container">
+      <!-- Regisztrációs űrlap -->
+      <div class="form-container">
         <header>
           <h1>Regisztráció</h1>
         </header>
@@ -65,7 +67,12 @@
   </script>
   
   <style scoped>
-  /* A fejléc stílusa maradjon meg a meglévő kódból */
+  /* Fő konténer */
+  .auth-container {
+    animation: fadeInAll 0.75s ease-out; /* Az egész oldal gyorsabban történő betöltése */
+  }
+  
+  /* Fejléc */
   .header {
     background-color: #fff;
     color: #333;
@@ -75,6 +82,7 @@
     align-items: center;
     border-bottom: 3px solid #ddd;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
   }
   
   .header img {
@@ -93,6 +101,7 @@
     font-weight: 700;
     letter-spacing: 1px;
     transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+    animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
   }
   
   .nav-link:hover {
@@ -102,13 +111,15 @@
     letter-spacing: 3px;
   }
   
-  .auth-container {
-    max-width: 600px; /* Növeltem a maximális szélességet */
+  /* Regisztrációs form */
+  .form-container {
+    max-width: 600px;
     margin: 50px auto;
     padding: 30px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInForm 0.75s ease-out; /* Form gyorsabb animációja */
   }
   
   header {
@@ -117,12 +128,13 @@
   }
   
   h1 {
-    font-size: 28px; /* Nagyobb cím */
+    font-size: 28px;
     font-weight: 600;
+    animation: fadeInText 0.75s ease-out forwards; /* Cím animációja */
   }
   
   .input-group {
-    margin-bottom: 20px; /* Tágabb margó */
+    margin-bottom: 20px;
   }
   
   label {
@@ -132,10 +144,12 @@
   
   input {
     width: 100%;
-    padding: 12px; /* Növeltük a belső paddingot */
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 16px; /* Kicsit nagyobb betűméret */
+    font-size: 16px;
+    opacity: 0; /* Kezdetben átlátszó */
+    animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
   }
   
   button {
@@ -148,6 +162,8 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
+    opacity: 0; /* Kezdetben átlátszó */
+    animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
   }
   
   button:hover {
@@ -162,10 +178,48 @@
   .redirect a {
     color: #4caf50;
     text-decoration: none;
+    opacity: 0; /* Kezdetben átlátszó */
+    animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
   }
   
   .redirect a:hover {
     text-decoration: underline;
+  }
+  
+  /* Animációk */
+  @keyframes fadeInAll {
+    0% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInHeader {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInLink {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInForm {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInText {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInInput {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInButton {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
   </style>
   
