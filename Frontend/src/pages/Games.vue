@@ -181,7 +181,7 @@ export default {
   .search-container {
     flex: 1;
     display: flex;
-    justify-content: center; /* Középre igazítja a keresőt */
+    justify-content: center;
   }
 
   .search-container input {
@@ -203,13 +203,14 @@ export default {
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 1px;
-    transition: color 0.3s, transform 0.3s;
+    transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
   }
-
+  
   .nav-link:hover {
     color: #e91e63;
     transform: scale(1.1);
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    letter-spacing: 3px;
   }
 
   .main {
