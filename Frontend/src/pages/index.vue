@@ -1,9 +1,9 @@
 <template>
-  <Games/>
+  <Main />
 </template>
 
 <script setup>
-  import Games from './Games.vue'
+  import Main from './Main.vue'
 </script>
 
 <style>
