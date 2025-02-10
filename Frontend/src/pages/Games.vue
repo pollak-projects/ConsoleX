@@ -97,19 +97,19 @@ export default {
   data() {
     return {
       searchQuery: '',
-      categories: ['Akció', 'PlayStation', 'Xbox', 'PC'],
+      categories: ['Használt', 'PlayStation', 'Xbox', 'PC'],
       selectedCategories: [],
       selectedPriceMin: 0, // Minimum ár
       selectedPriceMax: 25000, // Maximum ár
       maxPrice: 25000, // Maximális ár, amit a csúszkákhoz használunk
       products: [
-        { id: 1, name: "Marvel's Spider-Man 2", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
-        { id: 2, name: "Marvel's Spider-Man 2 (használt)", price: 15990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
-        { id: 3, name: "Marvel's Spider-Man Miles Morales Ultimate Edition", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
-        { id: 4, name: "Marvel's Spider-Man: Miles Morales", price: 17990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
-        { id: 5, name: "Call of Duty: Modern Warfare II", price: 24990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Akció'] },
-        { id: 6, name: "FIFA 24", price: 15990, image: "https://placehold.co/200x300", category: ['PC', 'Sport'] },
-        { id: 7, name: "Halo Infinite", price: 19990, image: "https://placehold.co/200x300", category: ['Xbox', 'Akció'] },
+        { id: 1, name: "Marvel's Spider-Man 2", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
+        { id: 2, name: "Marvel's Spider-Man 2 (használt)", price: 15990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Használt'] },
+        { id: 3, name: "Marvel's Spider-Man Miles Morales Ultimate Edition", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
+        { id: 4, name: "Marvel's Spider-Man: Miles Morales", price: 17990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
+        { id: 5, name: "Call of Duty: Modern Warfare II", price: 24990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
+        { id: 6, name: "FIFA 24", price: 15990, image: "https://placehold.co/200x300", category: ['PC'] },
+        { id: 7, name: "Halo Infinite", price: 19990, image: "https://placehold.co/200x300", category: ['Xbox'] },
       ],
       filteredProducts: [],
     };
