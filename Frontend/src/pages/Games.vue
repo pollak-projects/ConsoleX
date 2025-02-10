@@ -1,7 +1,7 @@
 <template>
   <div class="games-container">
     <header class="header">
-      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" id="navlogo" />
+      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
       <div class="search-container">
         <input
           type="text"

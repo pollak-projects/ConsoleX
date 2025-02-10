@@ -4,9 +4,7 @@
         <img alt="Konzolvilág logo" src="https://placehold.co/150x50" id="navlogo" />
         <div class="navigation">
           <router-link to="/main" class="nav-link">Főoldal</router-link>
-          <router-link to="/login" class="nav-link">Bejelentkezés</router-link>
-          <router-link to="/register" class="nav-link">Regisztráció</router-link>
-          <router-link to="/cart" class="nav-link">Kosár</router-link>
+          <router-link to="/games" class="nav-link">Játékok</router-link>
         </div>
       </header>
   
@@ -101,6 +99,13 @@
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     letter-spacing: 3px;
   }
+
+  .navlogo{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   
   .auth-container {
     max-width: 600px; /* Növeltem a maximális szélességet */
@@ -131,7 +136,7 @@
   }
   
   input {
-    width: 100%;
+    width: 95%;
     padding: 12px; /* Növeltük a belső paddingot */
     border: 1px solid #ddd;
     border-radius: 5px;
