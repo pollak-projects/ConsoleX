@@ -142,10 +142,12 @@ button {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s
 }
 
 button:hover {
   background-color: #45a049;
+  transform: scale(1.06);
 }
 
 .redirect {
