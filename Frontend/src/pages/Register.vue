@@ -11,7 +11,6 @@
       </div>
     </header>
 
-<<<<<<< HEAD
     <!-- Regisztrációs űrlap -->
     <div class="form-container">
       <header>
@@ -223,81 +222,4 @@ button:hover {
   100% { opacity: 1; transform: translateY(0); }
 }
 </style>
-=======
-  .navlogo{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .auth-container {
-    max-width: 600px; /* Növeltem a maximális szélességet */
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  h1 {
-    font-size: 28px; /* Nagyobb cím */
-    font-weight: 600;
-  }
-  
-  .input-group {
-    margin-bottom: 20px; /* Tágabb margó */
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  input {
-    width: 95%;
-    padding: 12px; /* Növeltük a belső paddingot */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px; /* Kicsit nagyobb betűméret */
-  }
-  
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s, transform 0.3s, letter-spacing 0.3s
-  }
-  
-  button:hover {
-    background-color: #45a049;
-    transform: scale(1.06)
-  }
-  
-  .redirect {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .redirect a {
-    color: #4caf50;
-    text-decoration: none;
-  }
-  
-  .redirect a:hover {
-    text-decoration: underline;
-  }
-  </style>
-  
->>>>>>> d78668ce43929fe5cc8b4ed22f29725d5fe9c330
+

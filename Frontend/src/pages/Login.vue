@@ -148,17 +148,12 @@ button {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-<<<<<<< HEAD
   opacity: 0; /* Kezdetben átlátszó */
   animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
-=======
-  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s
->>>>>>> d78668ce43929fe5cc8b4ed22f29725d5fe9c330
 }
 
 button:hover {
   background-color: #45a049;
-  transform: scale(1.06);
 }
 
 .redirect {
