@@ -60,42 +60,12 @@
       return {
         // Kiemelt játékok listája
         featuredGames: [
-          {
-            id: 1,
-            name: "Jatek 1",
-            price: 17990,
-            image: "https://placehold.co/400x300",
-          },
-          {
-            id: 2,
-            name: "Jatek 2",
-            price: 15990,
-            image: "https://placehold.co/400x300",
-          },
-          {
-            id: 3,
-            name: "Jatek 3",
-            price: 12990,
-            image: "https://placehold.co/400x300",
-          },
-          {
-            id: 3,
-            name: "Jatek 4",
-            price: 12990,
-            image: "https://placehold.co/400x300",
-          },
-          {
-            id: 3,
-            name: "Jatek 5",
-            price: 12990,
-            image: "https://placehold.co/400x300",
-          },
-          {
-            id: 3,
-            name: "Jatek 6",
-            price: 12990,
-            image: "https://placehold.co/400x300",
-          },
+          { id: 1, name: "Jatek 1", price: 17990, image: "https://placehold.co/400x300" },
+          { id: 2, name: "Jatek 2", price: 15990, image: "https://placehold.co/400x300" },
+          { id: 3, name: "Jatek 3", price: 12990, image: "https://placehold.co/400x300" },
+          { id: 4, name: "Jatek 4", price: 12990, image: "https://placehold.co/400x300" },
+          { id: 5, name: "Jatek 5", price: 12990, image: "https://placehold.co/400x300" },
+          { id: 6, name: "Jatek 6", price: 12990, image: "https://placehold.co/400x300" },
         ],
         // Slider képek listája
         sliderImages: [
@@ -124,211 +94,239 @@
   </script>
   
   <style scoped>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-      color: #333;
-    }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+  }
   
+  /* Header */
+  .main-header {
+    background-color: #fff;
+    color: #333;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #ddd;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .main-navigation {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .main-nav-link {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  }
+  
+  .main-nav-link:hover {
+    color: #e91e63;
+    transform: scale(1.1);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    letter-spacing: 3px;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-slider {
+    display: flex;
+    transition: transform 1s ease;
+  }
+  
+  .slide {
+    flex: 0 0 100%;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    filter: brightness(70%);
+  }
+  
+  .hero-content {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    z-index: 3;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  .hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+  }
+  
+  .hero-subtitle {
+    font-size: 20px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  .shop-now-button {
+    background: linear-gradient(45deg, #e91e63, #d81b60);
+    color: white;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shop-now-button:hover {
+    background: linear-gradient(45deg, #d81b60, #c2185b);
+    transform: scale(1.05);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Featured Section */
+  .featured-section {
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  
+  .featured-games {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .game-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .game-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .game-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .game-price {
+    font-size: 18px;
+    color: #e91e63;
+    margin-bottom: 15px;
+  }
+  
+  .view-details {
+    text-decoration: none;
+    color: #4caf50;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  /* About Us Section */
+  .about-us {
+    background-color: #f0f0f0;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .about-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .about-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .about-button:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .footer-content {
+    font-size: 14px;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
     .main-header {
-      background-color: #fff;
-      color: #333;
-      padding: 20px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 3px solid #ddd;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+      align-items: flex-start;
     }
   
     .main-navigation {
-      display: flex;
-      gap: 30px;
-    }
-  
-    .main-nav-link {
-      color: #333;
-      text-decoration: none;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      transition: color 0.3s, transform 0.3s;
-    }
-  
-    .main-nav-link:hover {
-      color: #e91e63;
-      transform: scale(1.1);
-      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    }
-  
-    .hero-section {
-      position: relative;
-      overflow: hidden;
-    }
-  
-    .hero-slider {
-      display: flex;
-      transition: transform 1s ease;
-    }
-  
-    .slide {
-      flex: 0 0 100%;
-    }
-  
-    .hero-image {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
-  
-    .hero-content {
-      position: absolute;
-      top: 30%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      color: white;
+      margin-top: 20px;
+      flex-direction: column;
+      gap: 15px;
     }
   
     .hero-title {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 20px;
+      font-size: 36px;
     }
   
     .hero-subtitle {
-      font-size: 20px;
-      margin-bottom: 40px;
-    }
-  
-    .shop-now-button {
-      background-color: #e91e63;
-      color: white;
-      padding: 15px 40px;
-      text-decoration: none;
       font-size: 18px;
-      border-radius: 5px;
-      transition: background-color 0.3s, transform 0.3s;
     }
-  
-    .shop-now-button:hover {
-      background-color: #d81b60;
-      transform: scale(1.05);
-    }
-  
-    .featured-section {
-      padding: 40px 20px;
-      text-align: center;
-    }
-  
-    .section-title {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 30px;
-    }
-  
-    .featured-games {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 30px;
-    }
-  
-    .game-card {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      text-align: center;
-      padding: 20px;
-      transition: transform 0.3s;
-    }
-  
-    .game-card:hover {
-      transform: translateY(-10px);
-    }
-  
-    .game-image {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-  
-    .game-name {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-  
-    .game-price {
-      font-size: 18px;
-      color: #e91e63;
-      margin-bottom: 15px;
-    }
-  
-    .view-details {
-      text-decoration: none;
-      color: #4caf50;
-      font-size: 16px;
-      font-weight: 700;
-    }
-  
-    .about-us {
-      background-color: #f0f0f0;
-      padding: 40px 20px;
-      text-align: center;
-    }
-  
-    .about-text {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-  
-    .about-button {
-      background-color: #4caf50;
-      color: white;
-      padding: 15px 30px;
-      font-size: 16px;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-  
-    .about-button:hover {
-      background-color: #388e3c;
-    }
-  
-    .footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-  
-    .footer-content {
-      font-size: 14px;
-    }
-  
-    @media (max-width: 768px) {
-      .main-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-  
-      .main-navigation {
-        margin-top: 20px;
-        flex-direction: column;
-        gap: 15px;
-      }
-  
-      .hero-title {
-        font-size: 36px;
-      }
-  
-      .hero-subtitle {
-        font-size: 18px;
-      }
-    }
+  }
   </style>
   
