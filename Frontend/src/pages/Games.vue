@@ -71,10 +71,9 @@
       <section class="content">
         <img alt="PS5 Pro advertisement" src="https://placehold.co/800x200" />
         <h1>Játékok</h1>
-        <p>1–24 / 880 termék a Játékok kategóriában</p>
 
         <div class="products">
-          <div class="product" v-for="product in filteredProducts" :key="product.id">
+          <div class="product" v-for="product in filteredProducts" :key="product.product_id">
             <img :alt="product.name" :src="product.image" />
             <h2>{{ product.name }}</h2>
             <p class="price">{{ product.price }} Ft</p>
@@ -90,24 +89,18 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       searchQuery: '',
       categories: ['Használt', 'PlayStation', 'Xbox', 'PC'],
       selectedCategories: [],
-      selectedPriceMin: 0, // Minimum ár
-      selectedPriceMax: 25000, // Maximum ár
-      maxPrice: 25000, // Maximális ár, amit a csúszkákhoz használunk
-      products: [
-        { id: 1, name: "Marvel's Spider-Man 2", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
-        { id: 2, name: "Marvel's Spider-Man 2 (használt)", price: 15990, image: "https://placehold.co/200x300", category: ['PlayStation', 'Használt'] },
-        { id: 3, name: "Marvel's Spider-Man Miles Morales Ultimate Edition", price: 19990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
-        { id: 4, name: "Marvel's Spider-Man: Miles Morales", price: 17990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
-        { id: 5, name: "Call of Duty: Modern Warfare II", price: 24990, image: "https://placehold.co/200x300", category: ['PlayStation'] },
-        { id: 6, name: "FIFA 24", price: 15990, image: "https://placehold.co/200x300", category: ['PC'] },
-        { id: 7, name: "Halo Infinite", price: 19990, image: "https://placehold.co/200x300", category: ['Xbox'] },
-      ],
+      selectedPriceMin: 0,
+      selectedPriceMax: 25000,
+      maxPrice: 25000,
+      products: [],
       filteredProducts: [],
     };
   },
@@ -135,17 +128,23 @@ export default {
       return filtered;
     },
   },
+  mounted() {
+  this.fetchProducts();
+},
   methods: {
     addToCart(product) {
       console.log("Added to cart:", product.name);
     },
-    filterProducts() {
-      // A csúszkák és egyéb szűrők alapján frissíti a filteredProducts tömböt
-    },
+  async fetchProducts() {
+    try {
+      const response = await fetch('http://localhost:8000/api/product');
+      const data = await response.json();
+      this.products = data;
+    } catch (error) {
+      console.error('Hiba történt a termékek lekérése közben:', error);
+    }
   },
-  mounted() {
-    this.filteredProducts = this.products;
-  },
+}
 };
 </script>
 

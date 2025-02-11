@@ -41,9 +41,9 @@ model order_item {
 model product {
   product_id       Int                @id @default(autoincrement())
   name             String             @db.VarChar(255)
-  description      String?            @db.Text
+  image            String             @db.VarChar(255)
   price            Decimal            @db.Decimal(10, 2)
-  stock_quantity   Int
+  category         String             @db.VarChar(255)
   order_item       order_item[]
   product_category product_category[]
 }
