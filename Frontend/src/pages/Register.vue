@@ -55,21 +55,55 @@ export default {
     };
   },
   methods: {
-    register() {
+    async register() {
+      // Ha a jelszavak nem egyeznek
       if (this.password !== this.confirmPassword) {
         alert('A jelszavak nem egyeznek!');
         return;
       }
-      console.log('Regisztráció:', this.username, this.email);
-    },
+
+      try {
+        // A fetch kérés, amely az API URL-t a .env fájlból használja
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/register`, {  // Backend API URL
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: this.username,
+            email: this.email,
+            password: this.password,
+            confirmPassword: this.confirmPassword,
+          }),
+        });
+
+        // Ha a válasz nem sikeres, hibaüzenetet küldünk
+        if (!response.ok) {
+          const errorData = await response.json();
+          alert(`Hiba történt: ${errorData.message}`);
+        } else {
+          // Ha a válasz sikeres, a szerver üzenetét mutatjuk
+          const data = await response.json();
+          alert(data.message);  // Sikeres regisztráció üzenet
+
+          // Átirányítás a bejelentkezési oldalra
+          this.$router.push('/login');
+        }
+      } catch (error) {
+        console.error('Hiba történt:', error);
+        alert('Belső hiba történt a regisztráció során.');
+      }
+    }
   },
 };
 </script>
 
+
 <style scoped>
+/* Stílusok maradnak ugyanazok, mint az előző példában */
 /* Fő konténer */
 .auth-container {
-  animation: fadeInAll 0.75s ease-out; /* Az egész oldal gyorsabban történő betöltése */
+  animation: fadeInAll 0.75s ease-out;
 }
 
 /* Fejléc */
@@ -82,7 +116,7 @@ export default {
   align-items: center;
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
+  animation: fadeInHeader 0.75s ease-out;
 }
 
 .header img {
@@ -101,7 +135,7 @@ export default {
   font-weight: 700;
   letter-spacing: 1px;
   transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .nav-link:hover {
@@ -119,7 +153,7 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInForm 0.75s ease-out; /* Form gyorsabb animációja */
+  animation: fadeInForm 0.75s ease-out;
 }
 
 header {
@@ -130,7 +164,7 @@ header {
 h1 {
   font-size: 28px;
   font-weight: 600;
-  animation: fadeInText 0.75s ease-out forwards; /* Cím animációja */
+  animation: fadeInText 0.75s ease-out forwards;
 }
 
 .input-group {
@@ -148,8 +182,8 @@ input {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
-  opacity: 0; /* Kezdetben átlátszó */
-  animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
+  opacity: 0;
+  animation: fadeInInput 0.75s ease-out forwards;
 }
 
 button {
@@ -162,8 +196,8 @@ button {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  opacity: 0; /* Kezdetben átlátszó */
-  animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
+  opacity: 0;
+  animation: fadeInButton 0.75s ease-out forwards;
 }
 
 button:hover {
@@ -178,8 +212,8 @@ button:hover {
 .redirect a {
   color: #4caf50;
   text-decoration: none;
-  opacity: 0; /* Kezdetben átlátszó */
-  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+  opacity: 0;
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .redirect a:hover {
@@ -222,4 +256,3 @@ button:hover {
   100% { opacity: 1; transform: translateY(0); }
 }
 </style>
-
