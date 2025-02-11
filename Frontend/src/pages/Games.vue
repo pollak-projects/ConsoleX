@@ -137,7 +137,7 @@ export default {
     },
   async fetchProducts() {
     try {
-      const response = await fetch('http://localhost:8000/api/product');
+      const response = await fetch('http://localhost:8080/api/product');
       const data = await response.json();
       this.products = data;
     } catch (error) {
