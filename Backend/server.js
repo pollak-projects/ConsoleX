@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/products', async (req, res) => {
+app.get('/api/product', async (req, res) => {
   const products = await prisma.product.findMany();
   res.json(products);
 });
