@@ -79,10 +79,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `name`, `price`, `image`, `category`) VALUES
-(1, 'PlayStation 5', 120000.00, 'https://placehold.co/200x200', 'PlayStation'),
-(2, 'Xbox Series X', 115000.00, 'https://placehold.co/200x200', 'Xbox'),
-(3, 'Gaming PC', 200000.00, 'https://placehold.co/200x200', 'PC'),
-(4, 'Forza horizon 4', 15000.00, 'https://placehold.co/200x200', 'Használt'),
+(1, 'Call of Duty: Black Ops 6', 25000.00, 'https://placehold.co/200x200', 'PC'),
+(2, 'Minecraft', 10000.00, 'https://placehold.co/200x200', 'Xbox'),
+(3, 'Minecraft', 10000.00, 'https://placehold.co/200x200', 'PC'),
+(4, 'Forza Horizon 4 (használt)', 15000.00, 'https://placehold.co/200x200', 'Használt Xbox'),
 (5, 'The Last of Us Part II', 15000.00, 'https://placehold.co/200x200', 'PlayStation'),
 (6, 'FIFA 22', 12000.00, 'https://placehold.co/200x200', 'Xbox');
 
