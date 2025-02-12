@@ -101,7 +101,6 @@ export default {
       selectedPriceMax: 25000,
       maxPrice: 25000,
       products: [],
-      filteredProducts: [],
     };
   },
   computed: {
@@ -129,24 +128,27 @@ export default {
     },
   },
   mounted() {
-  this.fetchProducts();
-},
+    this.fetchProducts();
+  },
   methods: {
     addToCart(product) {
       console.log("Added to cart:", product.name);
     },
-  async fetchProducts() {
-    try {
-      const response = await fetch('http://localhost:8080/api/product');
-      const data = await response.json();
-      this.products = data;
-    } catch (error) {
-      console.error('Hiba történt a termékek lekérése közben:', error);
-    }
+// Vue.js frontend (például a `fetchProducts` függvényben)
+
+async fetchProducts() {
+  try {
+    const response = await fetch('http://localhost:8000/api/product'); // API végpont
+    const data = await response.json(); // Válasz JSON-ként
+    this.products = data; // Az adatokat a 'products' változóba mentjük
+  } catch (error) {
+    console.error('Hiba történt a termékek lekérése közben:', error);
+  }
+  }
   },
-}
 };
 </script>
+
 
 <style scoped>
 body {
