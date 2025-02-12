@@ -177,7 +177,7 @@ label {
 }
 
 input {
-  width: 100%;
+  width: 96%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 5px;
