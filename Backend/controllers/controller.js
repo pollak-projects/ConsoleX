@@ -1,20 +1,27 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const mysql = require('mysql2');
 
-// Összes Order lekérdezése a kategória nevével
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',        
+    database: 'vizsgaremek',
+});
+
 const getAllOrder = async (req, res) => {
-    try{
-        const orders = await prisma.orders.findMany({
-            include: {
-                Kategoria: true, 
-            },
-        }
-        );
-        res.status(200).json(orders);
-    } catch (error){
-        res.status(500).json({error: "Hiba történt a lekérdezéskor!"});
+    try {
+
+        db.query('SELECT * FROM order JOIN Kategoria ON orders.kategoria_id = Kategoria.id', (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: 'Hiba történt a lekérdezéskor!' });
+            }
+            res.status(200).json(results);
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Hiba történt a lekérdezéskor!' });
     }
 };
+
 
 // Új Order rögzítése
 // req => request(kérés)

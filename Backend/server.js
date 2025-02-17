@@ -3,6 +3,9 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const app = express();
+const route = require('./routes/route')
+
+app.use('/api/order', route);
 
 // CORS beállítása
 app.use(cors());
@@ -65,6 +68,18 @@ app.post('/api/register', (req, res) => {
         res.status(201).json({ message: 'Sikeres regisztráció!' });
       });
     });
+  });
+});
+
+app.get('/api/order', (req, res) => {
+  const sql = 'SELECT * FROM order'; // Feltételezve, hogy a tábla neve 'products'
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Hiba történt a lekérdezés során: ', err);
+      return res.status(500).json({ message: 'Hiba történt a lekérdezés során' });
+    }
+    res.json(results);
   });
 });
 
