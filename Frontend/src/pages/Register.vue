@@ -64,7 +64,7 @@ export default {
 
       try {
         // A fetch kérés, amely az API URL-t a .env fájlból használja
-        const response = await fetch(`${process.env.VUE_APP_API_URL}/register`, {  // Backend API URL
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -98,9 +98,9 @@ export default {
 };
 </script>
 
-
 <style scoped>
 /* Stílusok maradnak ugyanazok, mint az előző példában */
+
 /* Fő konténer */
 .auth-container {
   animation: fadeInAll 0.75s ease-out;
