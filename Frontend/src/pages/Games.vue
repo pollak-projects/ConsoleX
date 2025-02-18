@@ -104,29 +104,31 @@ export default {
     };
   },
   computed: {
-    filteredProducts() {
-      let filtered = this.products;
+  filteredProducts() {
+    let filtered = this.products;
 
-      // Keresés
-      if (this.searchQuery) {
-        filtered = filtered.filter(product =>
-          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      }
+    // Keresés
+    if (this.searchQuery) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
 
-      // Kategóriák szűrése
-      if (this.selectedCategories.length) {
-        filtered = filtered.filter(product =>
-          this.selectedCategories.every(category => product.category.includes(category))
-        );
-      }
+    // Kategóriák szűrése
+    if (this.selectedCategories.length) {
+      filtered = filtered.filter(product =>
+        this.selectedCategories.every(category => product.category.includes(category))
+      );
+    }
 
-      // Ár szűrés
-      filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
+    // Ár szűrés
+    filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
 
-      return filtered;
-    },
+    console.log("Szűrt termékek:", filtered); // Szűrt termékek naplózása
+    return filtered;
   },
+},
+
   mounted() {
     this.fetchProducts();
   },
@@ -134,20 +136,25 @@ export default {
     addToCart(product) {
       console.log("Added to cart:", product.name);
     },
-// Vue.js frontend (például a `fetchProducts` függvényben)
 
-async fetchProducts() {
-  try {
-    const response = await fetch('http://localhost:8000/api/product'); // API végpont
-    const data = await response.json(); // Válasz JSON-ként
-    this.products = data; // Az adatokat a 'products' változóba mentjük
-  } catch (error) {
-    console.error('Hiba történt a termékek lekérése közben:', error);
-  }
-  }
+    // Termékek lekérése a backendről
+    async fetchProducts() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/products'); // Frissített API végpont
+        this.products = response.data.products; // Az adatokat a 'products' kulcsból tároljuk el
+      } catch (error) {
+        console.error('Hiba történt a termékek lekérése közben:', error);
+      }
+    },
+
+    // Keresés szűrése
+    filterProducts() {
+      // A termékek szűrésének logikája
+    },
   },
 };
 </script>
+
 
 
 <style scoped>
