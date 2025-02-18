@@ -1,18 +1,18 @@
 const mysql = require('mysql');
+require('dotenv').config();
 
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: 'vizsgaremek',
-  port: 3306,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DB_NAME,
 });
 
 db.connect((err) => {
   if (err) {
-    console.error('Error connecting to the database: ', err);
-    return process.exit(1);
+    console.error('Hiba történt a kapcsolat létrehozása során:', err);
+    return;
   }
-  console.log('Connected to the database');
+  console.log('Sikeres kapcsolat az adatbázishoz!');
 });
 
 module.exports = db;
