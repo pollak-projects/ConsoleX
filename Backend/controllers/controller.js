@@ -1,5 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({
