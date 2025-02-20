@@ -2,16 +2,35 @@ const request = require('supertest');
 const app = require('../server');
 const route = require('../routes/productRoutes');
 
-app.use()
-
 describe('GET /products', () => {
-    it('should return a 200 status and a list of products', async () => {
-        const response = await request(app)
-            .get('/products')
-            .expect('Content-Type', /json/)
-            .expect(200); 
+  it('should get all products', async () => {
+    const res = await request(app)
+      .get('/products')
+      .expect('Content-Type', /json/)
+      .expect(200);
 
-        expect(Array.isArray(response.body)).toBe(true);
-        expect(response.body.length).toBeGreaterThan(0);
-    });
+    expect(res.body).toBeInstanceOf(Array);
+    expect(res.body[0]).toHaveProperty('name');
+    expect(res.body[0]).toHaveProperty('category');
+  });
+});
+
+describe('POST /products', () => {
+  it('should add a new product', async () => {
+    const newProduct = {
+      name: 'Termék 1',
+      category: 'Kategória 1',
+      price: 1000,
+      image: 'image_url'
+    };
+
+    const res = await request(app)
+      .post('/products')
+      .send(newProduct)
+      .expect('Content-Type', /json/)
+      .expect(201);
+
+    expect(res.body).toHaveProperty('message', 'Termék sikeresen hozzáadva');
+    expect(res.body).toHaveProperty('productId');
+  });
 });
