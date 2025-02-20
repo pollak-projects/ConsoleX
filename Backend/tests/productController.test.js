@@ -1,6 +1,10 @@
 const request = require('supertest');
+const express = require('express');
 const app = require('../server');
-const route = require('../routes/productRoutes');
+const productRoutes = require('../routes/productRoutes');
+
+const app = express();
+app.use(express.json());
 
 describe('GET /products', () => {
   it('should get all products', async () => {
