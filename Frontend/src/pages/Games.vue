@@ -104,56 +104,46 @@ export default {
     };
   },
   computed: {
-  filteredProducts() {
-    let filtered = this.products;
+    filteredProducts() {
+      let filtered = this.products;
 
-    // Keresés
-    if (this.searchQuery) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    }
+      if (this.searchQuery) {
+        filtered = filtered.filter(product =>
+          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
 
-    // Kategóriák szűrése
-    if (this.selectedCategories.length) {
-      filtered = filtered.filter(product =>
-        this.selectedCategories.every(category => product.category.includes(category))
-      );
-    }
+      if (this.selectedCategories.length) {
+        filtered = filtered.filter(product =>
+          this.selectedCategories.every(category => product.category.includes(category))
+        );
+      }
 
-    // Ár szűrés
-    filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
-
-    console.log("Szűrt termékek:", filtered); // Szűrt termékek naplózása
-    return filtered;
+      filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
+      return filtered;
+    },
   },
-},
-
   mounted() {
     this.fetchProducts();
   },
   methods: {
-    addToCart(product) {
-      console.log("Added to cart:", product.name);
-    },
-
-    // Termékek lekérése a backendről
     async fetchProducts() {
       try {
-        const response = await axios.get('http://localhost:8000/api/products'); // Frissített API végpont
-        this.products = response.data.products; // Az adatokat a 'products' kulcsból tároljuk el
+        const response = await axios.get('http://localhost:8000/api/products');
+        this.products = response.data.products;
       } catch (error) {
         console.error('Hiba történt a termékek lekérése közben:', error);
       }
     },
-
-    // Keresés szűrése
     filterProducts() {
-      // A termékek szűrésének logikája
+    },
+    addToCart(product) {
+      console.log("Added to cart:", product.name);
     },
   },
 };
 </script>
+
 
 
 

@@ -91,10 +91,11 @@ export default {
         console.error('Hiba történt:', error);
         alert(`Belső hiba történt a regisztráció során: ${error.message}`);
       }
-    }
+    },
   },
 };
 </script>
+
 
 <style scoped>
 /* Stílusok maradnak ugyanazok, mint az előző példában */
