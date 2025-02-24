@@ -9,32 +9,28 @@
         <router-link to="/register" class="nav-link">Regisztráció</router-link>
       </div>
     </header>
-
     <main class="main">
       <div class="cart-content">
         <div class="cart-left">
           <h1>Kosár</h1>
-
           <div v-if="cart.length === 0" class="empty-cart">
             <p>A kosár jelenleg üres. Helyezd a termékeket a kosárba!</p>
           </div>
-
           <div v-else>
             <!-- Termékek listája -->
             <div v-for="(item, index) in cart" :key="index" class="cart-item">
               <p>{{ item.name }} - {{ item.quantity }} x {{ item.price }} Ft</p>
               <p>Összesen: {{ item.quantity * item.price }} Ft</p>
             </div>
-
             <!-- Kosár összegzése -->
             <div class="cart-summary">
               <p>Termékek száma: {{ cart.length }}</p>
               <p>Végösszeg: {{ totalAmount }} Ft</p>
               <button @click="placeOrder" class="place-order" :disabled="cart.length === 0">Rendelés leadása</button>
+              <button @click="clearCart" class="clear-cart-button">Kosár ürítése</button>
             </div>
           </div>
         </div>
-
         <!-- Sidebar (Jobb oldali sáv) -->
         <div class="cart-sidebar">
           <h2>Összegzés</h2>
@@ -52,35 +48,31 @@
 export default {
   data() {
     return {
-      // Kezdetben üres kosár
-      cart: [],
+      cart: [],  // Kosár üres kezdetben
     };
   },
   computed: {
-    // Végösszeg számítása
     totalAmount() {
       return this.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     },
   },
+  mounted() {
+    this.loadCart();
+  },
   methods: {
-    // Kosár ürítése
-    clearCart() {
-      this.cart = [];
+    loadCart() {
+      const cart = JSON.parse(localStorage.getItem('cart'));
+      if (cart) {
+        this.cart = cart;
+      }
     },
-
-    // Rendelés leadása
     placeOrder() {
       alert("Rendelés leadása nem elérhető még.");
     },
-
-    // Példa termék hozzáadása a kosárhoz
-    addProductToCart(product) {
-      const existingProduct = this.cart.find(item => item.name === product.name);
-      if (existingProduct) {
-        existingProduct.quantity += product.quantity;
-      } else {
-        this.cart.push(product);
-      }
+    clearCart() {
+      this.cart = [];  // Kosár ürítése
+      localStorage.removeItem('cart');  // Kosár tartalmának törlése a localStorage-ból
+      alert("A kosár sikeresen kiürítve.");
     },
   },
 };
@@ -236,6 +228,23 @@ body {
   cursor: not-allowed;
 }
 
+.clear-cart-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.clear-cart-button:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
 /* Sidebar (Jobb oldali sáv) */
 .cart-sidebar {
   width: 28%;
@@ -260,8 +269,8 @@ body {
   .cart-content {
     flex-direction: column;
   }
-
-  .cart-left, .cart-sidebar {
+  .cart-left,
+  .cart-sidebar {
     width: 100%;
   }
 }
