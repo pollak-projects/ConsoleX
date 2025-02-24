@@ -101,6 +101,7 @@ export default {
       selectedPriceMax: 25000,
       maxPrice: 25000,
       products: [],
+      cart: [],
     };
   },
   computed: {
@@ -135,16 +136,33 @@ export default {
         console.error('Hiba történt a termékek lekérése közben:', error);
       }
     },
-    filterProducts() {
-    },
     addToCart(product) {
-      console.log("Added to cart:", product.name);
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingProduct = cart.find(item => item.product_id === product.product_id);
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        product.quantity = 1;
+        cart.push(product);
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Termék hozzáadva a kosárhoz.');
+    },
+    updatePriceFromInput(type) {
+      if (type === 'min' && this.selectedPriceMin > this.selectedPriceMax) {
+        this.selectedPriceMin = this.selectedPriceMax;
+      }
+      if (type === 'max' && this.selectedPriceMax < this.selectedPriceMin) {
+        this.selectedPriceMax = this.selectedPriceMin;
+      }
+      this.filterProducts();
+    },
+    filterProducts() {
+      // Filter products based on search query, categories, and price range
     },
   },
 };
 </script>
-
-
 
 
 <style scoped>
