@@ -1,40 +1,66 @@
-const request = require('supertest');
-const express = require('express');
-const app = require('../server');
-const productRoutes = require('../routes/productRoutes');
+const http = require('http');
+const assert = require('assert');
 
-const app = express();
-app.use(express.json());
+describe('Products API', () => {
+  
+  it('GET /api/products should return all products', (done) => {
+    http.get('http://localhost:3000/api/products', (res) => {
+      assert.strictEqual(res.statusCode, 200);
 
-describe('GET /products', () => {
-  it('should get all products', async () => {
-    const res = await request(app)
-      .get('/products')
-      .expect('Content-Type', /json/)
-      .expect(200);
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
 
-    expect(res.body).toBeInstanceOf(Array);
-    expect(res.body[0]).toHaveProperty('name');
-    expect(res.body[0]).toHaveProperty('category');
+      res.on('end', () => {
+        const result = JSON.parse(data);
+        assert.strictEqual(typeof result, 'object');
+        assert.strictEqual(Array.isArray(result.products), true);
+        done();
+      });
+    });
   });
-});
 
-describe('POST /products', () => {
-  it('should add a new product', async () => {
-    const newProduct = {
-      name: 'Termék 1',
-      category: 'Kategória 1',
-      price: 1000,
+  it('POST /api/products should add a new product', (done) => {
+    const postData = JSON.stringify({
+      name: 'New Product',
+      category: 'Category1',
+      price: 100,
       image: 'image_url'
+    });
+
+    const options = {
+      hostname: 'localhost',
+      port: 3000,
+      path: '/api/products',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': postData.length
+      }
     };
 
-    const res = await request(app)
-      .post('/products')
-      .send(newProduct)
-      .expect('Content-Type', /json/)
-      .expect(201);
+    const req = http.request(options, (res) => {
+      assert.strictEqual(res.statusCode, 201);
 
-    expect(res.body).toHaveProperty('message', 'Termék sikeresen hozzáadva');
-    expect(res.body).toHaveProperty('productId');
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        const result = JSON.parse(data);
+        assert.strictEqual(result.message, 'Termék sikeresen hozzáadva');
+        assert.strictEqual(typeof result.productId, 'number');
+        done();
+      });
+    });
+
+    req.on('error', (err) => {
+      done(err);
+    });
+
+    req.write(postData);
+    req.end();
   });
 });
