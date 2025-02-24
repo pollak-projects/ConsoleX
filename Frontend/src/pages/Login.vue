@@ -45,12 +45,41 @@ export default {
     };
   },
   methods: {
-    login() {
-      console.log('Bejelentkezés:', this.usernameOrEmail);
+    async login() {
+      try {
+        const response = await fetch(`http://localhost:8000/api/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.usernameOrEmail,
+            password: this.password,
+          }),
+        });
+
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
+        const data = await response.json();
+        console.log('Response data:', data);
+
+        if (!response.ok) {
+          alert(`Hiba történt: ${data.message}`);
+        } else {
+          alert(data.message); 
+
+          this.$router.push('/');
+        }
+      } catch (error) {
+        console.error('Hiba történt:', error);
+        alert(`Belső hiba történt a bejelentkezés során: ${error.message}`); 
+      }
     },
   },
 };
 </script>
+
 
 <style scoped>
 /* Az egész oldal animációja */
