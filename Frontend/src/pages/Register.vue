@@ -62,7 +62,7 @@ export default {
       }
 
       try {
-        const response = await fetch('http://localhost:8000/api/register', {
+        const response = await fetch(`http://localhost:8000/api/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -74,17 +74,22 @@ export default {
           }),
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        const data = await response.json();
+        console.log('Response data:', data);
+
         if (!response.ok) {
-          const errorData = await response.json();
-          alert(`Hiba történt: ${errorData.message}`);
+          alert(`Hiba történt: ${data.message}`);
         } else {
-          const data = await response.json();
-          alert(data.message);
+          alert(data.message); 
+
           this.$router.push('/login');
         }
       } catch (error) {
         console.error('Hiba történt:', error);
-        alert('Belső hiba történt a regisztráció során.');
+        alert(`Belső hiba történt a regisztráció során: ${error.message}`);
       }
     },
   },
