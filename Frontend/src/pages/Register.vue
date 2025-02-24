@@ -56,15 +56,13 @@ export default {
   },
   methods: {
     async register() {
-      // Ha a jelszavak nem egyeznek
       if (this.password !== this.confirmPassword) {
         alert('A jelszavak nem egyeznek!');
         return;
       }
 
       try {
-        // A fetch kérés, amely az API URL-t a .env fájlból használja
-        const response = await fetch(`${process.env.VUE_APP_API_URL}/register`, {
+        const response = await fetch('http://localhost:8000/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -73,30 +71,26 @@ export default {
             username: this.username,
             email: this.email,
             password: this.password,
-            confirmPassword: this.confirmPassword,
           }),
         });
 
-        // Ha a válasz nem sikeres, hibaüzenetet küldünk
         if (!response.ok) {
           const errorData = await response.json();
           alert(`Hiba történt: ${errorData.message}`);
         } else {
-          // Ha a válasz sikeres, a szerver üzenetét mutatjuk
           const data = await response.json();
-          alert(data.message);  // Sikeres regisztráció üzenet
-
-          // Átirányítás a bejelentkezési oldalra
+          alert(data.message);
           this.$router.push('/login');
         }
       } catch (error) {
         console.error('Hiba történt:', error);
         alert('Belső hiba történt a regisztráció során.');
       }
-    }
+    },
   },
 };
 </script>
+
 
 <style scoped>
 /* Stílusok maradnak ugyanazok, mint az előző példában */
