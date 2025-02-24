@@ -14,3 +14,8 @@ exports.login = async (req, res) => {
   const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
   res.header('Authorization', token).send({ token });
 };
+
+exports.getUsers = async (req, res) => {
+  const users = await User.find({});
+  res.send(users);
+};
