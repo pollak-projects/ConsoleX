@@ -18,7 +18,7 @@
       </header>
       <form @submit.prevent="login">
         <div class="input-group">
-          <label for="username-email">Felhasználónév vagy Email</label>
+          <label for="username-email">Email</label>
           <input type="text" v-model="usernameOrEmail" id="username-email" required />
         </div>
         <div class="input-group">
