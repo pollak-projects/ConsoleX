@@ -77,6 +77,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 /* Az egész oldal animációja */
 .auth-container {

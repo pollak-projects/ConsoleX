@@ -8,7 +8,6 @@
 **Languages we use:**
 - Vueifiy 3
 - NodeJs
-- Prisma
 - Mysql
 
 # Important links:
