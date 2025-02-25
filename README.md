@@ -21,7 +21,7 @@
 ## Tips:
 
 **Admin page:**
-- if you want to use the admin page, you need to click to the logo on the top right of the website. This will
+- if you want to use the admin page, you need to click on the logo on the top right of the website. This will
  redirect you to the Admin Login page.
 what you need to type in to the inputs:
    - username: admin
