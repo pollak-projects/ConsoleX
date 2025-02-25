@@ -17,3 +17,12 @@
 
 **Figma:**
 - https://www.figma.com/design/ihrZKVltpJ2c6uFfEmMTnN/ConsoleX?node-id=0-1&p=f&t=9xa1aChE9qH2Jh5c-0
+
+## Tips:
+
+**Admin page:**
+- if you want to use the admin page, you need to click to the logo on the top right of the website. This will
+ redirect you to the Admin Login page.
+what you need to type in to the inputs:
+   - username: admin
+   - password: admin
