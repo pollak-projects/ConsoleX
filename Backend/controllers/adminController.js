@@ -1,21 +1,10 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const db = require('../config/db');
 
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
-
-  const user = await User.findOne({ username });
-  if (!user) return res.status(400).send('Username or password is wrong');
-
-  const validPass = await bcrypt.compare(password, user.password);
-  if (!validPass) return res.status(400).send('Invalid password');
-
-  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-  res.header('Authorization', token).send({ token });
-};
-
-exports.getUsers = async (req, res) => {
-  const users = await User.find({});
-  res.send(users);
+exports.addProduct = (req, res) => {
+  const { name, price, image, category } = req.body;
+  const sql = 'INSERT INTO products (name, price, image, category) VALUES (?, ?, ?, ?)';
+  db.query(sql, [name, price, image, category], (err, result) => {
+    if (err) throw err;
+    res.send('Product added successfully');
+  });
 };
