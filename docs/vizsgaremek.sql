@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Feb 17. 08:34
+-- Létrehozás ideje: 2025. Feb 25. 09:28
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -20,6 +20,25 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `vizsgaremek`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `adminuser`
+--
+
+CREATE TABLE `adminuser` (
+  `adminid` int(255) NOT NULL,
+  `adminusername` text NOT NULL,
+  `adminpassword` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `adminuser`
+--
+
+INSERT INTO `adminuser` (`adminid`, `adminusername`, `adminpassword`) VALUES
+(1, 'admin', 'admin');
 
 -- --------------------------------------------------------
 
@@ -115,6 +134,12 @@ CREATE TABLE `user` (
 --
 
 --
+-- A tábla indexei `adminuser`
+--
+ALTER TABLE `adminuser`
+  ADD PRIMARY KEY (`adminid`);
+
+--
 -- A tábla indexei `category`
 --
 ALTER TABLE `category`
@@ -158,6 +183,12 @@ ALTER TABLE `user`
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
 --
+
+--
+-- AUTO_INCREMENT a táblához `adminuser`
+--
+ALTER TABLE `adminuser`
+  MODIFY `adminid` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `category`

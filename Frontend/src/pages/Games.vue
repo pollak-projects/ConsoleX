@@ -1,7 +1,7 @@
 <template>
   <div class="games-container">
     <header class="header">
-      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+      <router-link to="/adminlogin"><img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" /></router-link>
       <div class="search-container">
         <input
           type="text"
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
   data() {
