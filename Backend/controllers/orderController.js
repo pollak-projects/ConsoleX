@@ -1,14 +1,17 @@
+// controllers/orderController.js
+
 const db = require('../config/db');
 
+// Create a new order
 exports.createOrder = (req, res) => {
-  const { userId, products, totalPrice } = req.body;
+  const { name, street, houseNumber, postalCode, paymentMethod, totalAmount } = req.body;
+  const query = 'INSERT INTO orders (name, street, houseNumber, postalCode, paymentMethod, totalAmount) VALUES (?, ?, ?, ?, ?, ?)';
 
-  const sqlQuery = 'INSERT INTO orders (user_id, products, total_price) VALUES (?, ?, ?)';
-  db.query(sqlQuery, [userId, JSON.stringify(products), totalPrice], (err, result) => {
-    if (err) {
-      console.error('Hiba a rendelés létrehozása során:', err);
-      return res.status(500).json({ message: 'Hiba történt a rendelés létrehozásakor' });
+  db.query(query, [name, street, houseNumber, postalCode, paymentMethod, totalAmount], (error, results) => {
+    if (error) {
+      return res.status(500).json({ message: 'Failed to place order', error });
     }
-    res.status(201).json({ message: 'Rendelés sikeresen létrehozva', orderId: result.insertId });
+
+    res.status(201).json({ message: 'Order placed successfully', orderId: results.insertId });
   });
 };

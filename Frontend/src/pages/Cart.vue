@@ -17,21 +17,18 @@
             <p>A kosár jelenleg üres. Helyezd a termékeket a kosárba!</p>
           </div>
           <div v-else>
-            <!-- Termékek listája -->
             <div v-for="(item, index) in cart" :key="index" class="cart-item">
               <p>{{ item.name }} - {{ item.quantity }} x {{ item.price }} Ft</p>
               <p>Összesen: {{ item.quantity * item.price }} Ft</p>
             </div>
-            <!-- Kosár összegzése -->
             <div class="cart-summary">
               <p>Termékek száma: {{ cart.length }}</p>
               <p>Végösszeg: {{ totalAmount }} Ft</p>
-              <button @click="placeOrder" class="place-order" :disabled="cart.length === 0">Rendelés leadása</button>
+              <button @click="showOrderForm = true" class="place-order" :disabled="cart.length === 0">Rendelés leadása</button>
               <button @click="clearCart" class="clear-cart-button">Kosár ürítése</button>
             </div>
           </div>
         </div>
-        <!-- Sidebar (Jobb oldali sáv) -->
         <div class="cart-sidebar">
           <h2>Összegzés</h2>
           <div class="cart-summary">
@@ -39,6 +36,25 @@
             <p>Végösszeg: {{ totalAmount }} Ft</p>
           </div>
         </div>
+      </div>
+      <div v-if="showOrderForm" class="order-form">
+        <h2>Rendelési Adatok</h2>
+        <form @submit.prevent="submitOrder">
+          <label for="name">Név:</label>
+          <input type="text" v-model="orderDetails.name" required />
+          <label for="street">Utca:</label>
+          <input type="text" v-model="orderDetails.street" required />
+          <label for="houseNumber">Házszám:</label>
+          <input type="text" v-model="orderDetails.houseNumber" required />
+          <label for="postalCode">Irányítószám:</label>
+          <input type="text" v-model="orderDetails.postalCode" required />
+          <label for="paymentMethod">Fizetési mód:</label>
+          <select v-model="orderDetails.paymentMethod" required>
+            <option value="creditCard">Bankkártya</option>
+            <option value="cash">Készpénz</option>
+          </select>
+          <button type="submit">Rendelés leadása</button>
+        </form>
       </div>
     </main>
   </div>
@@ -48,7 +64,15 @@
 export default {
   data() {
     return {
-      cart: [],  // Kosár üres kezdetben
+      cart: [],
+      showOrderForm: false,
+      orderDetails: {
+        name: '',
+        street: '',
+        houseNumber: '',
+        postalCode: '',
+        paymentMethod: 'creditCard',
+      },
     };
   },
   computed: {
@@ -67,12 +91,41 @@ export default {
       }
     },
     placeOrder() {
-      alert("Rendelés leadása nem elérhető még.");
+      this.showOrderForm = true;
+    },
+    async submitOrder() {
+      const orderDetails = {
+        ...this.orderDetails,
+        totalAmount: this.totalAmount,
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderDetails),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(data.message);
+          this.clearCart();
+          this.$router.push('/main');
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to place order.');
+      }
     },
     clearCart() {
-      this.cart = [];  // Kosár ürítése
-      localStorage.removeItem('cart');  // Kosár tartalmának törlése a localStorage-ból
-      alert("A kosár sikeresen kiürítve.");
+      this.cart = [];
+      localStorage.removeItem('cart');
+      alert('A kosár sikeresen kiürítve.');
     },
   },
 };
@@ -262,6 +315,49 @@ body {
 .cart-summary p {
   font-size: 18px;
   margin-bottom: 10px;
+}
+.order-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.order-form h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.order-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.order-form input[type="text"],
+.order-form select {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.order-form button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.order-form button[type="submit"]:hover {
+  background-color: #218838;
 }
 
 /* Mobil eszközök */
