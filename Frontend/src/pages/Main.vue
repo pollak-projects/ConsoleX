@@ -1,7 +1,17 @@
 <template>
   <div class="main-container fade-in">
-    <Navbar><!--Ez itt a Navbár--></Navbar>
-    <!-- Üdvözlő szöveg háttérképekkel -->
+    <header class="header">
+      <router-link to="/adminlogin"><img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" /></router-link>
+      <div class="search-container">
+      </div>
+      <div class="navigation">
+        <router-link to="/games" class="nav-link">Játékok</router-link>
+        <router-link to="/login" class="nav-link">Bejelentkezés</router-link>
+        <router-link to="/register" class="nav-link">Regisztráció</router-link>
+        <router-link to="/cart" class="nav-link">Kosár</router-link>
+        <router-link to="/admin" class="nav-link">Admin</router-link>
+      </div>
+    </header>
     <section class="hero-section fade-in">
       <div class="hero-carousel">
         <img v-for="(image, index) in images" :key="index" :src="image" class="hero-image" :class="{active: activeImageIndex === index}" />
@@ -101,6 +111,22 @@ body {
   animation: fadeIn 1.5s forwards; /* Gyorsabb animáció */
 }
 
+.header {
+  background-color: #fff;
+  color: #333;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #ddd;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
+}
+
+.header img {
+  height: 60px;
+}
+
 /* Fading animáció */
 @keyframes fadeIn {
   to {
@@ -137,6 +163,28 @@ body {
 
 .fade-in-header {
   animation: fadeInHeader 1s ease-out forwards;
+}
+
+.navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+}
+
+.nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
 }
 
 /* Hero Section */

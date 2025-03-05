@@ -1,6 +1,17 @@
 <template>
   <div class="admin-container">
-    <Navbar></Navbar>
+    <header class="header">
+      <router-link to="/adminlogin"><img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" /></router-link>
+      <div class="search-container">
+      </div>
+      <div class="navigation">
+        <router-link to="/main" class="nav-link">Főoldal</router-link>
+        <router-link to="/games" class="nav-link">Játékok</router-link>
+        <router-link to="/login" class="nav-link">Bejelentkezés</router-link>
+        <router-link to="/register" class="nav-link">Regisztráció</router-link>
+        <router-link to="/cart" class="nav-link">Kosár</router-link>
+      </div>
+    </header>
 
     <div class="form-container">
       <header>

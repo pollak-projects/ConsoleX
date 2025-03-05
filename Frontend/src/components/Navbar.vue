@@ -42,6 +42,7 @@ export default {
   font-weight: 700;
   letter-spacing: 1px;
   transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .main-nav-link:hover {
