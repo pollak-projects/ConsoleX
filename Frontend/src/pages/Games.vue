@@ -70,7 +70,7 @@
       </div>
 
       <section class="content">
-        <img alt="PS5 Pro advertisement" src="https://placehold.co/800x200" />
+        <img alt="PS5 Pro advertisement" src="https://media.licdn.com/dms/image/v2/D4E16AQG-UxmGle8URA/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1700322321372?e=2147483647&v=beta&t=Jgkb9WaAazLPhQHA0AgNhnlOWEx4pduESM460LMlQ4M" />
         <h1>Játékok</h1>
 
         <div class="products">
