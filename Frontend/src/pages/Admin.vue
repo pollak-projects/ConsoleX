@@ -39,6 +39,17 @@
         </div>
       </form>
     </div>
+    <div class="products">
+        <div class="product" v-for="product in filteredProducts" :key="product.product_id">
+          <img :alt="product.name" :src="product.image" />
+          <h2>{{ product.name }}</h2>
+          <p class="price">{{ product.price }} Ft</p>
+          <div class="actions">
+            <button @click="addToCart(product)">Kosárba</button>
+            <i class="fas fa-heart wishlist"></i>
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 
