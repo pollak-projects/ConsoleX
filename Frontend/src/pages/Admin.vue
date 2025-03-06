@@ -40,16 +40,17 @@
       </form>
     </div>
     <div class="products">
-        <div class="product" v-for="product in filteredProducts" :key="product.product_id">
-          <img :alt="product.name" :src="product.image" />
-          <h2>{{ product.name }}</h2>
-          <p class="price">{{ product.price }} Ft</p>
-          <div class="actions">
-            <button @click="addToCart(product)">Kosárba</button>
-            <i class="fas fa-heart wishlist"></i>
-          </div>
-      </div>
+  <div class="product" v-for="product in products" :key="product.product_id">
+    <img :alt="product.name" :src="product.image" />
+    <h2>{{ product.name }}</h2>
+    <p class="price">{{ product.price }} Ft</p>
+    <div class="actions">
+      
+      <i class="fas fa-heart wishlist"></i>
     </div>
+  </div>
+</div>
+
   </div>
 </template>
 
@@ -59,37 +60,55 @@ import Navbar from '../components/Navbar.vue';
 
 export default {
   data() {
-    return {
-      product: {
-        name: '',
-        price: '',
-        image: '',
-        category: ''
-      }
-    };
-  },
+  return {
+    product: {
+      name: '',
+      price: '',
+      image: '',
+      category: ''
+    },
+    products: []
+  };
+},
+
   methods: {
-    async addProduct() {
-      try {
-        const response = await axios.post('http://localhost:8000/api/admin', this.product, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        console.log('Response data:', response.data);
-
-        if (response.status !== 201) {
-          alert(`Sikeres feltöltés: ${response.data.message}`);
-        } else {
-          alert(response.data.message); 
+  async addProduct() {
+    try {
+      const response = await axios.post('http://localhost:8000/api/products', this.product, {
+        headers: {
+          'Content-Type': 'application/json'
         }
-      } catch (error) {
-        console.error('Hiba történt:', error);
-        alert(`Belső hiba történt a termék hozzáadása során: ${error.message}`);
+      });
+
+      console.log('Response data:', response.data);
+
+      if (response.status !== 201) {
+        alert(`Sikeres feltöltés: ${response.data.message}`);
+      } else {
+        alert(response.data.message);
       }
+
+      this.fetchProducts();
+
+    } catch (error) {
+      console.error('Hiba történt:', error);
+      alert(`Belső hiba történt a termék hozzáadása során: ${error.message}`);
+    }
+  },
+  async fetchProducts() {
+    try {
+      const response = await axios.get('http://localhost:8000/api/products');
+      this.products = response.data;
+    } catch (error) {
+      console.error('Hiba történt a termékek betöltésekor:', error);
+      alert(`Belső hiba történt a termékek betöltése során: ${error.message}`);
     }
   }
+},
+created() {
+  this.fetchProducts();
+}
+
 };
 </script>
 
