@@ -1,9 +1,7 @@
 <template>
     <div class="auth-container">
       <header class="header">
-        <router-link to="/adminlogin">
-          <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
-        </router-link>
+        <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
         <div class="search-container"></div>
         <div class="navigation">
           <router-link to="/admin" class="nav-link">Admin</router-link>
