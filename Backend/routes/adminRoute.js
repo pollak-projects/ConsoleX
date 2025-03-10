@@ -3,5 +3,7 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 
 router.post('/admin', adminController.addProduct);
+router.get('/admin', adminController.getProducts);
+router.delete('/admin/:id', adminController.deleteProduct);
 
 module.exports = router;

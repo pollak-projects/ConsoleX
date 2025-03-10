@@ -2,8 +2,7 @@
   <div class="admin-container">
     <header class="header">
       <router-link to="/adminlogin"><img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" /></router-link>
-      <div class="search-container">
-      </div>
+      <div class="search-container"></div>
       <div class="navigation">
         <router-link to="/main" class="nav-link">Főoldal</router-link>
         <router-link to="/games" class="nav-link">Játékok</router-link>
@@ -39,78 +38,84 @@
         </div>
       </form>
     </div>
-    <div class="products">
-  <div class="product" v-for="product in products" :key="product.product_id">
-    <img :alt="product.name" :src="product.image" />
-    <h2>{{ product.name }}</h2>
-    <p class="price">{{ product.price }} Ft</p>
-    <div class="actions">
-      
-      <i class="fas fa-heart wishlist"></i>
-    </div>
-  </div>
-</div>
 
+    
+
+      <div class="products">
+        <div class="product" v-for="product in products" :key="product.product_id">
+            <img :alt="product.name" :src="product.image" />
+            <h2>{{ product.name }}</h2>
+            <p class="price">{{ product.price }} Ft</p>
+            <div class="actions">
+              <button @click="deleteProduct(product)">Törlés</button>
+              <i class="fas fa-heart wishlist"></i>
+            </div>
+          </div>
+        </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Navbar from '../components/Navbar.vue';
 
 export default {
   data() {
-  return {
-    product: {
-      name: '',
-      price: '',
-      image: '',
-      category: ''
-    },
-    products: []
-  };
-},
+    return {
+      product: {
+        name: '',
+        price: '',
+        image: '',
+        category: ''
+      },
+      products: []
+    };
+  },
 
   methods: {
-  async addProduct() {
-    try {
-      const response = await axios.post('http://localhost:8000/api/products', this.product, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+    async addProduct() {
+      try {
+        const response = await axios.post('http://localhost:8000/api/products', this.product, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
 
-      console.log('Response data:', response.data);
-
-      if (response.status !== 201) {
         alert(`Sikeres feltöltés: ${response.data.message}`);
-      } else {
-        alert(response.data.message);
+        this.fetchProducts();
+      } catch (error) {
+        console.error('Hiba történt:', error);
+        alert(`Belső hiba történt a termék hozzáadása során: ${error.message}`);
       }
+    },
 
-      this.fetchProducts();
+    async fetchProducts() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/products');
+        this.products = response.data.products;
+      } catch (error) {
+        console.error('Hiba történt a termékek lekérése közben:', error);
+      }
+    },
 
-    } catch (error) {
-      console.error('Hiba történt:', error);
-      alert(`Belső hiba történt a termék hozzáadása során: ${error.message}`);
+
+    async deleteProduct(productId) {
+      try {
+        const response = await axios.delete(`http://localhost:8000/api/products/${productId}`);
+        alert(response.data.message);
+        this.fetchProducts();
+      } catch (error) {
+        console.error('Hiba történt a termék törlésekor:', error);
+        alert(`Belső hiba történt a termék törlése során: ${error.message}`);
+      }
     }
   },
-  async fetchProducts() {
-    try {
-      const response = await axios.get('http://localhost:8000/api/products');
-      this.products = response.data;
-    } catch (error) {
-      console.error('Hiba történt a termékek betöltésekor:', error);
-      alert(`Belső hiba történt a termékek betöltése során: ${error.message}`);
-    }
-  }
-},
-created() {
-  this.fetchProducts();
-}
 
+  created() {
+    this.fetchProducts();
+  }
 };
 </script>
+
 
 <style scoped>
 body {
