@@ -39,8 +39,11 @@
       </form>
     </div>
 
-    
-
+    <section class="section">
+    <div class="form-container">
+      <header>
+        <h1>Termékek törlése</h1>
+      </header>
       <div class="products">
         <div class="product" v-for="product in products" :key="product.product_id">
             <img :alt="product.name" :src="product.image" />
@@ -52,6 +55,8 @@
             </div>
           </div>
         </div>
+    </div>
+  </section>
   </div>
 </template>
 
@@ -115,7 +120,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 body {
