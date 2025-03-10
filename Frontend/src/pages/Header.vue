@@ -1,48 +1,59 @@
 <template>
-    <header class="header">
-      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" id="navlogo" />
-      <div class="navigation">
-        <router-link to="/main" class="nav-link">Főoldal</router-link>
-        <router-link to="/games" class="nav-link">Játékok</router-link>
-        <router-link v-if="!isLoggedIn" to="/register" class="nav-link">Regisztráció</router-link>
-        <router-link to="/cart" class="nav-link">Kosár</router-link>
-        <div v-if="isLoggedIn" class="profile">
-          <img src="https://placehold.co/50x50" alt="Profil ikon" @click="toggleProfileMenu" class="profile-icon"/>
-          <div v-if="showProfileMenu" class="profile-menu">
-            <span>{{ username }}</span>
-            <button @click="logout">Kijelentkezés</button>
-          </div>
+<header class="header">
+  <router-link to="/adminlogin">
+    <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+  </router-link>
+  <div class="navigation">
+    <router-link to="/games" class="nav-link">Játékok</router-link>
+    <router-link to="/cart" class="nav-link">Kosár</router-link>
+    <div class="profile-container">
+      <p @click="toggleProfileMenu" class="profile-menu-title">
+        {{ user ? user.username : 'Profil' }}
+      </p>
+      <div v-if="showProfileMenu" class="profile-menu">
+        <div v-if="!user">
+          <p>Még nincs bejelentkezve</p>
+          <router-link to="/login" class="login-button">Bejelentkezés</router-link>
+        </div>
+        <div v-else>
+          <p>{{ user.username }}</p>
+          <button @click="logout" class="logout-button">Kijelentkezés</button>
         </div>
       </div>
-    </header>
+    </div>
+  </div>
+</header>
+
   </template>
   
   <script>
   export default {
     data() {
-      return {
-        username: localStorage.getItem('username') || '',
-        showProfileMenu: false,
-      };
-    },
-    computed: {
-      isLoggedIn() {
-        return !!localStorage.getItem('token');
-      },
-    },
-    methods: {
-      toggleProfileMenu() {
-        this.showProfileMenu = !this.showProfileMenu;
-      },
-      logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        this.username = '';
-        this.showProfileMenu = false;
-        this.$router.push('/login');
-      },
-    },
+  return {
+    user: null,
+    showProfileMenu: false,
   };
+},
+methods: {
+  toggleProfileMenu() {
+    this.showProfileMenu = !this.showProfileMenu;
+  },
+  logout() {
+    this.user = null;
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    this.$router.push("/login");
+  },
+},
+mounted() {
+  const username = localStorage.getItem("username");
+  if (username) {
+    this.user = { username };
+  }
+},
+
+};
+
   </script>
   
   <style scoped>
