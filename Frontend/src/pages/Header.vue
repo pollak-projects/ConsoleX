@@ -1,96 +1,69 @@
 <template>
-<header class="header">
-  <router-link to="/adminlogin">
-    <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
-  </router-link>
-  <div class="navigation">
-    <router-link to="/games" class="nav-link">Játékok</router-link>
-    <router-link to="/cart" class="nav-link">Kosár</router-link>
-    <div class="profile-container">
-      <p @click="toggleProfileMenu" class="profile-menu-title">
-        {{ user ? user.username : 'Profil' }}
-      </p>
-      <div v-if="showProfileMenu" class="profile-menu">
-        <div v-if="!user">
-          <p>Még nincs bejelentkezve</p>
-          <router-link to="/login" class="login-button">Bejelentkezés</router-link>
-        </div>
-        <div v-else>
-          <p>{{ user.username }}</p>
-          <button @click="logout" class="logout-button">Kijelentkezés</button>
-        </div>
-      </div>
+  <div class="header">
+    <router-link to="/main">
+      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+    </router-link>
+    <div class="navigation">
+      <router-link to="/main" class="nav-link">Főoldal</router-link>
+      <router-link to="/games" class="nav-link">Játékok</router-link>
+      <router-link v-if="!isLoggedIn" to="/register" class="nav-link">Regisztráció</router-link>
+      <router-link v-if="!isLoggedIn" to="/login" class="nav-link">Bejelentkezés</router-link>
+      <router-link to="/cart" class="nav-link">Kosár</router-link>
+      <router-link to="/admin" class="nav-link">Admin</router-link>
+      <router-link v-if="isLoggedIn" to="/profile" class="nav-link">Profil</router-link>
     </div>
   </div>
-</header>
+</template>
 
-  </template>
-  
-  <script>
-  export default {
-    data() {
-  return {
-    user: null,
-    showProfileMenu: false,
-  };
-},
-methods: {
-  toggleProfileMenu() {
-    this.showProfileMenu = !this.showProfileMenu;
+<script>
+export default {
+  data() {
+    return {
+      isLoggedIn: !!localStorage.getItem('token'),
+    };
   },
-  logout() {
-    this.user = null;
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    this.$router.push("/login");
+  watch: {
+    '$route'() {
+      this.isLoggedIn = !!localStorage.getItem('token');
+    },
   },
-},
-mounted() {
-  const username = localStorage.getItem("username");
-  if (username) {
-    this.user = { username };
-  }
-},
-
 };
+</script>
 
-  </script>
-  
-  <style scoped>
-  .profile {
-    display: flex;
-    align-items: center;
-  }
-  .profile-icon {
-    cursor: pointer;
-    border-radius: 50%;
-  }
-  .profile-menu {
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .profile-menu span {
-    margin-bottom: 10px;
-  }
-  .profile-menu button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 5px 10px;
-  }
-  .profile-menu button:hover {
-    background-color: #45a049;
-  }
-  </style>
-  
+<style scoped>
+.header {
+  background-color: #fff;
+  color: #333;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #ddd;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header img {
+  height: 60px;
+}
+
+.navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+}
+
+.nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
+}
+</style>
