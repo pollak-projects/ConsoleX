@@ -121,6 +121,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 body {
   font-family: 'Montserrat', sans-serif;
