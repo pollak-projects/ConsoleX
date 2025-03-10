@@ -20,16 +20,39 @@
 
 ## Tips:
 
+**How to start up the website in localhost:**
+## Frontend startup:
+   1. In Visual Studio Code, open up a new terminal.
+   2. Once open,  copy these commands into the terminal:
+      ```
+       cd .\Frontend\
+      ```
+      ```
+       npm install 
+      ```
+      ```
+        npm run dev 
+      ```
+## Backend server startup:
+   1. Start up XAMPP and in PHPmyadmin creat a new database named "vizsgaremek" and after that import the "viszgaremek.sql" into the database.
+   2. Once the Database is configed, open a new terminal and copy these commands into it:
+      ```
+      cd .\Backend\
+      ```
+      ```
+       npm install 
+      ```
+      ```
+        npm run start 
+      ```
+ Once everything is setup, you can reach the website here: http://localhost:6969/
+
+
 **Admin page:**
-- if you want to use the admin page, you need to click on the logo on the top right of the website. This will
- redirect you to the Admin Login page.
-what you need to type in to the inputs:
+- How to access the admin page:
+  Click on the logo on the top right of the website. This will redirect you to the Admin Login page.
+  these are needed to login into the Admin page:
+
    - username: admin
    - password: admin
 
-**How to start up the website in localhost:**
-- if you wanna check out the website before you publish it than you need to follow these steps:
-   1. in VSC you open up a terminal and split it into two.
-   2. in one of the you navigate to the frontend folder and type this in the terminal: | npm install |, | npm run dev |.
-   3. after you started up the fronted you have to start up the backend server too. first you have to open XAMPP and start up the MySQL server and then make a table named "vizsgaremek" after that import the "vizsgaremek.sql" into the database.
-      If you impoted it then you have to go back to VSC and  navigate to the backend folder and tpye these commans into the other terminal: | npm install |, | npm run start |.
