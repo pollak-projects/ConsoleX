@@ -21,7 +21,7 @@
 ## Tips:
 
 **How to start up the website in localhost:**
-## Frontend startup:
+### Frontend startup:
    1. In Visual Studio Code, open up a new terminal.
    2. Once open,  copy these commands into the terminal:
       ```
@@ -33,7 +33,7 @@
       ```
         npm run dev 
       ```
-## Backend server startup:
+### Backend server startup:
    1. Start up XAMPP and in PHPmyadmin creat a new database named "vizsgaremek" and after that import the "viszgaremek.sql" into the database.
    2. Once the Database is configed, open a new terminal and copy these commands into it:
       ```
