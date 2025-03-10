@@ -1,7 +1,9 @@
 <template>
   <div class="auth-container">
     <header class="header">
-      <router-link to="/adminlogin"><img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" /></router-link>
+      <router-link to="/adminlogin">
+        <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+      </router-link>
       <div class="search-container">
       </div>
       <div class="navigation">
@@ -10,6 +12,7 @@
         <router-link to="/register" class="nav-link">Regisztráció</router-link>
         <router-link to="/cart" class="nav-link">Kosár</router-link>
         <router-link to="/admin" class="nav-link">Admin</router-link>
+        <router-link to="/profile" class="nav-link">Profil</router-link>
       </div>
     </header>
 
@@ -49,35 +52,37 @@ export default {
   },
   methods: {
     async login() {
-      try {
-        const response = await fetch('http://localhost:8000/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.usernameOrEmail,
-            password: this.password,
-          }),
-        });
+  try {
+    const response = await fetch("http://localhost:8000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: this.usernameOrEmail,
+        password: this.password,
+      }),
+    });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          alert(`Hiba történt: ${errorData.message}`);
-        } else {
-          const data = await response.json();
-          alert(data.message);
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('username', data.username);
-          this.$router.push('/');
-        }
-      } catch (error) {
-        console.error('Hiba történt:', error);
-        alert('Belső hiba történt a bejelentkezés során.');
-      }
-    },
-  },
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(`Hiba történt: ${errorData.message}`);
+    } else {
+      const data = await response.json();
+      alert(data.message);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
+      this.$router.push("/profile");
+    }
+  } catch (error) {
+    console.error("Hiba történt:", error);
+    alert("Belső hiba történt a bejelentkezés során.");
+  }
+},
+
+},
 };
+
 </script>
 
 
