@@ -12,20 +12,25 @@
         <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
       </div>
     </header>
-
+  
     <div class="loggedin-container">
       <header>
-        <h1>Üdvözöllek!</h1>
+        <h1>Üdvözöllek, {{ username }}!</h1>
         <p>Örülünk, hogy újra itt vagy.</p>
       </header>
       <div class="actions">
-        <button @click="logout">Kijelentkezés</button>
+        <button class="logout-button" @click="logout">Kijelentkezés</button>
       </div>
     </div>
   </template>
   
   <script>
   export default {
+    data() {
+      return {
+        username: localStorage.getItem("username") || "Felhasználó"
+      };
+    },
     methods: {
       logout() {
         localStorage.removeItem("token");
@@ -36,7 +41,6 @@
   };
   </script>
   
-
   <style scoped>
   /* Az egész oldal animációja */
   .auth-container {
@@ -123,22 +127,28 @@
     animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
   }
   
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4caf50;
-    color: white;
+  .actions {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #f44336, #ff7961);
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    opacity: 0; /* Kezdetben átlátszó */
+    transition: background 0.3s, transform 0.3s;
     animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
   }
   
-  button:hover {
-    background-color: #45a049;
+  .logout-button:hover {
+    background: linear-gradient(45deg, #d32f2f, #ff5252);
+    transform: scale(1.05);
   }
   
   .redirect {
