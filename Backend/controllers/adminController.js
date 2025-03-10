@@ -27,13 +27,17 @@ exports.getProducts = (req, res) => {
 
 exports.deleteProduct = (req, res) => {
   const { id } = req.params;
+  console.log(`Beérkező kérés törlésre, ID: ${id}`);
   const query = 'DELETE FROM products WHERE product_id = ?';
   db.query(query, [id], (err, result) => {
     if (err) {
       console.error('Hiba történt a termék törlésekor:', err);
-      res.status(500).send('Hiba történt a termék törlésekor');
-      return;
+      return res.status(500).send('Hiba történt a termék törlésekor');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Nem található ilyen azonosítójú termék');
     }
     res.send('Termék sikeresen törölve');
   });
 };
+

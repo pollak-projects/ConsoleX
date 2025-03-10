@@ -49,8 +49,7 @@
             <h2>{{ product.name }}</h2>
             <p class="price">{{ product.price }} Ft</p>
             <div class="actions">
-              <button @click="deleteProduct(product)">Törlés</button>
-              <i class="fas fa-heart wishlist"></i>
+              <button @click="deleteProduct(product.product_id)">Törlés</button>
             </div>
           </div>
         </div>
@@ -104,8 +103,8 @@ export default {
 
     async deleteProduct(productId) {
       try {
-        const response = await axios.delete(`http://localhost:8000/api/products/${productId}`);
-        alert(response.data.message);
+        const response = await axios.delete(`http://localhost:8000/api/admin/${productId}`);
+        alert("Termék sikeresen törölve!");
         this.fetchProducts();
       } catch (error) {
         console.error('Hiba történt a termék törlésekor:', error);
