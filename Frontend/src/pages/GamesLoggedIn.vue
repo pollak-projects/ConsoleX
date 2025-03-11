@@ -1,7 +1,7 @@
 <template>
     <div class="games-container">
       <header class="header">
-        <router-link to="/adminlogin"><img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" /></router-link>
+        <img src="../assets/logo.png" class="navlogo"/>
         <div class="search-container">
           <input
             type="text"

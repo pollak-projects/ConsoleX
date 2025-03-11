@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <router-link to="/main">
-      <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+      <img src="../assets/logo.png" class="navlogo"/>
     </router-link>
     <div class="navigation">
       <router-link to="/main" class="nav-link">Főoldal</router-link>

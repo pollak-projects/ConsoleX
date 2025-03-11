@@ -1,7 +1,7 @@
 <template>
     <div class="main-container fade-in">
       <header class="header">
-        <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+        <img src="../assets/logo.png" class="navlogo"/>
         <div class="search-container">
         </div>
         <div class="navigation">
