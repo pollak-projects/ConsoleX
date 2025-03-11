@@ -57,7 +57,7 @@
 import Navbar from '../components/Navbar.vue';
 import imagePath from '../assets/fc25.jpg';
 import imagePath2 from '../assets/farcry6.jpg';
-import imagePath3 from '../assets/fc25.jpg';
+import imagePath3 from '../assets/fortnite.jpg';
 
 
 export default {
