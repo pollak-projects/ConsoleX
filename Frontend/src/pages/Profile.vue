@@ -2,7 +2,7 @@
   <div class="auth-container">
     <header class="header">
       <router-link to="/adminlogin">
-        <img alt="Konzolvilág logo" src="https://placehold.co/150x50" class="navlogo" />
+        <img src="../assets/logo.png" class="navlogo"/>
       </router-link>
       <div class="search-container">
       </div>
