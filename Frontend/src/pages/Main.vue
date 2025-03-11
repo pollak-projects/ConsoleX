@@ -60,14 +60,6 @@ import Navbar from '../components/Navbar.vue';
 export default {
   data() {
     return {
-      featuredGames: [
-        { id: 1, name: "Jatek 1", price: 17990, image: "https://placehold.co/400x300?text=Játék+1" },
-        { id: 2, name: "Jatek 2", price: 15990, image: "https://placehold.co/400x300?text=Játék+2" },
-        { id: 3, name: "Jatek 3", price: 12990, image: "https://placehold.co/400x300?text=Játék+3" },
-        { id: 4, name: "Jatek 4", price: 12990, image: "https://placehold.co/400x300?text=Játék+4" },
-        { id: 5, name: "Jatek 5", price: 12990, image: "https://placehold.co/400x300?text=Játék+5" },
-        { id: 6, name: "Jatek 6", price: 12990, image: "https://placehold.co/400x300?text=Játék+6" },
-      ],
       images: [
         'https://placehold.co/1600x800?text=Kép+1',
         'https://placehold.co/1600x800?text=Kép+2',
@@ -78,11 +70,15 @@ export default {
     };
   },
   methods: {
-    changeImage() {
+    nextImage() {
       this.activeImageIndex = (this.activeImageIndex + 1) % this.images.length;
     },
+    previousImage() {
+      this.activeImageIndex =
+        (this.activeImageIndex - 1 + this.images.length) % this.images.length;
+    },
     startImageCarousel() {
-      this.intervalId = setInterval(this.changeImage, 3000);
+      this.intervalId = setInterval(this.nextImage, 3000); // Automatically move to the next image
     },
     stopImageCarousel() {
       clearInterval(this.intervalId);
@@ -92,9 +88,10 @@ export default {
     this.startImageCarousel();
   },
   beforeDestroy() {
-    clearInterval(this.intervalId);
+    this.stopImageCarousel();
   }
 };
+
 </script>
 
 <style scoped>
@@ -191,7 +188,10 @@ body {
   position: relative;
   overflow: hidden;
   text-align: center;
-  padding: 100px 20px;
+  padding: 0;
+  margin-top: 0;
+  width: 1890px;
+  height: 400px; /* Keeps the shorter height */
 }
 
 .hero-carousel {
@@ -200,8 +200,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+    display: flex; /* Enables horizontal alignment of images */
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -211,19 +212,44 @@ body {
   object-fit: cover;
   opacity: 0;
   transition: opacity 1s ease-in-out;
+  position: absolute;
 }
 
 .hero-image.active {
   opacity: 1;
 }
 
-.hero-text {
-  position: relative;
-  z-index: 1;
-  opacity: 0;
-  animation: slideUp 2s ease-in-out forwards;
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 2;
 }
 
+.nav-button.left {
+  left: 10px; /* Position left button */
+}
+
+.nav-button.right {
+  right: 10px; /* Position right button */
+}
+
+.nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+.hero-text {
+  position: relative; /* Ensures it stays on top of the carousel */
+  z-index: 1;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
 @keyframes slideUp {
   0% {
     transform: translateY(50px);
