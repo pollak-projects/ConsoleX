@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       images: [
-        'https://placehold.co/1600x800?text=Kép+1',
+        '../assets/fc25.jpg',
         'https://placehold.co/1600x800?text=Kép+2',
         'https://placehold.co/1600x800?text=Kép+3'
       ],
