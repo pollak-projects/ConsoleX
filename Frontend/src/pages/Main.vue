@@ -55,15 +55,19 @@
 
 <script>
 import Navbar from '../components/Navbar.vue';
+import imagePath from '../assets/fc25.jpg';
+import imagePath2 from '../assets/farcry6.jpg';
+import imagePath3 from '../assets/fc25.jpg';
 
 
 export default {
   data() {
     return {
+
       images: [
-        '../assets/fc25.jpg',
-        'https://placehold.co/1600x800?text=Kép+2',
-        'https://placehold.co/1600x800?text=Kép+3'
+        imagePath,
+        imagePath2,
+        imagePath3,
       ],
       activeImageIndex: 0,
       intervalId: null
