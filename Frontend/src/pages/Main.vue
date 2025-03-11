@@ -17,7 +17,6 @@
       </div>
       <div class="hero-text slide-up">
         <h1 class="hero-title">Üdvözlünk a ConsoleX-en!</h1>
-        <p class="hero-subtitle">Fedezd fel legújabb játékkínálatunkat és szerezd meg kedvenc konzolodat!</p>
         <router-link to="/games" class="shop-now-button">Vásárolj most</router-link>
       </div>
     </section>
@@ -269,13 +268,14 @@ body {
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 20px;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+  color: white;
+  text-shadow: 2px 2px 10px rgb(0, 0, 0);
 }
 
 .hero-subtitle {
   font-size: 20px;
   margin-bottom: 40px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 2px 5px rgb(255, 255, 255);
 }
 
 .shop-now-button {
