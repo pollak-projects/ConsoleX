@@ -1,7 +1,7 @@
 <template>
   <div class="main-container fade-in">
     <header class="header">
-      <img src="../assets/logo.png" class="navlogo"/>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
       <div class="search-container">
       </div>
       <div class="navigation">

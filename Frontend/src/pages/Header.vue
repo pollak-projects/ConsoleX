@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <router-link to="/main">
-      <img src="../assets/logo.png" class="navlogo"/>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
     </router-link>
     <div class="navigation">
       <router-link to="/main" class="nav-link">Főoldal</router-link>

@@ -1,7 +1,7 @@
 <template>
     <header class="header">
       <router-link to="/adminlogin">
-        <img src="../assets/logo.png" class="navlogo"/>
+        <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo"/></router-link>
       </router-link>
       <div class="search-container">
       </div>
