@@ -45,7 +45,7 @@
       ```
         npm run start 
       ```
- Once everything is setup, you can reach the website here: http://localhost:6969/
+ Once everything is setup, you can reach the website here: http://localhost:7777/
 
 
 **Admin page:**
