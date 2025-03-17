@@ -77,7 +77,7 @@ export default {
   methods: {
     async addProduct() {
       try {
-        const response = await axios.post('http://localhost:8000/api/products', this.product, {
+        const response = await axios.post('http://localhost:8000/api/admin', this.product, {
           headers: {
             'Content-Type': 'application/json'
           }

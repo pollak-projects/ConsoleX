@@ -40,4 +40,3 @@ exports.deleteProduct = (req, res) => {
     res.send('Termék sikeresen törölve');
   });
 };
-
