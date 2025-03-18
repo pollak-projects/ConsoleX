@@ -67,7 +67,7 @@ export default {
           localStorage.setItem("username", data.username);
 
           if (data.role === 'admin') {
-            this.$router.push("/admin");
+            this.$router.push("/adminloggedin");
           } else {
             this.$router.push("/loggedin");
           }
