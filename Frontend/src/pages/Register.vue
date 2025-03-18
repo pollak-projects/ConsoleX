@@ -85,7 +85,7 @@ export default {
         } else {
           alert(data.message); 
 
-          this.$router.push('/login');
+          this.$router.push('/profile');
         }
       } catch (error) {
         console.error('Hiba történt:', error);
