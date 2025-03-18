@@ -3,12 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 10. 08:40
+-- Létrehozás ideje: 2025. Már 18. 11:07
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
-
-CREATE DATABASE IF NOT EXISTS vizsgaremek;
-USE vizsgaremek;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -122,10 +119,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `email`, `password`) VALUES
-(1, 'asd', 'asd@gmail.com', '$2b$10$uMvaTgU17DSKT3vNMcC6kuQUJ5B9.31jtWr3nydpWwBKcLkddYpA2'),
-(4, 'dsasadsda', 'sdasadsda@gmail.com', '$2b$10$ZuC9W81ITTSY1inv83mvzOsWmJULuvY/vDNJ4iXSunbGV3n55eiJ6'),
-(5, 'proba1', 'proba1@gmail.com', '$2b$10$fRBqtBFjG4d8QRh/B35HtOmYhjXsI7UWdA8hLqctUeOHFB4F75Pu.'),
-(6, 'valami', 'valami@gmail.com', '$2b$10$Zl81FAantc76BPxgtxDVn.dl8q/as5L/eAlu/KKjg2XkbeSfAn9xa');
+(1, 'asd', 'asd@gmail.com', '$2b$10$uMvaTgU17DSKT3vNMcC6kuQUJ5B9.31jtWr3nydpWwBKcLkddYpA2');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -203,7 +197,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Megkötések a kiírt táblákhoz
