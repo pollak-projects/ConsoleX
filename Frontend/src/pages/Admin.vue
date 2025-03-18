@@ -4,10 +4,10 @@
       <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
       <div class="search-container"></div>
       <div class="navigation">
-        <router-link to="/main" class="nav-link">Főoldal</router-link>
-        <router-link to="/games" class="nav-link">Játékok</router-link>
-        <router-link to="/cart" class="nav-link">Kosár</router-link>
-        <router-link to="/profile" class="nav-link">Profil</router-link>
+        <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
+        <router-link to="/admingames" class="nav-link">Játékok</router-link>
+        <router-link to="/admincart" class="nav-link">Kosár</router-link>
+        <router-link to="/adminloggedin" class="nav-link">Profil</router-link>
       </div>
     </header>
 

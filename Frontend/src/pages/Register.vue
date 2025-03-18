@@ -8,7 +8,6 @@
         <router-link to="/main" class="nav-link">Főoldal</router-link>
         <router-link to="/games" class="nav-link">Játékok</router-link>
         <router-link to="/cart" class="nav-link">Kosár</router-link>
-        <router-link to="/admin" class="nav-link">Admin</router-link>
       </div>
     </header>
     <div class="form-container">
@@ -36,7 +35,7 @@
           <button type="submit">Regisztrálok</button>
         </div>
         <p class="redirect">
-          Már van fiókod? <router-link to="/login">Jelentkezz be itt</router-link>
+          Már van fiókod? <router-link to="/profile">Jelentkezz be itt</router-link>
         </p>
       </form>
     </div>

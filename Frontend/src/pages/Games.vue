@@ -11,7 +11,6 @@
         />
       </div>
       <div class="navigation">
-        <router-link to="/admin" class="nav-link">Admin</router-link>
         <router-link to="/main" class="nav-link">Főoldal</router-link>
         <router-link to="/cart" class="nav-link">Kosár</router-link> 
         <router-link to="/profile" class="nav-link">Profil</router-link>

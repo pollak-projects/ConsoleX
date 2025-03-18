@@ -9,7 +9,6 @@
       <router-link v-if="!isLoggedIn" to="/register" class="nav-link">Regisztráció</router-link>
       <router-link v-if="!isLoggedIn" to="/login" class="nav-link">Bejelentkezés</router-link>
       <router-link to="/cart" class="nav-link">Kosár</router-link>
-      <router-link to="/admin" class="nav-link">Admin</router-link>
       <router-link v-if="isLoggedIn" to="/profile" class="nav-link">Profil</router-link>
     </div>
   </div>

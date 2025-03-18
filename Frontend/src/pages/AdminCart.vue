@@ -1,13 +1,13 @@
 <template>
     <div class="cart-container">
       <header class="header">
-        <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo"/></router-link>
+        <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
         <div class="search-container">
         </div>
         <div class="navigation">
-          <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
-          <router-link to="/gamesloggedin" class="nav-link">Játékok</router-link>
-          <router-link to="/loggedin" class="nav-link">Profil</router-link>
+          <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
+          <router-link to="/admingames" class="nav-link">Játékok</router-link>
+          <router-link to="/adminloggedin" class="nav-link">Profil</router-link>
         </div>
       </header>
       <main class="main">

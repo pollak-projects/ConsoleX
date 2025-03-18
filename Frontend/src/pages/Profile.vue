@@ -1,16 +1,12 @@
 <template>
   <div class="auth-container">
     <header class="header">
-      <router-link to="/adminlogin">
-        <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
-      </router-link>
-      <div class="search-container">
-      </div>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
+      <div class="search-container"></div>
       <div class="navigation">
-        <router-link to="/admin" class="nav-link">Admin</router-link>
         <router-link to="/main" class="nav-link">Főoldal</router-link>
         <router-link to="/games" class="nav-link">Játékok</router-link>
-        <router-link to="/cart" class="nav-link">Kosár</router-link> 
+        <router-link to="/cart" class="nav-link">Kosár</router-link>
       </div>
     </header>
 
@@ -21,7 +17,7 @@
       </header>
       <form @submit.prevent="login">
         <div class="input-group">
-          <label for="username-email">Email</label>
+          <label for="username-email">Email vagy Felhasználónév</label>
           <input type="text" v-model="usernameOrEmail" id="username-email" required />
         </div>
         <div class="input-group">
@@ -40,7 +36,6 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue';
 export default {
   data() {
     return {
@@ -49,38 +44,41 @@ export default {
     };
   },
   methods: {
-  async login() {
-    try {
-      const response = await fetch("http://localhost:8000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.usernameOrEmail,
-          password: this.password,
-        }),
-      });
+          async login() {
+      try {
+        const response = await fetch("http://localhost:8000/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usernameOrEmail: this.usernameOrEmail,
+            password: this.password,
+          }),
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        alert(`Hiba történt: ${errorData.message}`);
-      } else {
-        const data = await response.json();
-        alert(data.message);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("username", data.username);
-        this.$router.push("/loggedin");
+        if (!response.ok) {
+          const errorData = await response.json();
+          alert(`Hiba történt: ${errorData.message}`);
+        } else {
+          const data = await response.json();
+          alert(data.message);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("username", data.username);
+
+          if (data.role === 'admin') {
+            this.$router.push("/admin");
+          } else {
+            this.$router.push("/loggedin");
+          }
+        }
+      } catch (error) {
+        console.error("Hiba történt:", error);
+        alert("Belső hiba történt a bejelentkezés során.");
       }
-    } catch (error) {
-      console.error("Hiba történt:", error);
-      alert("Belső hiba történt a bejelentkezés során.");
     }
-  },
-}
-
+  }
 };
-
 </script>
 
 

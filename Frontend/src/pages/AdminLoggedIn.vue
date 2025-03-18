@@ -1,37 +1,24 @@
 <template>
-    <div class="auth-container">
-      <header class="header">
-        <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
-        <div class="search-container"></div>
-        <div class="navigation">
-          <router-link to="/admin" class="nav-link">Admin</router-link>
-          <router-link to="/main" class="nav-link">Főoldal</router-link>
-          <router-link to="/games" class="nav-link">Játékok</router-link>
-          <router-link to="/cart" class="nav-link">Kosár</router-link>
-        </div>
-      </header>
+    <header class="header">
+      <router-link to="/adminlogin">
+        <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo"/></router-link>
+      </router-link>
+      <div class="search-container">
+      </div>
+      <div class="navigation">
+        <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
+        <router-link to="/adminmain" class="nav-link">Játékok</router-link>
+        <router-link to="/admincart" class="nav-link">Kosár</router-link> 
+      </div>
+    </header>
   
-      <!-- Bejelentkezési űrlap -->
-      <div class="form-container">
-        <header>
-          <h1>Bejelentkezés</h1>
-        </header>
-        <form @submit.prevent="login">
-          <div class="input-group">
-            <label for="username-email">Email</label>
-            <input type="text" v-model="usernameOrEmail" id="username-email" required />
-          </div>
-          <div class="input-group">
-            <label for="password">Jelszó</label>
-            <input type="password" v-model="password" id="password" required />
-          </div>
-          <div class="actions">
-            <button type="submit">Bejelentkezés</button>
-          </div>
-          <p class="redirect">
-            Még nem regisztráltál? <router-link to="/register">Regisztrálj itt</router-link>
-          </p>
-        </form>
+    <div class="loggedin-container">
+      <header>
+        <h1>Üdvözöllek, {{ username }}!</h1>
+        <p>Örülünk, hogy újra itt vagy.</p>
+      </header>
+      <div class="actions">
+        <button class="logout-button" @click="logout">Kijelentkezés</button>
       </div>
     </div>
   </template>
@@ -40,43 +27,18 @@
   export default {
     data() {
       return {
-        usernameOrEmail: '',
-        password: '',
+        username: localStorage.getItem("username") || "Felhasználó"
       };
     },
     methods: {
-      async login() {
-        try {
-          const response = await fetch("http://localhost:8000/api/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: this.usernameOrEmail,
-              password: this.password,
-            }),
-          });
-  
-          if (!response.ok) {
-            const errorData = await response.json();
-            alert(`Hiba történt: ${errorData.message}`);
-          } else {
-            const data = await response.json();
-            alert(data.message);
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("username", data.username);
-            this.$router.push("/loggedin");
-          }
-        } catch (error) {
-          console.error("Hiba történt:", error);
-          alert("Belső hiba történt a bejelentkezés során.");
-        }
-      }
-    }
+      logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        this.$router.push("/main");
+      },
+    },
   };
   </script>
-  
   
   <style scoped>
   /* Az egész oldal animációja */
@@ -164,22 +126,28 @@
     animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
   }
   
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4caf50;
-    color: white;
+  .actions {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #f44336, #ff7961);
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    opacity: 0; /* Kezdetben átlátszó */
+    transition: background 0.3s, transform 0.3s;
     animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
   }
   
-  button:hover {
-    background-color: #45a049;
+  .logout-button:hover {
+    background: linear-gradient(45deg, #d32f2f, #ff5252);
+    transform: scale(1.05);
   }
   
   .redirect {

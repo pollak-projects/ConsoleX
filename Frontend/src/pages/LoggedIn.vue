@@ -6,7 +6,6 @@
       <div class="search-container">
       </div>
       <div class="navigation">
-        <router-link to="/admin" class="nav-link">Admin</router-link>
         <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
         <router-link to="/gamesloggedin" class="nav-link">Játékok</router-link>
         <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
