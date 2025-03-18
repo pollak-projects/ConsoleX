@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 18. 11:07
+-- Létrehozás ideje: 2025. Már 18. 12:35
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -111,15 +111,17 @@ CREATE TABLE `user` (
   `user_id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','user') DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `email`, `password`) VALUES
-(1, 'asd', 'asd@gmail.com', '$2b$10$uMvaTgU17DSKT3vNMcC6kuQUJ5B9.31jtWr3nydpWwBKcLkddYpA2');
+INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `role`) VALUES
+(10, 'admin', 'admin@consolex.hu', '$2b$10$LIKJrZnIBl0O.aYa9Ya4nO.x/sUTjLPFcW1c7WOiZukgh8nf8f8dO', 'admin'),
+(11, 'user', 'user@consolex.hu', '$2b$10$9Vqu1u0EakCpOYCqZZrj4ewCMeW09l35gqm3YM9NXGIIo5G5HAzXy', 'user');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -197,7 +199,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Megkötések a kiírt táblákhoz
