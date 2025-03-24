@@ -1,7 +1,7 @@
 <template>
   <div class="games-container">
     <header class="header">
-      <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="search-container">
         <input
           type="text"
@@ -12,7 +12,7 @@
       </div>
       <div class="navigation">
         <router-link to="/main" class="nav-link">Főoldal</router-link>
-        <router-link to="/cart" class="nav-link">Kosár</router-link> 
+        <router-link to="/cart" class="nav-link">Kosár</router-link>
         <router-link to="/profile" class="nav-link">Profil</router-link>
       </div>
     </header>
@@ -20,13 +20,109 @@
     <main class="main">
       <div class="sidebar">
         <h2>Szűrők</h2>
+
         <div class="filter-category">
-          <h3>Kategória</h3>
-          <label v-for="filter in categories" :key="filter">
-            <input type="checkbox" v-model="selectedCategories" :value="filter" @change="filterProducts" />
-            {{ filter }}
+          <h3>Összes termék</h3>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'PC játékok'"
+              @change="filterProducts"
+            />
+            PC játékok
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'Xbox játékok'"
+              @change="filterProducts"
+            />
+            Xbox játékok
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'PlayStation játékok'"
+              @change="filterProducts"
+            />
+            PlayStation játékok
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'PlayStation konzolok'"
+              @change="filterProducts"
+            />
+            PlayStation 
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'Xbox konzolok'"
+              @change="filterProducts"
+            />
+            Xbox 
           </label>
         </div>
+
+        <div class="filter-category">
+          <h3>Játékok</h3>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'PC játékok'"
+              @change="filterProducts"
+            />
+            PC játékok
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'Xbox játékok'"
+              @change="filterProducts"
+            />
+            Xbox játékok
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'PlayStation játékok'"
+              @change="filterProducts"
+            />
+            PlayStation játékok
+          </label>
+        </div>
+
+        <div class="filter-category">
+          <h3>Konzolok</h3>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'Xbox konzolok'"
+              @change="filterProducts"
+            />
+            Xbox 
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              v-model="selectedCategories"
+              :value="'PlayStation konzolok'"
+              @change="filterProducts"
+            />
+            PlayStation 
+          </label>
+        </div>
+
         <div class="filter-category">
           <h3>Ár</h3>
           <div class="slider-container">
@@ -45,7 +141,8 @@
               @input="filterProducts"
             />
             <div class="price-range">
-              <input class="input-price"
+              <input
+                class="input-price"
                 type="number"
                 v-model="selectedPriceMin"
                 @input="updatePriceFromInput('min')"
@@ -54,7 +151,8 @@
                 step="500"
               />Ft
               <span> - </span>
-              <input class="input-price"
+              <input
+                class="input-price"
                 type="number"
                 v-model="selectedPriceMax"
                 @input="updatePriceFromInput('max')"
@@ -68,8 +166,11 @@
       </div>
 
       <section class="content">
-        <img alt="advertisement" src="https://media.licdn.com/dms/image/v2/D4E16AQG-UxmGle8URA/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1700322321372?e=2147483647&v=beta&t=Jgkb9WaAazLPhQHA0AgNhnlOWEx4pduESM460LMlQ4M" />
-        <h1>Játékok</h1>
+        <img
+          alt="advertisement"
+          src="https://media.licdn.com/dms/image/v2/D4E16AQG-UxmGle8URA/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1700322321372?e=2147483647&v=beta&t=Jgkb9WaAazLPhQHA0AgNhnlOWEx4pduESM460LMlQ4M"
+        />
+        <h1>Összes termék</h1>
 
         <div class="products">
           <div class="product" v-for="product in filteredProducts" :key="product.product_id">
@@ -87,42 +188,50 @@
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
 
 export default {
   data() {
-    return {
-      searchQuery: '',
-      categories: ['Használt', 'PlayStation', 'Xbox', 'PC'],
-      selectedCategories: [],
-      selectedPriceMin: 0,
-      selectedPriceMax: 25000,
-      maxPrice: 25000,
-      products: [],
-      cart: [],
-    };
-  },
-  computed: {
-    filteredProducts() {
-      let filtered = this.products;
+  return {
+    searchQuery: '',
+    categories: ['Összes termék', 'Játékok', 'Konzolok'],
+    selectedCategories: [],
+    selectedPriceMin: 0,
+    selectedPriceMax: 250000,
+    maxPrice: 250000,
+    products: [],
+    cart: [],
+  };
+},
+computed: {
+  filteredProducts() {
+    let filtered = this.products;
 
-      if (this.searchQuery) {
-        filtered = filtered.filter(product =>
-          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
+    if (this.searchQuery) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+
+    if (this.selectedCategories.length) {
+      if (this.selectedCategories.includes('Összes termék')) {
+        // Show all products
+        return filtered;
       }
 
-      if (this.selectedCategories.length) {
-        filtered = filtered.filter(product =>
-          this.selectedCategories.every(category => product.category.includes(category))
-        );
-      }
+      filtered = filtered.filter(product =>
+        this.selectedCategories.some(category => product.category.includes(category))
+      );
+    }
 
-      filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
-      return filtered;
-    },
+    filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
+    return filtered;
   },
+},
+
+
   mounted() {
     this.fetchProducts();
   },
@@ -162,6 +271,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>
