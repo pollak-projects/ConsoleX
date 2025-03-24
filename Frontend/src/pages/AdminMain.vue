@@ -1,7 +1,7 @@
 <template>
     <div class="main-container fade-in">
       <header class="header">
-        <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
+        <router-link to="adminmain"><img src="../assets/logo.png" class="navlogo"/></router-link>
         <div class="search-container">
         </div>
         <div class="navigation">
@@ -17,7 +17,7 @@
         </div>
         <div class="hero-text slide-up">
           <h1 class="hero-title">Üdvözlünk a ConsoleX-en!</h1>
-          <router-link to="/games" class="shop-now-button">Vásárolj most</router-link>
+          <router-link to="/admingames" class="shop-now-button">Vásárolj most</router-link>
         </div>
       </section>
   

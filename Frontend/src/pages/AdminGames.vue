@@ -1,7 +1,7 @@
 <template>
     <div class="games-container">
       <header class="header">
-        <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
+        <router-link to="adminmain"><img src="../assets/logo.png" class="navlogo"/></router-link>
         <div class="search-container">
           <input
             type="text"
