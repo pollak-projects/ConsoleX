@@ -1,8 +1,5 @@
-// controllers/orderController.js
-
 const db = require('../config/db');
 
-// Create a new order
 exports.createOrder = (req, res) => {
   const { name, street, houseNumber, postalCode, paymentMethod, totalAmount } = req.body;
   const query = 'INSERT INTO orders (name, street, houseNumber, postalCode, paymentMethod, totalAmount) VALUES (?, ?, ?, ?, ?, ?)';
