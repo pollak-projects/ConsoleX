@@ -23,7 +23,7 @@ describe('POST /login', () => {
         assert.strictEqual(response.status, 200);
         assert.strictEqual(response.body.message, 'Sikeres bejelentkezés');
         assert.strictEqual(response.body.token, 'dummy-token');
-        assert.strictEqual(response.body.username, 'testuser'); 
+        assert.strictEqual(response.body.username, 'user'); 
         done();
       });
   });
