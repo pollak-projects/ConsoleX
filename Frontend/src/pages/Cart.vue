@@ -1,59 +1,46 @@
 <template>
   <div class="cart-container">
     <header class="header">
-      <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
-      <div class="search-container">
-      </div>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="navigation">
         <router-link to="/main" class="nav-link">Főoldal</router-link>
         <router-link to="/games" class="nav-link">Játékok</router-link>
         <router-link to="/profile" class="nav-link">Profil</router-link>
       </div>
     </header>
+
     <main class="main">
-      <div class="cart-content">
-        <div class="cart-left">
-          <h1>Kosár</h1>
-          <div v-if="cart.length === 0" class="empty-cart">
-            <p>A kosár jelenleg üres. Helyezd a termékeket a kosárba!</p>
-          </div>
-          <div v-else>
-            <div v-for="(item, index) in cart" :key="index" class="cart-item">
-              <p>{{ item.name }} - {{ item.quantity }} x {{ item.price }} Ft</p>
-              <p>Összesen: {{ item.quantity * item.price }} Ft</p>
-            </div>
-            <div class="cart-summary">
-              <p>Termékek száma: {{ cart.length }}</p>
-              <p>Végösszeg: {{ totalAmount }} Ft</p>
-              <button @click="showOrderForm = true" class="place-order" :disabled="cart.length === 0">Rendelés leadása</button>
-              <button @click="clearCart" class="clear-cart-button">Kosár ürítése</button>
-            </div>
-          </div>
+      <h1>Kosár</h1>
+      <div v-if="cart.length === 0" class="empty-cart">
+        <p>A kosár jelenleg üres. Helyezd a termékeket a kosárba!</p>
+      </div>
+      <div v-else>
+        <div v-for="(item, index) in cart" :key="index" class="cart-item">
+          <p>Termék: {{ item.name }}</p>
+          <p>Ár: {{ item.price }} Ft</p>
         </div>
-        <div class="cart-sidebar">
-          <h2>Összegzés</h2>
-          <div class="cart-summary">
-            <p>Termékek száma: {{ cart.length }}</p>
-            <p>Végösszeg: {{ totalAmount }} Ft</p>
-          </div>
+        <div class="cart-summary">
+          <p>Termékek száma: {{ cart.length }}</p>
+          <button @click="clearCart" class="clear-cart-button">Kosár ürítése</button>
+          <button @click="showOrderForm = true" class="place-order">Rendelés leadása</button>
         </div>
       </div>
+
       <div v-if="showOrderForm" class="order-form">
         <h2>Rendelési Adatok</h2>
         <form @submit.prevent="submitOrder">
           <label for="name">Név:</label>
           <input type="text" v-model="orderDetails.name" required />
-          <label for="street">Utca:</label>
-          <input type="text" v-model="orderDetails.street" required />
-          <label for="houseNumber">Házszám:</label>
-          <input type="text" v-model="orderDetails.houseNumber" required />
-          <label for="postalCode">Irányítószám:</label>
-          <input type="text" v-model="orderDetails.postalCode" required />
+
+          <label for="address">Cím:</label>
+          <input type="text" v-model="orderDetails.address" required />
+
           <label for="paymentMethod">Fizetési mód:</label>
           <select v-model="orderDetails.paymentMethod" required>
             <option value="creditCard">Bankkártya</option>
             <option value="cash">Készpénz</option>
           </select>
+
           <button type="submit">Rendelés leadása</button>
         </form>
       </div>
@@ -62,7 +49,8 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue';
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -70,58 +58,36 @@ export default {
       showOrderForm: false,
       orderDetails: {
         name: '',
-        street: '',
-        houseNumber: '',
-        postalCode: '',
+        address: '',
         paymentMethod: 'creditCard',
       },
     };
-  },
-  computed: {
-    totalAmount() {
-      return this.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    },
   },
   mounted() {
     this.loadCart();
   },
   methods: {
     loadCart() {
-      const cart = JSON.parse(localStorage.getItem('cart'));
-      if (cart) {
-        this.cart = cart;
-      }
-    },
-    placeOrder() {
-      this.showOrderForm = true;
+      this.cart = JSON.parse(localStorage.getItem('cart')) || [];
     },
     async submitOrder() {
-      const orderDetails = {
-        ...this.orderDetails,
-        totalAmount: this.totalAmount,
+      const order = {
+        userDetails: this.orderDetails,
+        products: this.cart,
       };
 
       try {
-        const response = await fetch('http://localhost:3000/api/orders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderDetails),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          alert(data.message);
+        const response = await axios.post('http://localhost:8000/api/orders', order);
+        if (response.status === 200) {
+          alert('Rendelés sikeresen leadva!');
           this.clearCart();
-          this.$router.push('/main');
+          this.showOrderForm = false;
         } else {
-          alert(data.message);
+          alert(`Hiba történt: ${response.data.message}`);
         }
       } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to place order.');
+        console.error('Hiba:', error);
+        alert('Nem sikerült kapcsolódni a szerverhez.');
       }
     },
     clearCart() {

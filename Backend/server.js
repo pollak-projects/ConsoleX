@@ -16,10 +16,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api', productRoute);
-app.use('/api', orderRoute);
 app.use('/api', registerRoute); 
 app.use('/api', loginRoute);
 app.use('/api', adminRoute);
+app.use('/api', orderRoute);
 
 app.get('/', (req, res) => {
   res.send('Backend szerver működik!');

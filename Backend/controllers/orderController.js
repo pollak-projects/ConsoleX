@@ -1,14 +1,45 @@
 const db = require('../config/db');
 
 exports.createOrder = (req, res) => {
-  const { name, street, houseNumber, postalCode, paymentMethod, totalAmount } = req.body;
-  const query = 'INSERT INTO orders (name, street, houseNumber, postalCode, paymentMethod, totalAmount) VALUES (?, ?, ?, ?, ?, ?)';
+  const { userDetails, products } = req.body;
 
-  db.query(query, [name, street, houseNumber, postalCode, paymentMethod, totalAmount], (error, results) => {
-    if (error) {
-      return res.status(500).json({ message: 'Failed to place order', error });
+  // Insert user details into the `users` table
+  const insertUserQuery = `
+    INSERT INTO users (name, address, payment_method)
+    VALUES (?, ?, ?)
+  `;
+
+  db.query(
+    insertUserQuery,
+    [userDetails.name, userDetails.address, userDetails.paymentMethod],
+    (userErr, userResult) => {
+      if (userErr) {
+        console.error('Error saving user:', userErr);
+        return res.status(500).json({ message: 'Failed to save user details.' });
+      }
+
+      const userId = userResult.insertId; // Get the user ID
+
+      // Insert each product into the `orders` table
+      const insertOrderQuery = `
+        INSERT INTO orders (user_id, product_name, product_price)
+        VALUES (?, ?, ?)
+      `;
+
+      products.forEach((product) => {
+        db.query(
+          insertOrderQuery,
+          [userId, product.name, product.price],
+          (orderErr) => {
+            if (orderErr) {
+              console.error('Error saving order:', orderErr);
+              return res.status(500).json({ message: 'Failed to save order.' });
+            }
+          }
+        );
+      });
+
+      res.status(200).json({ message: 'Order successfully placed!' });
     }
-
-    res.status(201).json({ message: 'Order placed successfully', orderId: results.insertId });
-  });
+  );
 };
