@@ -22,55 +22,6 @@
         <h2>Szűrők</h2>
 
         <div class="filter-category">
-          <h3>Összes termék</h3>
-          <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'PC játékok'"
-              @change="filterProducts"
-            />
-            PC játékok
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'Xbox játékok'"
-              @change="filterProducts"
-            />
-            Xbox játékok
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'PlayStation játékok'"
-              @change="filterProducts"
-            />
-            PlayStation játékok
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'PlayStation konzolok'"
-              @change="filterProducts"
-            />
-            PlayStation 
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'Xbox konzolok'"
-              @change="filterProducts"
-            />
-            Xbox 
-          </label>
-        </div>
-
-        <div class="filter-category">
           <h3>Játékok</h3>
           <label>
             <input
