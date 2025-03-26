@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 25. 12:57
+-- Létrehozás ideje: 2025. Már 26. 08:20
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -12,7 +12,7 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 CREATE DATABASE IF NOT EXISTS `vizsgaremek`;
-  USE `vizsgaremek`;
+ USE `vizsgaremek`;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -55,21 +55,10 @@ INSERT INTO `orders` (`id`, `user_id`, `product_name`, `product_price`) VALUES
 (4, 1, 'Game 1', 5000.00),
 (5, 1, 'Far Cry 6', 15000.00),
 (6, 2, 'Far Cry 6', 15000.00),
-(7, 3, 'Call Of Duty: Black Ops 6 (PlayStation 4)', 25000.00);
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `order_item`
---
-
-CREATE TABLE `order_item` (
-  `id` int(11) NOT NULL,
-  `orderId` int(11) NOT NULL,
-  `productName` varchar(255) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(7, 3, 'Call Of Duty: Black Ops 6 (PlayStation 4)', 25000.00),
+(8, 4, 'Call Of Duty: Black Ops 6 (PlayStation 4)', 25000.00),
+(9, 4, 'The Witcher 3: Wild Hunt Game of The Year Edition (GOTY)\r\nPC', 10000.00),
+(10, 5, 'Call Of Duty: Black Ops 6 (PlayStation 4)', 25000.00);
 
 -- --------------------------------------------------------
 
@@ -102,17 +91,6 @@ INSERT INTO `products` (`product_id`, `name`, `price`, `image`, `category`) VALU
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `product_category`
---
-
-CREATE TABLE `product_category` (
-  `product_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `user`
 --
 
@@ -135,10 +113,10 @@ INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `users`
+-- Tábla szerkezet ehhez a táblához `user_orders`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `user_orders` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
@@ -146,13 +124,15 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- A tábla adatainak kiíratása `users`
+-- A tábla adatainak kiíratása `user_orders`
 --
 
-INSERT INTO `users` (`id`, `name`, `address`, `payment_method`) VALUES
+INSERT INTO `user_orders` (`id`, `name`, `address`, `payment_method`) VALUES
 (1, 'asd', 'asdasd', 'creditCard'),
 (2, 'd', 'gec', 'creditCard'),
-(3, 'dasd', 'adadad', 'creditCard');
+(3, 'dasd', 'adadad', 'creditCard'),
+(4, 'sad', 'asd', 'creditCard'),
+(5, 'asd', 'asd', 'creditCard');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -172,24 +152,10 @@ ALTER TABLE `orders`
   ADD KEY `user_id` (`user_id`);
 
 --
--- A tábla indexei `order_item`
---
-ALTER TABLE `order_item`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `orderId` (`orderId`);
-
---
 -- A tábla indexei `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`);
-
---
--- A tábla indexei `product_category`
---
-ALTER TABLE `product_category`
-  ADD PRIMARY KEY (`product_id`,`category_id`),
-  ADD KEY `category_id` (`category_id`);
 
 --
 -- A tábla indexei `user`
@@ -199,9 +165,9 @@ ALTER TABLE `user`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- A tábla indexei `users`
+-- A tábla indexei `user_orders`
 --
-ALTER TABLE `users`
+ALTER TABLE `user_orders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -218,13 +184,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT a táblához `order_item`
---
-ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `products`
@@ -239,10 +199,10 @@ ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT a táblához `users`
+-- AUTO_INCREMENT a táblához `user_orders`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `user_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -258,19 +218,7 @@ ALTER TABLE `category`
 -- Megkötések a táblához `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Megkötések a táblához `order_item`
---
-ALTER TABLE `order_item`
-  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
-
---
--- Megkötések a táblához `product_category`
---
-ALTER TABLE `product_category`
-  ADD CONSTRAINT `product_category_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_orders` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
