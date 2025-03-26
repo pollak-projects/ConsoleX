@@ -18,6 +18,7 @@
         <div v-for="(item, index) in cart" :key="index" class="cart-item">
           <p>Termék: {{ item.name }}</p>
           <p>Ár: {{ item.price }} Ft</p>
+          <p>Mennyiség: {{ item.quantity }}</p>
         </div>
         <div class="cart-summary">
           <p>Termékek száma: {{ cart.length }}</p>
