@@ -17,12 +17,11 @@ exports.createOrder = (req, res) => {
         return res.status(500).json({ message: 'Failed to save user details.' });
       }
 
-      const userId = userResult.insertId; // Get the user ID
+      const userId = userResult.insertId;
 
-      // Insert each product into the `orders` table
       const insertOrderQuery = `
-        INSERT INTO orders (user_id, product_name, product_price)
-        VALUES (?, ?, ?)
+        INSERT INTO orders (user_id, order_price)
+        VALUES (?, ?)
       `;
 
       products.forEach((product) => {
