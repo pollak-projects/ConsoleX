@@ -3,9 +3,8 @@ const db = require('../config/db');
 exports.createOrder = (req, res) => {
   const { userDetails, products } = req.body;
 
-  // Insert user details into the `users` table
   const insertUserQuery = `
-    INSERT INTO users (name, address, payment_method)
+    INSERT INTO user_orders (name, address, payment_method)
     VALUES (?, ?, ?)
   `;
 
