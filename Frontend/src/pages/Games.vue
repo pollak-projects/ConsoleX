@@ -145,46 +145,46 @@ import axios from 'axios';
 
 export default {
   data() {
-  return {
-    searchQuery: '',
-    categories: ['Összes termék', 'Játékok', 'Konzolok'],
-    selectedCategories: [],
-    selectedPriceMin: 0,
-    selectedPriceMax: 250000,
-    maxPrice: 250000,
-    products: [],
-    cart: [],
-  };
-},
-computed: {
-  filteredProducts() {
-    let filtered = this.products;
+    return {
+      searchQuery: '',
+      categories: [], // Dynamically fetched categories
+      selectedCategories: [],
+      selectedPriceMin: 0,
+      selectedPriceMax: 250000,
+      maxPrice: 250000,
+      products: [],
+      cart: [],
+    };
+  },
+  computed: {
+    filteredProducts() {
+      let filtered = this.products;
 
-    if (this.searchQuery) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    }
-
-    if (this.selectedCategories.length) {
-      if (this.selectedCategories.includes('Összes termék')) {
-        // Show all products
-        return filtered;
+      // Filter by search query
+      if (this.searchQuery) {
+        filtered = filtered.filter(product =>
+          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
       }
 
-      filtered = filtered.filter(product =>
-        this.selectedCategories.some(category => product.category.includes(category))
+      // Filter by selected categories
+      if (this.selectedCategories.length) {
+        filtered = filtered.filter(product =>
+          this.selectedCategories.includes(product.category_name)
+        );
+      }
+
+      // Filter by price range
+      filtered = filtered.filter(
+        product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax
       );
-    }
-
-    filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
-    return filtered;
+      
+      return filtered;
+    },
   },
-},
-
-
   mounted() {
     this.fetchProducts();
+    this.fetchCategories(); // Fetch categories on component mount
   },
   methods: {
     async fetchProducts() {
@@ -193,6 +193,14 @@ computed: {
         this.products = response.data.products;
       } catch (error) {
         console.error('Hiba történt a termékek lekérése közben:', error);
+      }
+    },
+    async fetchCategories() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/category'); // Example endpoint
+        this.categories = response.data.categories.map(category => category.category_name);
+      } catch (error) {
+        console.error('Hiba történt a kategóriák lekérése közben:', error);
       }
     },
     addToCart(product) {
@@ -217,12 +225,11 @@ computed: {
       this.filterProducts();
     },
     filterProducts() {
-      // Filter products based on search query, categories, and price range
+      // Automatically triggers filtering via computed property `filteredProducts`
     },
   },
 };
 </script>
-
 
 
 <style scoped>
