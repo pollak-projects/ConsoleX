@@ -27,7 +27,7 @@
             <input
               type="checkbox"
               v-model="selectedCategories"
-              :value="'PC játékok'"
+              :value="'PC'"
               @change="filterProducts"
             />
             PC játékok
@@ -45,7 +45,7 @@
             <input
               type="checkbox"
               v-model="selectedCategories"
-              :value="'PlayStation játékok'"
+              :value="'PS4'"
               @change="filterProducts"
             />
             PlayStation játékok

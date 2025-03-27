@@ -32,8 +32,13 @@
           <label for="category">Kategória</label>
           <input type="text" v-model="product.category" id="category" required />
         </div>
-        <div class="actions">
-          <button type="submit">Hozzáadás</button>
+        <div class="input-group">
+          <label for="category">Kategória</label>
+          <select v-model="product.category" id="category" required>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.category_name }}
+            </option>
+          </select>
         </div>
       </form>
     </div>
@@ -70,7 +75,8 @@ export default {
         image: '',
         category: ''
       },
-      products: []
+      products: [],
+      categories: []
     };
   },
 
@@ -113,8 +119,18 @@ export default {
     }
   },
 
+    async fetchCategories() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/products');
+        this.categories = response.data.categories;
+      } catch (error) {
+        console.error('Hiba történt a kategóriák lekérésekor:', error);
+      }
+    },
+
   created() {
     this.fetchProducts();
+    this.fetchCategories();
   }
 };
 </script>

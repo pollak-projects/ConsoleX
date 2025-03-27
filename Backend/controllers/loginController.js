@@ -6,8 +6,8 @@ exports.loginUser = (req, res) => {
 
   const emailRegex = /\S+@\S+\.\S+/;
   const query = emailRegex.test(usernameOrEmail)
-    ? 'SELECT * FROM user WHERE email = ?'
-    : 'SELECT * FROM user WHERE username = ?';
+    ? 'SELECT * FROM user_orders WHERE email = ?'
+    : 'SELECT * FROM user_orders WHERE username = ?';
 
   db.query(query, [usernameOrEmail], (err, results) => {
     if (err) {

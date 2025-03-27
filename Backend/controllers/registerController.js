@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt'); // For password hashing
 exports.registerUser = (req, res) => {
   const { username, email, password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password
-  const query = 'INSERT INTO user (username, email, password) VALUES (?, ?, ?)';
+  const query = 'INSERT INTO user_orders (username, email, password) VALUES (?, ?, ?)';
 
   db.query(query, [username, email, hashedPassword], (err, result) => {
     if (err) {
