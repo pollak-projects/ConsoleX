@@ -4,7 +4,7 @@
       <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="navigation">
         <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
-        <router-link to="/gamesloggedin" class="nav-link">Játékok</router-link>
+        <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
         <router-link to="/loggedin" class="nav-link">Profil</router-link>
       </div>
     </header>

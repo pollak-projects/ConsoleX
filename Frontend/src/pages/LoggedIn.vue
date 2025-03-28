@@ -7,7 +7,7 @@
       </div>
       <div class="navigation">
         <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
-        <router-link to="/gamesloggedin" class="nav-link">Játékok</router-link>
+        <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
         <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
       </div>
     </header>

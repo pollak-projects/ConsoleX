@@ -4,7 +4,7 @@
       <router-link to="main"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="navigation">
         <router-link to="/main" class="nav-link">Főoldal</router-link>
-        <router-link to="/games" class="nav-link">Játékok</router-link>
+        <router-link to="/products" class="nav-link">Termékek</router-link>
         <router-link to="/profile" class="nav-link">Profil</router-link>
       </div>
     </header>

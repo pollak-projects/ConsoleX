@@ -5,7 +5,7 @@
       <div class="search-container">
       </div>
       <div class="navigation">
-        <router-link to="/gamesloggedin" class="nav-link">Játékok</router-link>
+        <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
         <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
         <router-link to="/loggedin" class="nav-link">Profil</router-link>
       </div>
@@ -16,7 +16,7 @@
       </div>
       <div class="hero-text slide-up">
         <h1 class="hero-title">Üdvözlünk a ConsoleX-en!</h1>
-        <router-link to="/gamesloggedin" class="shop-now-button">Vásárolj most</router-link>
+        <router-link to="/productsloggedin" class="shop-now-button">Vásárolj most</router-link>
       </div>
     </section>
 

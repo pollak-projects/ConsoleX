@@ -1,7 +1,7 @@
 <template>
   <div class="games-container">
     <header class="header">
-      <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo" /></router-link>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="search-container">
         <input
           type="text"
@@ -24,53 +24,40 @@
         <div class="filter-category">
           <h3>Játékok</h3>
           <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'PC játékok'"
-              @change="filterProducts"
-            />
+            <input type="checkbox" v-model="selectedCategories" :value="1" @change="filterProducts" />
             PC játékok
           </label>
           <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'Xbox játékok'"
-              @change="filterProducts"
-            />
-            Xbox játékok
+            <input type="checkbox" v-model="selectedCategories" :value="2" @change="filterProducts" />
+            PlayStation játékok
           </label>
           <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'PlayStation játékok'"
-              @change="filterProducts"
-            />
-            PlayStation játékok
+            <input type="checkbox" v-model="selectedCategories" :value="3" @change="filterProducts" />
+            Xbox játékok
           </label>
         </div>
 
         <div class="filter-category">
           <h3>Konzolok</h3>
           <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'Xbox konzolok'"
-              @change="filterProducts"
-            />
-            Xbox 
+            <input type="checkbox" v-model="selectedCategories" :value="4" @change="filterProducts" />
+            PlayStation 
           </label>
           <label>
-            <input
-              type="checkbox"
-              v-model="selectedCategories"
-              :value="'PlayStation konzolok'"
-              @change="filterProducts"
-            />
-            PlayStation 
+            <input type="checkbox" v-model="selectedCategories" :value="5" @change="filterProducts" />
+            Xbox 
+          </label>
+        </div>
+
+        <div class="filter-category">
+          <h3>Egyéb</h3>
+          <label>
+            <input type="checkbox" v-model="selectedCategories" :value="6" @change="filterProducts" />
+            PlayStation tartozékok
+          </label>
+          <label>
+            <input type="checkbox" v-model="selectedCategories" :value="7" @change="filterProducts" />
+            Xbox tartozékok
           </label>
         </div>
 
@@ -119,9 +106,9 @@
       <section class="content">
         <img
           alt="advertisement"
-          src="https://media.licdn.com/dms/image/v2/D4E16AQG-UxmGle8URA/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1700322321372?e=2147483647&v=beta&t=Jgkb9WaAazLPhQHA0AgNhnlOWEx4pduESM460LMlQ4M"
+          src="../assets/battlefield.jpg"
         />
-        <h1>Összes termék</h1>
+        <h1>Termékek</h1>
 
         <div class="products">
           <div class="product" v-for="product in filteredProducts" :key="product.product_id">
@@ -145,46 +132,44 @@ import axios from 'axios';
 
 export default {
   data() {
-  return {
-    searchQuery: '',
-    categories: ['Összes termék', 'Játékok', 'Konzolok'],
-    selectedCategories: [],
-    selectedPriceMin: 0,
-    selectedPriceMax: 250000,
-    maxPrice: 250000,
-    products: [],
-    cart: [],
-  };
-},
-computed: {
-  filteredProducts() {
-    let filtered = this.products;
+    return {
+      searchQuery: '',
+      categories: {}, // Dynamically fetched categories
+      selectedCategories: [],
+      selectedPriceMin: 0,
+      selectedPriceMax: 250000,
+      maxPrice: 250000,
+      products: [],
+      cart: [],
+    };
+  },
+  computed: {
+    filteredProducts() {
+      let filtered = this.products;
 
-    if (this.searchQuery) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    }
-
-    if (this.selectedCategories.length) {
-      if (this.selectedCategories.includes('Összes termék')) {
-        // Show all products
-        return filtered;
+      // Szűrés név alapján
+      if (this.searchQuery) {
+        filtered = filtered.filter(product =>
+          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
       }
 
-      filtered = filtered.filter(product =>
-        this.selectedCategories.some(category => product.category.includes(category))
+      // Szűrés kategória alapján
+      if (this.selectedCategories.length) {
+        filtered = filtered.filter(product => this.selectedCategories.includes(product.category));
+      }
+
+      // Filter by price range
+      filtered = filtered.filter(
+        product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax
       );
-    }
-
-    filtered = filtered.filter(product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax);
-    return filtered;
+      
+      return filtered;
+    },
   },
-},
-
-
   mounted() {
     this.fetchProducts();
+    this.fetchCategories(); // Fetch categories on component mount
   },
   methods: {
     async fetchProducts() {
@@ -193,6 +178,19 @@ computed: {
         this.products = response.data.products;
       } catch (error) {
         console.error('Hiba történt a termékek lekérése közben:', error);
+      }
+    },
+    async fetchCategories() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/category');
+        const categoriesArray = response.data.categories;
+
+        this.categories = categoriesArray.reduce((acc, category) => {
+          acc[category.category_id] = category.category_name;
+          return acc;
+        }, {});
+      } catch (error) {
+        console.error('Hiba történt a kategóriák lekérése közben:', error);
       }
     },
     addToCart(product) {
@@ -217,12 +215,11 @@ computed: {
       this.filterProducts();
     },
     filterProducts() {
-      // Filter products based on search query, categories, and price range
+      // Automatically triggers filtering via computed property `filteredProducts`
     },
   },
 };
 </script>
-
 
 
 <style scoped>

@@ -5,7 +5,7 @@
       <div class="search-container"></div>
       <div class="navigation">
         <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
-        <router-link to="/admingames" class="nav-link">Játékok</router-link>
+        <router-link to="/adminproducts" class="nav-link">Termékek</router-link>
         <router-link to="/admincart" class="nav-link">Kosár</router-link>
         <router-link to="/adminloggedin" class="nav-link">Profil</router-link>
       </div>

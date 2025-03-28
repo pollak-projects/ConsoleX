@@ -6,7 +6,7 @@
       </div>
       <div class="navigation">
         <router-link to="/main" class="nav-link">Főoldal</router-link>
-        <router-link to="/games" class="nav-link">Játékok</router-link>
+        <router-link to="/products" class="nav-link">Termékek</router-link>
         <router-link to="/cart" class="nav-link">Kosár</router-link>
       </div>
     </header>

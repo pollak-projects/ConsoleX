@@ -6,7 +6,7 @@
         </div>
         <div class="navigation">
           <router-link to="/admin" class="nav-link">Admin</router-link>
-          <router-link to="/admingames" class="nav-link">Játékok</router-link>
+          <router-link to="/adminproducts" class="nav-link">Termékek</router-link>
           <router-link to="/admincart" class="nav-link">Kosár</router-link> 
           <router-link to="/adminloggedin" class="nav-link">Profil</router-link>
         </div>
@@ -17,7 +17,7 @@
         </div>
         <div class="hero-text slide-up">
           <h1 class="hero-title">Üdvözlünk a ConsoleX-en!</h1>
-          <router-link to="/admingames" class="shop-now-button">Vásárolj most</router-link>
+          <router-link to="/adminproducts" class="shop-now-button">Vásárolj most</router-link>
         </div>
       </section>
   

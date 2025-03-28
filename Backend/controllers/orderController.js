@@ -4,7 +4,7 @@ exports.createOrder = (req, res) => {
   const { userDetails, products } = req.body;
 
   const insertUserQuery = `
-    INSERT INTO user_orders (name, address, payment_method)
+    INSERT INTO user_order (name, address, payment_method)
     VALUES (?, ?, ?)
   `;
 
@@ -20,8 +20,8 @@ exports.createOrder = (req, res) => {
       const userId = userResult.insertId;
 
       const insertOrderQuery = `
-        INSERT INTO orders (user_id, order_price)
-        VALUES (?, ?)
+        INSERT INTO orders (user_id, order_price, created_at)
+        VALUES (?, ?, ?)
       `;
 
       products.forEach((product) => {
