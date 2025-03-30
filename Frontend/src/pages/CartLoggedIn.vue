@@ -1,11 +1,11 @@
 <template>
   <div class="cart-container">
     <header class="header">
-      <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo" /></router-link>
+      <router-link to="main"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="navigation">
         <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
         <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
-        <router-link to="/loggedin" class="nav-link">Profil</router-link>
+        <router-link to="loggedin" class="nav-link">Profil</router-link>
       </div>
     </header>
 
@@ -18,6 +18,7 @@
         <div v-for="(item, index) in cart" :key="index" class="cart-item">
           <p>Termék: {{ item.name }}</p>
           <p>Ár: {{ item.price }} Ft</p>
+          <p>Mennyiség: {{ item.quantity }}</p>
         </div>
         <div class="cart-summary">
           <p>Termékek száma: {{ cart.length }}</p>
@@ -56,25 +57,47 @@ export default {
     return {
       cart: [],
       showOrderForm: false,
+      user: null,
       orderDetails: {
         name: '',
         address: '',
         paymentMethod: 'creditCard',
+        email: '',
+        username: '',
       },
     };
   },
-  mounted() {
+  async mounted() {
     this.loadCart();
+    await this.getUserDetails();
   },
   methods: {
     loadCart() {
       this.cart = JSON.parse(localStorage.getItem('cart')) || [];
     },
+    async getUserDetails() {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/user/${this.user.id}`, { withCredentials: true });
+
+        if (response.data) {
+          this.user = response.data;
+          this.orderDetails.email = this.user.email || '';
+          this.orderDetails.username = this.user.username || '';
+        }
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    },
+
     async submitOrder() {
       const order = {
         userDetails: this.orderDetails,
         products: this.cart,
       };
+
+      if (this.user) {
+        order.userDetails.user_id = this.user.user_id;
+      }
 
       try {
         const response = await axios.post('http://localhost:8000/api/orders', order);
@@ -90,6 +113,8 @@ export default {
         alert('Nem sikerült kapcsolódni a szerverhez.');
       }
     },
+
+
     clearCart() {
       this.cart = [];
       localStorage.removeItem('cart');
@@ -98,6 +123,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Animációk gyorsítása */

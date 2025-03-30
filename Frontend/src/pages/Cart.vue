@@ -57,25 +57,45 @@ export default {
     return {
       cart: [],
       showOrderForm: false,
+      user: null,
       orderDetails: {
         name: '',
         address: '',
         paymentMethod: 'creditCard',
+        email: '',
+        username: '',
       },
     };
   },
-  mounted() {
+  async mounted() {
     this.loadCart();
+    await this.getUserDetails();
   },
   methods: {
     loadCart() {
       this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+    },
+      async getUserDetails() {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/user/${this.user.id}`, { withCredentials: true });
+        if (response.data) {
+          this.user = response.data;
+          this.orderDetails.email = this.user.email || '';
+          this.orderDetails.username = this.user.username || '';
+        }
+      } catch (error) {
+        console.error('Hiba a felhasználói adatok lekérésekor:', error);
+      }
     },
     async submitOrder() {
       const order = {
         userDetails: this.orderDetails,
         products: this.cart,
       };
+
+      if (this.user) {
+        order.userDetails.user_id = this.user.user_id;
+      }
 
       try {
         const response = await axios.post('http://localhost:8000/api/orders', order);
@@ -91,6 +111,7 @@ export default {
         alert('Nem sikerült kapcsolódni a szerverhez.');
       }
     },
+
     clearCart() {
       this.cart = [];
       localStorage.removeItem('cart');
@@ -99,6 +120,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Animációk gyorsítása */

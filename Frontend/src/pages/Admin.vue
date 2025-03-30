@@ -17,29 +17,28 @@
       </header>
       <form @submit.prevent="addProduct">
         <div class="input-group">
-          <label for="name">Termék neve</label>
+          <label for="name">Termék neve:</label>
           <input type="text" v-model="product.name" id="name" required />
         </div>
         <div class="input-group">
-          <label for="price">Ár</label>
+          <label for="price">Ár:</label>
           <input type="number" v-model="product.price" id="price" required />
         </div>
         <div class="input-group">
-          <label for="image">Kép URL</label>
+          <label for="image">Kép URL:</label>
           <input type="text" v-model="product.image" id="image" />
         </div>
         <div class="input-group">
-          <label for="category">Kategória</label>
-          <input type="text" v-model="product.category" id="category" required />
-        </div>
-        <div class="input-group">
-          <label for="category">Kategória</label>
+          <label for="category">Kategória:</label>
           <select v-model="product.category" id="category" required>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
+            <option disabled value=""></option>
+            <option v-for="category in categories" :key="category.category_id" :value="category.category_id">
               {{ category.category_name }}
             </option>
           </select>
+
         </div>
+        <button type="submit" class="submit-button">Termék feltöltése</button>
       </form>
     </div>
 
@@ -73,7 +72,7 @@ export default {
         name: '',
         price: '',
         image: '',
-        category: ''
+        category: '' // Kategória ID tárolására
       },
       products: [],
       categories: []
@@ -91,6 +90,7 @@ export default {
 
         alert(`Sikeres feltöltés: ${response.data.message}`);
         this.fetchProducts();
+        this.resetForm();
       } catch (error) {
         console.error('Hiba történt:', error);
         alert(`Belső hiba történt a termék hozzáadása során: ${error.message}`);
@@ -106,33 +106,48 @@ export default {
       }
     },
 
-
     async deleteProduct(productId) {
       try {
-        const response = await axios.delete(`http://localhost:8000/api/admin/${productId}`);
+        await axios.delete(`http://localhost:8000/api/admin/${productId}`);
         alert("Termék sikeresen törölve!");
         this.fetchProducts();
       } catch (error) {
         console.error('Hiba történt a termék törlésekor:', error);
         alert(`Belső hiba történt a termék törlése során: ${error.message}`);
       }
-    }
-  },
+    },
 
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8000/api/products');
-        this.categories = response.data.categories;
+        const response = await axios.get('http://localhost:8000/api/categories');
+
+        if (response.data.categories) {
+          this.categories = response.data.categories;
+        } else {
+          console.error("Hibás API válasz:", response.data);
+        }
       } catch (error) {
         console.error('Hiba történt a kategóriák lekérésekor:', error);
       }
     },
+
+
+    resetForm() {
+      this.product = {
+        name: '',
+        price: '',
+        image: '',
+        category: ''
+      };
+    }
+  },
 
   created() {
     this.fetchProducts();
     this.fetchCategories();
   }
 };
+
 </script>
 
 
@@ -284,7 +299,7 @@ body {
 
 .product .price {
   font-size: 16px;
-  color: #e91e63;
+  color: #000000;
   margin: 10px 0;
 }
 
@@ -295,7 +310,7 @@ body {
 }
 
 .product .actions button {
-  background-color: #4caf50;
+  background-color: #ff0000;
   color: #fff;
   border: none;
   padding: 10px;
@@ -304,7 +319,7 @@ body {
 }
 
 .product .actions button:hover {
-  background-color: #45a049;
+  background-color: #ff0000;
 }
 
 .product .actions .wishlist {
@@ -337,6 +352,15 @@ body {
   border-color: #ddd;
   height: 20px;
   width: 100px;
+}
+
+.submit-button{
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 /* Animációk */

@@ -3,41 +3,47 @@ const db = require('../config/db');
 exports.createOrder = (req, res) => {
   const { userDetails, products } = req.body;
 
-  const insertUserQuery = `
-    INSERT INTO user_order (name, address, payment_method)
-    VALUES (?, ?, ?)
-  `;
+  const userId = userDetails.user_id;
 
-  db.query(
-    insertUserQuery,
-    [userDetails.name, userDetails.address, userDetails.paymentMethod],
-    (userErr, userResult) => {
-      if (userErr) {
-        console.error('Error saving user:', userErr);
-        return res.status(500).json({ message: 'Failed to save user details.' });
+  const insertOrderQuery = `
+  INSERT INTO orders (user_id, name, address, payment_method, order_date)
+  VALUES (?, ?, ?, ?, NOW())`;
+
+db.query(
+  insertOrderQuery,
+  [
+    userId,
+    userDetails.name,
+    userDetails.address,
+    userDetails.paymentMethod,
+  ],
+  (orderErr, orderResult) => {
+    if (orderErr) {
+      console.error('Hiba a rendelés mentésekor:', orderErr);
+      return res.status(500).json({ message: 'Nem sikerült menteni a rendelést.' });
+    }
+
+    const orderId = orderResult.insertId;
+    let totalPrice = 0;
+
+    const insertOrderItemsQuery = `
+      INSERT INTO order_items (order_id, product_id, quantity)
+      VALUES ?
+    `;
+
+    const orderItemsData = products.map((product) => [
+      orderId,
+      product.product_id,
+      product.quantity,
+    ]);
+
+    db.query(insertOrderItemsQuery, [orderItemsData], (orderItemsErr) => {
+      if (orderItemsErr) {
+        console.error('Hiba a rendelés tételeinek mentésekor:', orderItemsErr);
+        return res.status(500).json({ message: 'Nem sikerült menteni a rendelés tételeit.' });
       }
 
-      const userId = userResult.insertId;
-
-      const insertOrderQuery = `
-        INSERT INTO orders (user_id, order_price, created_at)
-        VALUES (?, ?, ?)
-      `;
-
-      products.forEach((product) => {
-        db.query(
-          insertOrderQuery,
-          [userId, product.name, product.price],
-          (orderErr) => {
-            if (orderErr) {
-              console.error('Error saving order:', orderErr);
-              return res.status(500).json({ message: 'Failed to save order.' });
-            }
-          }
-        );
-      });
-
-      res.status(200).json({ message: 'Order successfully placed!' });
-    }
-  );
-};
+      res.status(200).json({ message: 'A rendelés sikeresen leadva!' });
+    });
+  }
+)};
