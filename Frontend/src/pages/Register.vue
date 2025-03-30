@@ -73,12 +73,8 @@ export default {
             password: this.password,
           }),
         });
-
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
         
         const data = await response.json();
-        console.log('Response data:', data);
 
         if (!response.ok) {
           alert(`Hiba történt: ${data.message}`);
@@ -98,14 +94,10 @@ export default {
 
 
 <style scoped>
-/* Stílusok maradnak ugyanazok, mint az előző példában */
-
-/* Fő konténer */
 .auth-container {
   animation: fadeInAll 0.75s ease-out;
 }
 
-/* Fejléc */
 .header {
   background-color: #fff;
   color: #333;
@@ -144,7 +136,6 @@ export default {
   letter-spacing: 3px;
 }
 
-/* Regisztrációs form */
 .form-container {
   max-width: 600px;
   margin: 50px auto;
@@ -219,7 +210,6 @@ button:hover {
   text-decoration: underline;
 }
 
-/* Animációk */
 @keyframes fadeInAll {
   0% { opacity: 0; transform: translateY(-30px); }
   100% { opacity: 1; transform: translateY(0); }

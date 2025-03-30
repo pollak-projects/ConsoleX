@@ -135,7 +135,7 @@ export default {
   data() {
     return {
       searchQuery: '',
-      categories: {}, // Dynamically fetched categories
+      categories: {},
       selectedCategories: [],
       selectedPriceMin: 0,
       selectedPriceMax: 250000,
@@ -148,19 +148,16 @@ export default {
     filteredProducts() {
       let filtered = this.products;
 
-      // Szűrés név alapján
       if (this.searchQuery) {
         filtered = filtered.filter(product =>
           product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
 
-      // Szűrés kategória alapján
       if (this.selectedCategories.length) {
         filtered = filtered.filter(product => this.selectedCategories.includes(product.category));
       }
 
-      // Filter by price range
       filtered = filtered.filter(
         product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax
       );
@@ -170,7 +167,7 @@ export default {
   },
   mounted() {
     this.fetchProducts();
-    this.fetchCategories(); // Fetch categories on component mount
+    this.fetchCategories();
   },
   methods: {
     async fetchProducts() {
@@ -216,7 +213,6 @@ export default {
       this.filterProducts();
     },
     filterProducts() {
-      // Automatically triggers filtering via computed property `filteredProducts`
     },
   },
 };
@@ -230,20 +226,19 @@ body {
   padding: 0;
   background-color: #f7f7f7;
   color: #333;
-  animation: fadeInAll 1s ease-out; /* Az egész oldal animációja */
+  animation: fadeInAll 1s ease-out;
 }
 
-/* Fejléc */
 .header {
   background-color: #fff;
   color: #333;
   padding: 20px 30px;
   display: flex;
-  justify-content: space-between; /* A navigációt jobbra helyezi */
+  justify-content: space-between;
   align-items: center;
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
+  animation: fadeInHeader 0.75s ease-out;
 }
 
 .header img {
@@ -276,7 +271,7 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .nav-link:hover {
@@ -289,9 +284,9 @@ body {
 .main {
   display: flex;
   padding: 20px;
-  max-width: 1400px; /* Tágabb elrendezés */
+  max-width: 1400px;
   margin: 0 auto;
-  animation: fadeInContent 0.75s ease-out; /* Tartalom animációja */
+  animation: fadeInContent 0.75s ease-out;
 }
 
 
@@ -303,7 +298,7 @@ body {
   border-radius: 8px;
   border: 1px solid #ddd;
   margin-right: 20px;
-  animation: fadeInSidebar 0.75s ease-out; /* Oldalsáv animációja */
+  animation: fadeInSidebar 0.75s ease-out;
 }
 
 .sidebar h2 {
@@ -327,7 +322,7 @@ body {
 
 .content {
   flex: 1;
-  animation: fadeInContentFromTop 1s ease-out; /* Fentről lefelé betöltés animációja */
+  animation: fadeInContentFromTop 1s ease-out;
 }
 
 .content img {
@@ -358,7 +353,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  animation: fadeInProduct 0.75s ease-out; /* Termékek animációja */
+  animation: fadeInProduct 0.75s ease-out;
 }
 
 .product img {
@@ -428,7 +423,6 @@ body {
   width: 100px;
 }
 
-/* Animációk */
 @keyframes fadeInAll {
   0% { opacity: 0; transform: translateY(-30px); }
   100% { opacity: 1; transform: translateY(0); }

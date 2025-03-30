@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view> <!-- Itt jelennek meg a komponensek -->
+    <router-view></router-view>
   </div>
 </template>
 

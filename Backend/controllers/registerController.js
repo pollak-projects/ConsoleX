@@ -1,9 +1,9 @@
 const db = require('../config/db');
-const bcrypt = require('bcrypt'); // For password hashing
+const bcrypt = require('bcrypt');
 
 exports.registerUser = (req, res) => {
   const { username, email, password } = req.body;
-  const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password
+  const hashedPassword = bcrypt.hashSync(password, 10);
   const query = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
 
   db.query(query, [username, email, hashedPassword], (err, result) => {

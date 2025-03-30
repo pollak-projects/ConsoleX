@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.post('/login', loginUser);
 
 describe('POST /login', () => {
-  it('should log in a user successfully', (done) => {
+  it('sikeresen be kell jelentkeznie egy felhasználónak', (done) => {
     const user = {
       email: 'testuser@example.com',
       password: 'testpassword'
@@ -28,7 +28,7 @@ describe('POST /login', () => {
       });
   });
 
-  it('should return a 400 error for invalid email or password', (done) => {
+  it('400-as hibát kell visszaadnia érvénytelen e-mail cím vagy jelszó miatt', (done) => {
     const user = {
       email: 'invalidemail@example.com',
       password: 'wrongpassword'
@@ -45,7 +45,7 @@ describe('POST /login', () => {
       });
   });
 
-  it('should return a 500 error for internal server errors', (done) => {
+  it('500-as hibát kell visszaadnia belső szerverhibák esetén', (done) => {
     request(app)
       .post('/login')
       .send({})

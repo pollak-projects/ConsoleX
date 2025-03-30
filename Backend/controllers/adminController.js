@@ -9,7 +9,7 @@ exports.addProduct = (req, res) => {
       res.status(500).send('Hiba történt a termék hozzáadásakor');
       return;
     }
-    res.send('Product added successfully');
+    res.send('Termék sikeresen hozzáadva');
   });
 };
 

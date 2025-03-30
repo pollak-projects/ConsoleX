@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.post('/register', registerUser);
 
 describe('POST /register', () => {
-  it('should register a user successfully', (done) => {
+  it('sikeresen regisztrálnia kell egy felhasználót', (done) => {
     const user = {
       username: 'testuser',
       email: 'testuser@example.com',
@@ -27,7 +27,7 @@ describe('POST /register', () => {
       });
   });
 
-  it('should return a 500 error for internal server errors', (done) => {
+  it('500-as hibát kell visszaadnia belső szerverhibák esetén', (done) => {
     const user = {
       username: '',
       email: 'invalidemail',

@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue';
 import imagePath from '../assets/fc25.jpg';
 import imagePath2 from '../assets/farcry6.jpg';
 import imagePath3 from '../assets/hogwarts.jpg';
@@ -80,7 +79,7 @@ export default {
         (this.activeImageIndex - 1 + this.images.length) % this.images.length;
     },
     startImageCarousel() {
-      this.intervalId = setInterval(this.nextImage, 3000); // Automatically move to the next image
+      this.intervalId = setInterval(this.nextImage, 3000);
     },
     stopImageCarousel() {
       clearInterval(this.intervalId);
@@ -97,7 +96,6 @@ export default {
 </script>
 
 <style scoped>
-/* Alap body stílusok */
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
@@ -106,7 +104,7 @@ body {
   color: #333;
   overflow-x: hidden;
   opacity: 0;
-  animation: fadeIn 1.5s forwards; /* Gyorsabb animáció */
+  animation: fadeIn 1.5s forwards;
 }
 
 .header {
@@ -118,24 +116,22 @@ body {
   align-items: center;
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
+  animation: fadeInHeader 0.75s ease-out;
 }
 
 .header img {
   height: 60px;
 }
 
-/* Fading animáció */
 @keyframes fadeIn {
   to {
     opacity: 1;
   }
 }
 
-/* Fading effektus a szekciókhoz */
 .fade-in {
   opacity: 0;
-  animation: fadeInSection 1.5s forwards; /* Gyorsabb animáció */
+  animation: fadeInSection 1.5s forwards;
 }
 
 @keyframes fadeInSection {
@@ -147,7 +143,6 @@ body {
   }
 }
 
-/* Fejléc animáció */
 @keyframes fadeInHeader {
   0% {
     opacity: 0;
@@ -175,7 +170,7 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .nav-link:hover {
@@ -185,7 +180,6 @@ body {
   letter-spacing: 3px;
 }
 
-/* Hero Section */
 .hero-section {
   position: relative;
   overflow: hidden;
@@ -193,7 +187,7 @@ body {
   padding: 0;
   margin-top: 0;
   width: 1890px;
-  height: 400px; /* Keeps the shorter height */
+  height: 400px;
 }
 
 .hero-carousel {
@@ -202,7 +196,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-    display: flex; /* Enables horizontal alignment of images */
+    display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -235,11 +229,11 @@ body {
 }
 
 .nav-button.left {
-  left: 10px; /* Position left button */
+  left: 10px;
 }
 
 .nav-button.right {
-  right: 10px; /* Position right button */
+  right: 10px;
 }
 
 .nav-button:hover {
@@ -248,7 +242,7 @@ body {
 
 
 .hero-text {
-  position: relative; /* Ensures it stays on top of the carousel */
+  position: relative;
   z-index: 1;
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
 }
@@ -294,7 +288,6 @@ body {
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Kiemelt Játékok Szekció */
 .featured-section {
   padding: 40px 20px;
   text-align: center;
@@ -354,7 +347,6 @@ body {
   font-weight: 700;
 }
 
-/* About Us Szekció */
 .about-us {
   background-color: #f0f0f0;
   padding: 40px 20px;
@@ -381,7 +373,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Footer */
 .footer {
   background-color: #333;
   color: white;

@@ -2,9 +2,9 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../server');
 
-describe('Product Controller', () => {
+describe('Termék Controller', () => {
   describe('GET /products', () => {
-    it('should return all products', (done) => {
+    it('vissza kell küldenie az összes terméket', (done) => {
       request(app)
         .get('/products')
         .expect(200)
@@ -17,10 +17,10 @@ describe('Product Controller', () => {
   });
 
   describe('POST /products', () => {
-    it('should add a new product', (done) => {
+    it('új terméket kell hozzáadnia', (done) => {
       const newProduct = {
-        name: 'Sample Product',
-        category: 'Sample Category',
+        name: 'Próba Termék',
+        category: 'Próba Kategória',
         price: 100,
         image: 'sample-image-url'
       };

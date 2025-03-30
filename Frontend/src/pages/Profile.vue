@@ -10,7 +10,6 @@
       </div>
     </header>
 
-    <!-- Bejelentkezési űrlap -->
     <div class="form-container">
       <header>
         <h1>Bejelentkezés</h1>
@@ -36,6 +35,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -44,33 +45,27 @@ export default {
     };
   },
   methods: {
-          async login() {
+    async login() {
       try {
-        const response = await fetch("http://localhost:8000/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            usernameOrEmail: this.usernameOrEmail,
-            password: this.password,
-          }),
+        const response = await axios.post("http://localhost:8000/api/login", {
+          usernameOrEmail: this.usernameOrEmail,
+          password: this.password,
         });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          alert(`Hiba történt: ${errorData.message}`);
-        } else {
-          const data = await response.json();
+        if (response.status === 200) {
+          const data = response.data;
           alert(data.message);
+
           localStorage.setItem("token", data.token);
-          localStorage.setItem("username", data.username);
+          localStorage.setItem('user', JSON.stringify({ user_id: data.user_id, username: data.username }));
 
           if (data.role === 'admin') {
             this.$router.push("/adminloggedin");
           } else {
             this.$router.push("/loggedin");
           }
+        } else {
+          alert(`Hiba történt: ${response.data.message}`);
         }
       } catch (error) {
         console.error("Hiba történt:", error);
@@ -83,12 +78,10 @@ export default {
 
 
 <style scoped>
-/* Az egész oldal animációja */
 .auth-container {
-  animation: fadeInAll 0.75s ease-out; /* Az egész oldal gyorsabban történő betöltése */
+  animation: fadeInAll 0.75s ease-out;
 }
 
-/* Fejléc */
 .header {
   background-color: #fff;
   color: #333;
@@ -98,7 +91,7 @@ export default {
   align-items: center;
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
+  animation: fadeInHeader 0.75s ease-out;
 }
 
 .header img {
@@ -117,7 +110,7 @@ export default {
   font-weight: 700;
   letter-spacing: 1px;
   transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .nav-link:hover {
@@ -127,7 +120,6 @@ export default {
   letter-spacing: 3px;
 }
 
-/* Form animáció */
 .form-container {
   max-width: 600px;
   margin: 50px auto;
@@ -135,7 +127,7 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInForm 0.75s ease-out; /* Form gyorsabb animációja */
+  animation: fadeInForm 0.75s ease-out;
 }
 
 header {
@@ -146,7 +138,7 @@ header {
 h1 {
   font-size: 28px;
   font-weight: 600;
-  animation: fadeInText 0.75s ease-out forwards; /* Cím animációja */
+  animation: fadeInText 0.75s ease-out forwards;
 }
 
 .input-group {
@@ -164,8 +156,8 @@ input {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
-  opacity: 0; /* Kezdetben átlátszó */
-  animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
+  opacity: 0;
+  animation: fadeInInput 0.75s ease-out forwards;
 }
 
 button {
@@ -178,8 +170,8 @@ button {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  opacity: 0; /* Kezdetben átlátszó */
-  animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
+  opacity: 0;
+  animation: fadeInButton 0.75s ease-out forwards;
 }
 
 button:hover {
@@ -194,15 +186,14 @@ button:hover {
 .redirect a {
   color: #4caf50;
   text-decoration: none;
-  opacity: 0; /* Kezdetben átlátszó */
-  animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+  opacity: 0;
+  animation: fadeInLink 0.75s ease-out forwards;
 }
 
 .redirect a:hover {
   text-decoration: underline;
 }
 
-/* Animációk */
 @keyframes fadeInAll {
   0% { opacity: 0; transform: translateY(-30px); }
   100% { opacity: 1; transform: translateY(0); }

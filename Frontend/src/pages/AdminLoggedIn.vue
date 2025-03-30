@@ -1,206 +1,201 @@
 <template>
-    <header class="header">
-      <router-link to="/adminlogin">
-        <router-link to="adminmain"><img src="../assets/logo.png" class="navlogo"/></router-link>
-      </router-link>
-      <div class="search-container">
-      </div>
-      <div class="navigation">
-        <router-link to="/admin" class="nav-link">Admin</router-link>
-        <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
-        <router-link to="/adminproducts" class="nav-link">Termékek</router-link>
-        <router-link to="/admincart" class="nav-link">Kosár</router-link> 
-      </div>
-    </header>
-  
-    <div class="loggedin-container">
-      <header>
-        <h1>Üdvözöllek, {{ username }}!</h1>
-        <p>Örülünk, hogy újra itt vagy.</p>
-      </header>
-      <div class="actions">
-        <button class="logout-button" @click="logout">Kijelentkezés</button>
-      </div>
+  <header class="header">
+    <router-link to="/adminlogin">
+      <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo"/></router-link>
+    </router-link>
+    <div class="search-container">
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        username: localStorage.getItem("username") || "Felhasználó"
-      };
+    <div class="navigation">
+      <router-link to="/admin" class="nav-link">Admin</router-link>
+      <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
+      <router-link to="/adminproducts" class="nav-link">Termékek</router-link>
+      <router-link to="/admincart" class="nav-link">Kosár</router-link> 
+    </div>
+  </header>
+
+  <div class="loggedin-container">
+    <header>
+      <h1>Üdvözöllek, {{ username }}!</h1>
+      <p>Örülünk, hogy újra itt vagy.</p>
+    </header>
+    <div class="actions">
+      <button class="logout-button" @click="logout">Kijelentkezés</button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      username: localStorage.getItem("username")
+    };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.$router.push("/main");
     },
-    methods: {
-      logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
-        this.$router.push("/main");
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* Az egész oldal animációja */
-  .auth-container {
-    animation: fadeInAll 0.75s ease-out; /* Az egész oldal gyorsabban történő betöltése */
-  }
-  
-  /* Fejléc */
-  .header {
-    background-color: #fff;
-    color: #333;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #ddd;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
-  }
-  
-  .header img {
-    height: 60px;
-  }
-  
-  .navigation {
-    display: flex;
-    gap: 30px;
-  }
-  
-  .nav-link {
-    color: #333;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-    animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
-  }
-  
-  .nav-link:hover {
-    color: #e91e63;
-    transform: scale(1.1);
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    letter-spacing: 3px;
-  }
-  
-  /* Form animáció */
-  .form-container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInForm 0.75s ease-out; /* Form gyorsabb animációja */
-  }
-  
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  h1 {
-    font-size: 28px;
-    font-weight: 600;
-    animation: fadeInText 0.75s ease-out forwards; /* Cím animációja */
-  }
-  
-  .input-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  input {
-    width: 96%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    opacity: 0; /* Kezdetben átlátszó */
-    animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
-  }
-  
-  .actions {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .logout-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background: linear-gradient(45deg, #f44336, #ff7961);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    transition: background 0.3s, transform 0.3s;
-    animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
-  }
-  
-  .logout-button:hover {
-    background: linear-gradient(45deg, #d32f2f, #ff5252);
-    transform: scale(1.05);
-  }
-  
-  .redirect {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .redirect a {
-    color: #4caf50;
-    text-decoration: none;
-    opacity: 0; /* Kezdetben átlátszó */
-    animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
-  }
-  
-  .redirect a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Animációk */
-  @keyframes fadeInAll {
-    0% { opacity: 0; transform: translateY(-30px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInHeader {
-    0% { opacity: 0; transform: translateY(-50px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInLink {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInForm {
-    0% { opacity: 0; transform: translateY(-50px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInText {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInInput {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInButton {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  </style>
-  
+  },
+};
+</script>
+
+<style scoped>
+.auth-container {
+  animation: fadeInAll 0.75s ease-out;
+}
+
+.header {
+  background-color: #fff;
+  color: #333;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #ddd;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInHeader 0.75s ease-out;
+}
+
+.header img {
+  height: 60px;
+}
+
+.navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards;
+}
+
+.nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInForm 0.75s ease-out;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  animation: fadeInText 0.75s ease-out forwards;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 96%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  opacity: 0;
+  animation: fadeInInput 0.75s ease-out forwards;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.logout-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #f44336, #ff7961);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.3s, transform 0.3s;
+  animation: fadeInButton 0.75s ease-out forwards;
+}
+
+.logout-button:hover {
+  background: linear-gradient(45deg, #d32f2f, #ff5252);
+  transform: scale(1.05);
+}
+
+.redirect {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.redirect a {
+  color: #4caf50;
+  text-decoration: none;
+  opacity: 0;
+  animation: fadeInLink 0.75s ease-out forwards;
+}
+
+.redirect a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeInAll {
+  0% { opacity: 0; transform: translateY(-30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInHeader {
+  0% { opacity: 0; transform: translateY(-50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLink {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInForm {
+  0% { opacity: 0; transform: translateY(-50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInText {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInInput {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInButton {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</style>

@@ -27,13 +27,13 @@
   export default {
     data() {
       return {
-        username: localStorage.getItem("username") || "Felhasználó"
+        username: localStorage.getItem("username")
       };
     },
     methods: {
       logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         this.$router.push("/main");
       },
     },
@@ -41,12 +41,10 @@
   </script>
   
   <style scoped>
-  /* Az egész oldal animációja */
   .auth-container {
-    animation: fadeInAll 0.75s ease-out; /* Az egész oldal gyorsabban történő betöltése */
+    animation: fadeInAll 0.75s ease-out;
   }
   
-  /* Fejléc */
   .header {
     background-color: #fff;
     color: #333;
@@ -56,7 +54,7 @@
     align-items: center;
     border-bottom: 3px solid #ddd;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInHeader 0.75s ease-out; /* Fejléc animáció */
+    animation: fadeInHeader 0.75s ease-out;
   }
   
   .header img {
@@ -75,7 +73,7 @@
     font-weight: 700;
     letter-spacing: 1px;
     transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-    animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+    animation: fadeInLink 0.75s ease-out forwards;
   }
   
   .nav-link:hover {
@@ -85,7 +83,6 @@
     letter-spacing: 3px;
   }
   
-  /* Form animáció */
   .form-container {
     max-width: 600px;
     margin: 50px auto;
@@ -93,7 +90,7 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInForm 0.75s ease-out; /* Form gyorsabb animációja */
+    animation: fadeInForm 0.75s ease-out;
   }
   
   header {
@@ -104,7 +101,7 @@
   h1 {
     font-size: 28px;
     font-weight: 600;
-    animation: fadeInText 0.75s ease-out forwards; /* Cím animációja */
+    animation: fadeInText 0.75s ease-out forwards;
   }
   
   .input-group {
@@ -122,8 +119,8 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    opacity: 0; /* Kezdetben átlátszó */
-    animation: fadeInInput 0.75s ease-out forwards; /* Input mezők animációja */
+    opacity: 0;
+    animation: fadeInInput 0.75s ease-out forwards;
   }
   
   .actions {
@@ -142,7 +139,7 @@
     font-weight: bold;
     font-size: 16px;
     transition: background 0.3s, transform 0.3s;
-    animation: fadeInButton 0.75s ease-out forwards; /* Gomb animációja */
+    animation: fadeInButton 0.75s ease-out forwards;
   }
   
   .logout-button:hover {
@@ -158,15 +155,14 @@
   .redirect a {
     color: #4caf50;
     text-decoration: none;
-    opacity: 0; /* Kezdetben átlátszó */
-    animation: fadeInLink 0.75s ease-out forwards; /* Linkek animációja */
+    opacity: 0;
+    animation: fadeInLink 0.75s ease-out forwards;
   }
   
   .redirect a:hover {
     text-decoration: underline;
   }
   
-  /* Animációk */
   @keyframes fadeInAll {
     0% { opacity: 0; transform: translateY(-30px); }
     100% { opacity: 1; transform: translateY(0); }

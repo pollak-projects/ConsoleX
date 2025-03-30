@@ -5,7 +5,7 @@
       <div class="navigation">
         <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
         <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
-        <router-link to="loggedin" class="nav-link">Profil</router-link>
+        <router-link to="/loggedin" class="nav-link">Profil</router-link>
       </div>
     </header>
 
@@ -57,47 +57,47 @@ export default {
     return {
       cart: [],
       showOrderForm: false,
-      user: null,
       orderDetails: {
         name: '',
         address: '',
         paymentMethod: 'creditCard',
-        email: '',
-        username: '',
+        user_id: null,
       },
     };
   },
-  async mounted() {
+  mounted() {
     this.loadCart();
-    await this.getUserDetails();
+    this.loadUser(); 
   },
   methods: {
     loadCart() {
       this.cart = JSON.parse(localStorage.getItem('cart')) || [];
     },
-    async getUserDetails() {
-      try {
-        const response = await axios.get(`http://localhost:8000/api/user/${this.user.id}`, { withCredentials: true });
-
-        if (response.data) {
-          this.user = response.data;
-          this.orderDetails.email = this.user.email || '';
-          this.orderDetails.username = this.user.username || '';
-        }
-      } catch (error) {
-        console.error('Error fetching user details:', error);
+    loadUser() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.user_id) {
+        this.orderDetails.user_id = user.user_id;
+      } else {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
       }
     },
 
     async submitOrder() {
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (user && user.user_id) {
+        this.orderDetails.user_id = user.user_id;
+      } else {
+        this.orderDetails.user_id = null;
+      }
+
+      console.log('Elküldött rendelési adatok:', this.orderDetails);
+
       const order = {
         userDetails: this.orderDetails,
         products: this.cart,
       };
-
-      if (this.user) {
-        order.userDetails.user_id = this.user.user_id;
-      }
 
       try {
         const response = await axios.post('http://localhost:8000/api/orders', order);
@@ -115,6 +115,7 @@ export default {
     },
 
 
+
     clearCart() {
       this.cart = [];
       localStorage.removeItem('cart');
@@ -125,8 +126,8 @@ export default {
 </script>
 
 
+
 <style scoped>
-/* Animációk gyorsítása */
 @keyframes fadeInHeader {
   0% { opacity: 0; transform: translateY(-50px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -152,32 +153,26 @@ export default {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Fejléc animáció */
 .header {
   animation: fadeInHeader 0.75s ease-out;
 }
 
-/* Kosár elemek animációja */
 .cart-item {
   animation: fadeInCartItem 0.75s ease-out forwards;
 }
 
-/* Kosár összegzése animáció */
 .cart-summary {
   animation: fadeInSummary 0.75s ease-out forwards;
 }
 
-/* Kosár rendelés gomb animáció */
 .place-order {
   animation: fadeInButton 0.75s ease-out forwards;
 }
 
-/* Linkek animáció a regisztráció oldalán */
 .nav-link {
   animation: fadeInLink 0.75s ease-out forwards;
 }
 
-/* Alap stílusok */
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
@@ -292,7 +287,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Sidebar (Jobb oldali sáv) */
 .cart-sidebar {
   width: 28%;
   background-color: #fff;
@@ -354,7 +348,6 @@ body {
   background-color: #218838;
 }
 
-/* Mobil eszközök */
 @media (max-width: 768px) {
   .cart-content {
     flex-direction: column;
