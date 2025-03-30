@@ -6,7 +6,7 @@
 - Juhász Gergő
 
 **Languages we use:**
-- Vuetifiy 3
+- Vuetify 3
 - NodeJs
 - Mysql
 
