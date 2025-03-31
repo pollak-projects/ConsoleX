@@ -56,6 +56,7 @@ export default {
           const data = response.data;
           alert(data.message);
 
+          localStorage.setItem("username", data.username);
           localStorage.setItem("token", data.token);
           localStorage.setItem('user', JSON.stringify({ user_id: data.user_id, username: data.username }));
 

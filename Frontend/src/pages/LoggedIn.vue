@@ -1,46 +1,121 @@
 <template>
-    <header class="header">
+  <header class="header">
       <router-link to="/adminlogin">
-        <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo"/></router-link>
+          <router-link to="/mainloggedin">
+              <img src="../assets/logo.png" class="navlogo"/>
+          </router-link>
       </router-link>
-      <div class="search-container">
-      </div>
       <div class="navigation">
-        <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
-        <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
-        <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
+          <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
+          <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
+          <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
       </div>
-    </header>
-  
-    <div class="loggedin-container">
+  </header>
+
+  <div class="loggedin-container">
       <header>
-        <h1>Üdvözöllek, {{ username }}!</h1>
-        <p>Örülünk, hogy újra itt vagy.</p>
+          <h1>Üdvözöllek, {{ username }}!</h1>
+          <p>Örülünk, hogy újra itt vagy.</p>
       </header>
-      <div class="actions">
-        <button class="logout-button" @click="logout">Kijelentkezés</button>
+
+      <h2>A rendeléseid</h2>
+      <div v-if="orders.length === 0">
+          <p>Nincsenek rendeléseid.</p>
       </div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
+      <div v-else>
+          <div v-for="order in orders" :key="order.order_id" class="order-card">
+              <h3>Rendelés száma: {{ order.order_id }}</h3>
+              <p><strong>Név:</strong> {{ order.name }}</p>
+              <p><strong>Cím:</strong> {{ order.address }}</p>
+              <p><strong>Fizetési mód:</strong> {{ order.payment_method }}</p>
+              <p><strong>Rendelés ideje:</strong> {{ new Date(order.order_date).toLocaleString() }}</p>
+              <h4>Termékek:</h4>
+              <ul>
+                  <li v-for="item in order.items" :key="item.product_name">
+                      {{ item.product_name }} - {{ item.quantity }} db - {{ item.price }} Ft/db
+                  </li>
+              </ul>
+              <p><strong>Végösszeg:</strong> {{ order.total_price }} Ft</p>
+              <button @click="deleteOrder(order.order_id)" class="delete-button">Rendelés törlése</button>
+          </div>
+      </div>
+
+      <div class="actions">
+          <button class="logout-button" @click="logout">Kijelentkezés</button>
+      </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
       return {
-        username: localStorage.getItem("username")
+          username: "",
+          orders: []
       };
-    },
-    methods: {
-      logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        this.$router.push("/main");
+  },
+  created() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+          this.username = user.username;
+          this.fetchOrders(user.user_id);
+      }
+  },
+  methods: {
+      fetchOrders(userId) {
+          axios.get(`http://localhost:8000/api/orders/${userId}`)
+              .then(response => {
+                  this.orders = response.data;
+              })
+              .catch(error => {
+                  console.error("Hiba a rendelési adatok lekérésekor:", error);
+              });
       },
-    },
-  };
-  </script>
+      async deleteOrder(orderId) {
+        try {
+          await axios.delete(`http://localhost:8000/api/orders/${orderId}`);
+          this.orders = this.orders.filter(order => order.order_id !== orderId);
+        } catch (error) {
+          console.error('Hiba a rendelés törlésekor:', error);
+        }
+      },
+
+      logout() {
+          localStorage.removeItem('username');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          this.$router.push("/main");
+      },
+  },
+};
+</script>
   
   <style scoped>
+  .delete-button {
+    background: linear-gradient(45deg, #f44336, #ff7961);
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+
+  .delete-button:hover {
+    background: linear-gradient(45deg, #d32f2f, #ff5252);
+    transform: scale(1.05);
+  }
+
+  .order-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
   .auth-container {
     animation: fadeInAll 0.75s ease-out;
   }
