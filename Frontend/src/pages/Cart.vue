@@ -18,10 +18,16 @@
         <div v-for="(item, index) in cart" :key="index" class="cart-item">
           <p>Termék: {{ item.name }}</p>
           <p>Ár: {{ item.price }} Ft</p>
-          <p>Mennyiség: {{ item.quantity }}</p>
+          <p>
+            Mennyiség:
+            <button @click="decreaseQuantity(index)" class="quantity-button">−</button>
+            {{ item.quantity }}
+            <button @click="increaseQuantity(index)" class="quantity-button">+</button>
+          </p>
         </div>
         <div class="cart-summary">
           <p>Termékek száma: {{ cart.length }}</p>
+          <p>Végösszeg: {{ totalPrice }} Ft</p>
           <button @click="clearCart" class="clear-cart-button">Kosár ürítése</button>
           <button @click="showOrderForm = true" class="place-order">Rendelés leadása</button>
         </div>
@@ -65,9 +71,16 @@ export default {
       },
     };
   },
+  computed: {
+    totalPrice() {
+      return this.cart.reduce((total, item) => {
+        return total + item.price * item.quantity;
+      }, 0);
+    },
+  },
   mounted() {
     this.loadCart();
-    this.loadUser(); 
+    this.loadUser();
   },
   methods: {
     loadCart() {
@@ -82,7 +95,18 @@ export default {
         localStorage.removeItem('token');
       }
     },
-
+    increaseQuantity(index) {
+      this.cart[index].quantity += 1;
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+    },
+    decreaseQuantity(index) {
+      if (this.cart[index].quantity > 1) {
+        this.cart[index].quantity -= 1;
+      } else {
+        this.cart.splice(index, 1);
+      }
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+    },
     async submitOrder() {
       const user = JSON.parse(localStorage.getItem('user'));
 
@@ -91,8 +115,6 @@ export default {
       } else {
         this.orderDetails.user_id = null;
       }
-
-      console.log('Elküldött rendelési adatok:', this.orderDetails);
 
       const order = {
         userDetails: this.orderDetails,
@@ -113,7 +135,6 @@ export default {
         alert('Nem sikerült kapcsolódni a szerverhez.');
       }
     },
-
     clearCart() {
       this.cart = [];
       localStorage.removeItem('cart');
@@ -122,8 +143,6 @@ export default {
   },
 };
 </script>
-
-
 
 <style scoped>
 @keyframes fadeInHeader {
@@ -354,5 +373,23 @@ body {
   .cart-sidebar {
     width: 100%;
   }
+}
+
+.quantity-button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.quantity-button:hover {
+  background-color: #1565c0;
+  transform: scale(1.1);
 }
 </style>
