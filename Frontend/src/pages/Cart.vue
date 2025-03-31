@@ -10,6 +10,13 @@
     </header>
 
     <main class="main">
+      <BaseAlert
+  v-if="alert.visible"
+  :message="alert.message"
+  :type="alert.type"
+  :duration="3000"
+/>
+
       <h1>Kosár</h1>
       <div v-if="cart.length === 0" class="empty-cart">
         <p>A kosár jelenleg üres. Helyezd a termékeket a kosárba!</p>
@@ -57,12 +64,21 @@
 
 <script>
 import axios from 'axios';
+import BaseAlert from '/src/pages/BaseAlert.vue';
 
 export default {
+  components: {
+    BaseAlert
+  },
   data() {
     return {
       cart: [],
       showOrderForm: false,
+      alert: {
+        visible: false,
+        message: '',
+        type: 'success'
+      },
       orderDetails: {
         name: '',
         address: '',
@@ -83,6 +99,14 @@ export default {
     this.loadUser();
   },
   methods: {
+    showAlert(message, type = 'success') {
+      this.alert.message = message;
+      this.alert.type = type;
+      this.alert.visible = true;
+      setTimeout(() => {
+        this.alert.visible = false;
+      }, 3000);
+    },
     loadCart() {
       this.cart = JSON.parse(localStorage.getItem('cart')) || [];
     },
@@ -108,40 +132,47 @@ export default {
       localStorage.setItem('cart', JSON.stringify(this.cart));
     },
     async submitOrder() {
-      const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('user'));
 
-      if (user && user.user_id) {
-        this.orderDetails.user_id = user.user_id;
-      } else {
-        this.orderDetails.user_id = null;
-      }
+  if (user && user.user_id) {
+    this.orderDetails.user_id = user.user_id;
+  } else {
+    this.orderDetails.user_id = null;
+  }
 
-      const order = {
-        userDetails: this.orderDetails,
-        products: this.cart,
-      };
+  const order = {
+    userDetails: this.orderDetails,
+    products: this.cart,
+  };
 
-      try {
-        const response = await axios.post('http://localhost:8000/api/orders', order);
-        if (response.status === 200) {
-          alert('Rendelés sikeresen leadva!');
-          this.clearCart();
-          this.showOrderForm = false;
-        } else {
-          alert(`Hiba történt: ${response.data.message}`);
-        }
-      } catch (error) {
-        console.error('Hiba:', error);
-        alert('Nem sikerült kapcsolódni a szerverhez.');
-      }
-    },
-    clearCart() {
-      this.cart = [];
-      localStorage.removeItem('cart');
-      alert('A kosár sikeresen kiürítve.');
-    },
+  try {
+    const response = await axios.post('http://localhost:8000/api/orders', order);
+    if (response.status === 200) {
+      this.showAlert(' A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
+
+      setTimeout(() => {
+        this.clearCart(); // teljes kosár törlés itt történik
+      }, 1500);
+
+      this.showOrderForm = false;
+    } else {
+      this.showAlert(`❌ Hiba történt: ${response.data.message}`, 'error');
+    }
+  } catch (error) {
+    console.error('Hiba:', error);
+    this.showAlert('⚠️ Nem sikerült kapcsolódni a szerverhez. Próbáld meg később újra!', 'error');
+  }
+},
+
+clearCart() {
+  this.cart = [];
+  localStorage.removeItem('cart');
+  this.showAlert('🛒 A kosár kiürítve! Készen állsz egy új bevásárlásra.', 'info');
+}
+
   },
 };
+
 </script>
 
 <style scoped>
