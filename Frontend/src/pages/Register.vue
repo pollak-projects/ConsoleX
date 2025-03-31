@@ -14,6 +14,7 @@
       <header>
         <h1>Regisztráció</h1>
       </header>
+      <BaseAlert v-if="alertMessage" :message="alertMessage" :type="alertType" />
       <form @submit.prevent="register">
         <div class="input-group">
           <label for="username">Felhasználónév</label>
@@ -44,20 +45,27 @@
 
 <script>
 import axios from 'axios';
+import BaseAlert from '/src/pages/BaseAlert.vue';
 
 export default {
+  components: {
+    BaseAlert,
+  },
   data() {
     return {
       username: '',
       email: '',
       password: '',
       confirmPassword: '',
+      alertMessage: '',
+      alertType: '',
     };
   },
   methods: {
     async register() {
       if (this.password !== this.confirmPassword) {
-        alert('A jelszavak nem egyeznek!');
+        this.alertMessage = 'A jelszavak nem egyeznek!';
+        this.alertType = 'error';
         return;
       }
 
@@ -77,15 +85,20 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          alert(`Hiba történt: ${data.message}`);
+          this.alertMessage = `Hiba történt: ${data.message}`;
+          this.alertType = 'error';
         } else {
-          alert(data.message); 
+          this.alertMessage = data.message;
+          this.alertType = 'success';
 
-          this.$router.push('/profile');
+          setTimeout(() => {
+            this.$router.push('/profile');
+          }, 1500);
         }
       } catch (error) {
         console.error('Hiba történt:', error);
-        alert(`Belső hiba történt a regisztráció során: ${error.message}`);
+        this.alertMessage = `Belső hiba történt a regisztráció során: ${error.message}`;
+        this.alertType = 'error';
       }
     },
   },

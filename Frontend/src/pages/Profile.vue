@@ -14,6 +14,7 @@
       <header>
         <h1>Bejelentkezés</h1>
       </header>
+      <BaseAlert v-if="alertMessage" :message="alertMessage" :type="alertType" />
       <form @submit.prevent="login">
         <div class="input-group">
           <label for="username-email">Felhasználónév vagy Email</label>
@@ -36,12 +37,17 @@
 
 <script>
 import axios from 'axios';
-
+import BaseAlert from '/src/pages/BaseAlert.vue';
 export default {
+  components: {
+    BaseAlert,
+  },
   data() {
     return {
       usernameOrEmail: '',
       password: '',
+      alertMessage: '',
+      alertType: '',
     };
   },
   methods: {
@@ -54,29 +60,33 @@ export default {
 
         if (response.status === 200) {
           const data = response.data;
-          alert(data.message);
+          this.alertMessage = data.message;
+          this.alertType = 'success';
 
           localStorage.setItem("username", data.username);
           localStorage.setItem("token", data.token);
           localStorage.setItem('user', JSON.stringify({ user_id: data.user_id, username: data.username }));
 
-          if (data.role === 'admin') {
-            this.$router.push("/adminloggedin");
-          } else {
-            this.$router.push("/loggedin");
-          }
+          setTimeout(() => {
+            if (data.role === 'admin') {
+              this.$router.push("/adminloggedin");
+            } else {
+              this.$router.push("/loggedin");
+            }
+          }, 1500);
         } else {
-          alert(`Hiba történt: ${response.data.message}`);
+          this.alertMessage = `Hiba történt: ${response.data.message}`;
+          this.alertType = 'error';
         }
       } catch (error) {
         console.error("Hiba történt:", error);
-        alert("Belső hiba történt a bejelentkezés során.");
+        this.alertMessage = "Belső hiba történt a bejelentkezés során.";
+        this.alertType = 'error';
       }
     }
   }
 };
 </script>
-
 
 <style scoped>
 .auth-container {

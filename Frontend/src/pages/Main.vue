@@ -2,8 +2,6 @@
   <div class="main-container fade-in">
     <header class="header">
       <router-link to="main"><img src="../assets/logo.png" class="navlogo"/></router-link>
-      <div class="search-container">
-      </div>
       <div class="navigation">
         <router-link to="/products" class="nav-link">Termékek</router-link>
         <router-link to="/cart" class="nav-link">Kosár</router-link> 
@@ -40,7 +38,6 @@
         A ConsoleX az egyik vezető online áruház a videojátékok, konzolok és tartozékok terén.
         Több mint 10 éve biztosítjuk a legjobb termékeket és szolgáltatásokat játékosok számára.
       </p>
-      <router-link to="/about" class="about-button">Tudj meg többet</router-link>
     </section>
 
     <footer class="footer fade-in">
@@ -50,6 +47,7 @@
     </footer>
   </div>
 </template>
+
 
 <script>
 import imagePath from '../assets/fc25.jpg';

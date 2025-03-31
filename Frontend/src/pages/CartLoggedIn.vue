@@ -10,12 +10,7 @@
     </header>
 
     <main class="main">
-      <BaseAlert
-  v-if="alert.visible"
-  :message="alert.message"
-  :type="alert.type"
-  :duration="3000"
-/>
+      <BaseAlert v-if="alert.visible" :message="alert.message" :type="alert.type" :duration="2200" />
 
       <h1>Kosár</h1>
       <div v-if="cart.length === 0" class="empty-cart">
@@ -33,7 +28,7 @@
           </p>
         </div>
         <div class="cart-summary">
-          <p>Termékek száma: {{ cart.length }}</p>
+          <p>Összes termék darabszám: {{ totalQuantity }}</p>
           <p>Végösszeg: {{ totalPrice }} Ft</p>
           <button @click="clearCart" class="clear-cart-button">Kosár ürítése</button>
           <button @click="showOrderForm = true" class="place-order">Rendelés leadása</button>
@@ -54,6 +49,16 @@
             <option value="creditCard">Bankkártya</option>
             <option value="cash">Készpénz</option>
           </select>
+
+          <label for="shippingMethod">Futárszolgálat:</label>
+          <select v-model="orderDetails.shippingMethod" @change="updateShippingCost" required>
+            <option value="gls">GLS (+1500 Ft)</option>
+            <option value="foxpost">Foxpost (+1200 Ft)</option>
+            <option value="personal">Személyes átvétel (ingyenes)</option>
+          </select>
+
+          <p>Szállítási díj: {{ shippingCost }} Ft</p>
+          <p>Végösszeg szállítással: {{ totalWithShipping }} Ft</p>
 
           <button type="submit">Rendelés leadása</button>
         </form>
@@ -83,16 +88,22 @@ export default {
         name: '',
         address: '',
         paymentMethod: 'creditCard',
+        shippingMethod: 'personal',
         user_id: null,
       },
+      shippingCost: 0,
     };
   },
   computed: {
     totalPrice() {
-      return this.cart.reduce((total, item) => {
-        return total + item.price * item.quantity;
-      }, 0);
+      return this.cart.reduce((total, item) => total + item.price * item.quantity, 0);
     },
+    totalQuantity() {
+      return this.cart.reduce((total, item) => total + item.quantity, 0);
+    },
+    totalWithShipping() {
+      return this.totalPrice + this.shippingCost;
+    }
   },
   mounted() {
     this.loadCart();
@@ -131,46 +142,50 @@ export default {
       }
       localStorage.setItem('cart', JSON.stringify(this.cart));
     },
+    updateShippingCost() {
+      const shippingPrices = {
+        gls: 1500,
+        foxpost: 1200,
+        personal: 0,
+      };
+      this.shippingCost = shippingPrices[this.orderDetails.shippingMethod];
+    },
     async submitOrder() {
-  const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.user_id) {
+        this.orderDetails.user_id = user.user_id;
+      } else {
+        this.orderDetails.user_id = null;
+      }
 
-  if (user && user.user_id) {
-    this.orderDetails.user_id = user.user_id;
-  } else {
-    this.orderDetails.user_id = null;
-  }
+      const order = {
+        userDetails: this.orderDetails,
+        products: this.cart,
+      };
 
-  const order = {
-    userDetails: this.orderDetails,
-    products: this.cart,
-  };
-
-  try {
-    const response = await axios.post('http://localhost:8000/api/orders', order);
-    if (response.status === 200) {
-      this.clearCart(false); 
-      this.showAlert('A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
-      this.showOrderForm = false;
-    } else {
-      this.showAlert(`❌ Hiba történt: ${response.data.message}`, 'error');
+      try {
+        const response = await axios.post('http://localhost:8000/api/orders', order);
+        if (response.status === 200) {
+          this.clearCart(false);
+          this.showAlert('A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
+          this.showOrderForm = false;
+        } else {
+          this.showAlert(`❌ Hiba történt: ${response.data.message}`, 'error');
+        }
+      } catch (error) {
+        console.error('Hiba:', error);
+        this.showAlert('⚠️ Nem sikerült kapcsolódni a szerverhez. Próbáld meg később újra!', 'error');
+      }
+    },
+    clearCart(showAlert = true) {
+      this.cart = [];
+      localStorage.removeItem('cart');
+      if (showAlert) {
+        this.showAlert('🛒 A kosár kiürítve! Készen állsz egy új bevásárlásra.', 'info');
+      }
     }
-  } catch (error) {
-    console.error('Hiba:', error);
-    this.showAlert('⚠️ Nem sikerült kapcsolódni a szerverhez. Próbáld meg később újra!', 'error');
-  }
-},
-
-clearCart(showAlert = true) {
-  this.cart = [];
-  localStorage.removeItem('cart');
-  if (showAlert) {
-    this.showAlert('🛒 A kosár kiürítve! Készen állsz egy új bevásárlásra.', 'info');
-  }
-}
-
   },
 };
-
 </script>
 
 <style scoped>

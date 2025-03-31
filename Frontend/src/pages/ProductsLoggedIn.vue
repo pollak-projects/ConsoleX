@@ -22,7 +22,7 @@
     v-if="alert.visible"
     :message="alert.message"
     :type="alert.type"
-    :duration="3000"
+    :duration="1200"
   />
       <div class="sidebar">
         <h2>Szűrők</h2>
@@ -185,13 +185,15 @@ export default {
   },
   methods: {
     showAlert(message, type = 'success') {
-      this.alert.message = message;
-      this.alert.type = type;
-      this.alert.visible = true;
-      setTimeout(() => {
-        this.alert.visible = false;
-      }, 3000);
-    },
+  this.alert.message = message;
+  this.alert.type = type;
+  this.alert.visible = true;
+
+  setTimeout(() => {
+    this.alert.visible = false;
+  }, 2000); // Itt módosíthatod az időtartamot
+},
+
     async fetchProducts() {
       try {
         const response = await axios.get('http://localhost:8000/api/products');
@@ -226,8 +228,10 @@ export default {
 
   localStorage.setItem('cart', JSON.stringify(cart));
 
-  this.showAlert('Termék sikeresen hozzáadva a kosárhoz!', 'success');
+  // Alert megjelenítése egységes időtartammal
+  this.showAlert(`${product.name} sikeresen hozzáadva a kosárhoz!`, 'success');
 },
+
 
     updatePriceFromInput(type) {
       if (type === 'min' && this.selectedPriceMin > this.selectedPriceMax) {
