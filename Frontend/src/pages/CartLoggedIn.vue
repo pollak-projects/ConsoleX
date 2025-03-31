@@ -1,11 +1,11 @@
 <template>
   <div class="cart-container">
     <header class="header">
-      <router-link to="main"><img src="../assets/logo.png" class="navlogo" /></router-link>
+      <router-link to="mainloggedin"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="navigation">
-        <router-link to="/main" class="nav-link">Főoldal</router-link>
-        <router-link to="/products" class="nav-link">Termékek</router-link>
-        <router-link to="/profile" class="nav-link">Profil</router-link>
+        <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
+        <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
+        <router-link to="/loggedin" class="nav-link">Profil</router-link>
       </div>
     </header>
 
