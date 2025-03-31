@@ -149,7 +149,7 @@ export default {
     const response = await axios.post('http://localhost:8000/api/orders', order);
     if (response.status === 200) {
       this.clearCart(false); // 🔥 kosár azonnal törlődik, NEM jelenik meg "kiürítve" alert
-      this.showAlert('✅ A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
+      this.showAlert('A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
       this.showOrderForm = false;
     } else {
       this.showAlert(`❌ Hiba történt: ${response.data.message}`, 'error');

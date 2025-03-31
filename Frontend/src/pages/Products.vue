@@ -18,6 +18,12 @@
     </header>
 
     <main class="main">
+      <BaseAlert
+    v-if="alert.visible"
+    :message="alert.message"
+    :type="alert.type"
+    :duration="3000"
+  />
       <div class="sidebar">
         <h2>Szűrők</h2>
 
@@ -129,8 +135,12 @@
 
 <script>
 import axios from 'axios';
+import BaseAlert from '/src/pages/BaseAlert.vue';
 
 export default {
+  components: {
+    BaseAlert
+  },
   data() {
     return {
       searchQuery: '',
@@ -141,6 +151,11 @@ export default {
       maxPrice: 250000,
       products: [],
       cart: [],
+      alert: {
+        visible: false,
+        message: '',
+        type: 'success'
+      },
     };
   },
   computed: {
@@ -160,7 +175,7 @@ export default {
       filtered = filtered.filter(
         product => product.price >= this.selectedPriceMin && product.price <= this.selectedPriceMax
       );
-      
+
       return filtered;
     },
   },
@@ -169,6 +184,14 @@ export default {
     this.fetchCategories();
   },
   methods: {
+    showAlert(message, type = 'success') {
+      this.alert.message = message;
+      this.alert.type = type;
+      this.alert.visible = true;
+      setTimeout(() => {
+        this.alert.visible = false;
+      }, 3000);
+    },
     async fetchProducts() {
       try {
         const response = await axios.get('http://localhost:8000/api/products');
@@ -191,17 +214,21 @@ export default {
       }
     },
     addToCart(product) {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existingProduct = cart.find(item => item.product_id === product.product_id);
-      if (existingProduct) {
-        existingProduct.quantity += 1;
-      } else {
-        product.quantity = 1;
-        cart.push(product);
-      }
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert('Termék hozzáadva a kosárhoz.');
-    },
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existingProduct = cart.find(item => item.product_id === product.product_id);
+
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    product.quantity = 1;
+    cart.push(product);
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  this.showAlert('Termék sikeresen hozzáadva a kosárhoz!', 'success');
+},
+
     updatePriceFromInput(type) {
       if (type === 'min' && this.selectedPriceMin > this.selectedPriceMax) {
         this.selectedPriceMin = this.selectedPriceMax;
@@ -212,6 +239,7 @@ export default {
       this.filterProducts();
     },
     filterProducts() {
+      // már a computed szűr
     },
   },
 };
