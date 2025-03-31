@@ -23,7 +23,7 @@
       },
       duration: {
         type: Number,
-        default: 3000
+        default: 1200
       }
     },
     data() {

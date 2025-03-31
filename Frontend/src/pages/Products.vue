@@ -22,7 +22,7 @@
     v-if="alert.visible"
     :message="alert.message"
     :type="alert.type"
-    :duration="3000"
+    :duration="1200"
   />
       <div class="sidebar">
         <h2>Szűrők</h2>

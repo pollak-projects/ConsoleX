@@ -14,7 +14,7 @@
   v-if="alert.visible"
   :message="alert.message"
   :type="alert.type"
-  :duration="3000"
+  :duration="1200"
 />
 
       <h1>Kosár</h1>
