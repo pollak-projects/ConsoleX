@@ -9,7 +9,7 @@
       <router-link to="/admin" class="nav-link">Admin</router-link>
       <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
       <router-link to="/adminproducts" class="nav-link">Termékek</router-link>
-      <router-link to="/admincart" class="nav-link">Kosár</router-link> 
+
     </div>
   </header>
 
