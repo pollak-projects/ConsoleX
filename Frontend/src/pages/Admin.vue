@@ -1,7 +1,15 @@
 <template>
   <div class="admin-container">
+    <BaseAlert
+      v-if="alertMessage"
+      :message="alertMessage"
+      :type="alertType"
+      :duration="2500"
+      @close="alertMessage = ''"
+    />
+
     <header class="header">
-      <router-link to="adminmain"><img src="../assets/logo.png" class="navlogo"/></router-link>
+      <router-link to="adminmain"><img src="../assets/logo.png" class="navlogo" /></router-link>
       <div class="search-container"></div>
       <div class="navigation">
         <router-link to="/adminmain" class="nav-link">Főoldal</router-link>
@@ -10,44 +18,47 @@
       </div>
     </header>
 
-    <div class="form-container">
-      <header>
-        <h1>Új termék hozzáadása</h1>
-      </header>
-      <form @submit.prevent="addProduct">
-        <div class="input-group">
-          <label for="name">Termék neve:</label>
-          <input type="text" v-model="product.name" id="name" required />
-        </div>
-        <div class="input-group">
-          <label for="price">Ár:</label>
-          <input type="number" v-model="product.price" id="price" required />
-        </div>
-        <div class="input-group">
-          <label for="image">Kép URL:</label>
-          <input type="text" v-model="product.image" id="image" />
-        </div>
-        <div class="input-group">
-          <label for="category">Kategória:</label>
-          <select v-model="product.category" id="category" required>
-            <option disabled value=""></option>
-            <option v-for="category in categories" :key="category.category_id" :value="category.category_id">
-              {{ category.category_name }}
-            </option>
-          </select>
+    <div class="main-content">
+      <div class="form-container">
+        <header>
+          <h1>Új termék hozzáadása</h1>
+        </header>
+        <form @submit.prevent="addProduct">
+          <div class="input-group">
+            <label for="name">Termék neve:</label>
+            <input type="text" v-model="product.name" id="name" required />
+          </div>
+          <div class="input-group">
+            <label for="price">Ár:</label>
+            <input type="number" v-model="product.price" id="price" required />
+          </div>
+          <div class="input-group">
+            <label for="image">Kép URL:</label>
+            <input type="text" v-model="product.image" id="image" />
+          </div>
+          <div class="input-group">
+            <label for="category">Kategória:</label>
+            <select v-model="product.category" id="category" required>
+              <option disabled value=""></option>
+              <option
+                v-for="category in categories"
+                :key="category.category_id"
+                :value="category.category_id"
+              >
+                {{ category.category_name }}
+              </option>
+            </select>
+          </div>
+          <button type="submit" class="submit-button">Termék feltöltése</button>
+        </form>
+      </div>
 
-        </div>
-        <button type="submit" class="submit-button">Termék feltöltése</button>
-      </form>
-    </div>
-
-    <section class="section">
-    <div class="form-container">
-      <header>
-        <h1>Termékek törlése</h1>
-      </header>
-      <div class="products">
-        <div class="product" v-for="product in products" :key="product.product_id">
+      <div class="product-list-container">
+        <header>
+          <h1>Termékek törlése</h1>
+        </header>
+        <div class="products">
+          <div class="product" v-for="product in products" :key="product.product_id">
             <img :alt="product.name" :src="product.image" />
             <h2>{{ product.name }}</h2>
             <p class="price">{{ product.price }} Ft</p>
@@ -56,15 +67,19 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
-  </section>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import BaseAlert from '/src/pages/BaseAlert.vue';
 
 export default {
+  components: {
+    BaseAlert
+  },
   data() {
     return {
       product: {
@@ -74,25 +89,28 @@ export default {
         category: ''
       },
       products: [],
-      categories: []
+      categories: [],
+      alertMessage: '',
+      alertType: ''
     };
   },
 
   methods: {
     async addProduct() {
       try {
-        const response = await axios.post('http://localhost:8000/api/admin', this.product, {
+        await axios.post('http://localhost:8000/api/admin', this.product, {
           headers: {
             'Content-Type': 'application/json'
           }
         });
-
-        alert(`Sikeres feltöltés: ${response.data.message}`);
+        this.alertMessage = "A terméket sikeresen hozzáadtad!";
+        this.alertType = "success";
         this.fetchProducts();
         this.resetForm();
       } catch (error) {
         console.error('Hiba történt:', error);
-        alert(`Belső hiba történt a termék hozzáadása során: ${error.message}`);
+        this.alertMessage = `❌ Hiba: ${error.message}`;
+        this.alertType = "error";
       }
     },
 
@@ -108,18 +126,19 @@ export default {
     async deleteProduct(productId) {
       try {
         await axios.delete(`http://localhost:8000/api/admin/${productId}`);
-        alert("Termék sikeresen törölve!");
+        this.alertMessage = "🗑️ A terméket sikeresen törölted!";
+        this.alertType = "success";
         this.fetchProducts();
       } catch (error) {
         console.error('Hiba történt a termék törlésekor:', error);
-        alert(`Belső hiba történt a termék törlése során: ${error.message}`);
+        this.alertMessage = `❌ Hiba: ${error.message}`;
+        this.alertType = "error";
       }
     },
 
     async fetchCategories() {
       try {
         const response = await axios.get('http://localhost:8000/api/categories');
-
         if (response.data.categories) {
           this.categories = response.data.categories;
         } else {
@@ -129,7 +148,6 @@ export default {
         console.error('Hiba történt a kategóriák lekérésekor:', error);
       }
     },
-
 
     resetForm() {
       this.product = {
@@ -146,8 +164,9 @@ export default {
     this.fetchCategories();
   }
 };
-
 </script>
+
+
 
 
 <style scoped>
@@ -162,32 +181,16 @@ body {
 
 .header {
   background-color: #fff;
-  color: #333;
   padding: 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 3px solid #ddd;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInHeader 0.75s ease-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .header img {
   height: 60px;
-}
-
-.search-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.search-container input {
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  width: 250px;
 }
 
 .navigation {
@@ -201,203 +204,190 @@ body {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
-  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
-  animation: fadeInLink 0.75s ease-out forwards;
+  transition: color 0.3s, transform 0.3s;
 }
 
 .nav-link:hover {
   color: #e91e63;
-  transform: scale(1.1);
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-  letter-spacing: 3px;
+  transform: scale(1.05);
 }
 
-.main {
+.main-content {
   display: flex;
-  padding: 20px;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 30px;
   max-width: 1400px;
   margin: 0 auto;
   animation: fadeInContent 0.75s ease-out;
 }
 
-.sidebar {
-  width: 25%;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-right: 20px;
-  animation: fadeInSidebar 0.75s ease-out;
-}
-
-.sidebar h2 {
-  font-size: 22px;
-  margin-bottom: 10px;
-}
-
-.filter-category {
-  margin-bottom: 20px;
-}
-
-.filter-category h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.sidebar label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.content {
+.form-container,
+.product-list-container {
   flex: 1;
-  animation: fadeInContentFromTop 1s ease-out;
+  min-width: 320px;
 }
 
-.content img {
-  width: 100%;
-  border-radius: 8px;
+.form-container {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-container h1 {
+  font-size: 22px;
   margin-bottom: 20px;
-}
-
-.content h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
   font-weight: 600;
 }
 
-.content .products {
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.input-group input,
+.input-group select {
+  padding: 10px;
+  font-size: 15px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+}
+
+.submit-button {
+  background-color: #4caf50;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background-color: #43a047;
+}
+
+.product-list-container {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.product-list-container h1 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.products {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
 .product {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  width: 23%;
+  background-color: #fefefe;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 12px;
+  width: 22%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  animation: fadeInProduct 0.75s ease-out;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
 }
 
 .product img {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 .product h2 {
-  font-size: 18px;
-  margin: 10px 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  margin: 10px 0 5px 0;
+  text-align: center;
 }
 
 .product .price {
-  font-size: 16px;
-  color: #000000;
-  margin: 10px 0;
+  font-size: 15px;
+  color: #4caf50;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .product .actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
 }
 
 .product .actions button {
-  background-color: #ff0000;
+  background-color: #e53935;
   color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 14px;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .product .actions button:hover {
-  background-color: #ff0000;
+  background-color: #c62828;
 }
 
-.product .actions .wishlist {
-  color: #e91e63;
-  cursor: pointer;
+@media (max-width: 1024px) {
+  .product {
+    width: 45%;
+  }
 }
 
-@media (max-width: 768px) {
-  .main {
+@media (max-width: 600px) {
+  .product {
+    width: 100%;
+  }
+
+  .main-content {
     flex-direction: column;
   }
-
-  .sidebar, .content {
-    width: 100%;
-  }
-
-  .product {
-    width: 48%;
-  }
 }
 
-@media (max-width: 480px) {
-  .product {
-    width: 100%;
-  }
-}
-
-.input-price {
-  border: 1px solid;
-  border-color: #ddd;
-  height: 20px;
-  width: 100px;
-}
-
-.submit-button{
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
+@keyframes fadeInContent {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInAll {
   0% { opacity: 0; transform: translateY(-30px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInHeader {
-  0% { opacity: 0; transform: translateY(-50px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInLink {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInContent {
-  0% { opacity: 0; transform: translateY(50px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInContentFromTop {
-  0% { opacity: 0; transform: translateY(-50px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInSidebar {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInProducts {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInProduct {
-  0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 

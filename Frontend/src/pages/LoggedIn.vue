@@ -1,97 +1,146 @@
 <template>
-  <header class="header">
+  <div>
+    <!-- Erősítés vagy visszajelzés -->
+    <BaseAlert
+  v-if="alertMessage"
+  :message="alertMessage"
+  :type="alertType"
+  :show-actions="confirmingDelete"
+  :duration="confirmingDelete ? 0 : 2500"
+  @confirm="deleteConfirmedOrder"
+  @cancel="cancelDelete"
+  @close="alertMessage = ''"
+/>
+
+
+    <header class="header">
       <router-link to="/adminlogin">
-          <router-link to="/mainloggedin">
-              <img src="../assets/logo.png" class="navlogo"/>
-          </router-link>
+        <router-link to="/mainloggedin">
+          <img src="../assets/logo.png" class="navlogo"/>
+        </router-link>
       </router-link>
       <div class="navigation">
-          <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
-          <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
-          <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
+        <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
+        <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
+        <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
       </div>
-  </header>
+    </header>
 
-  <div class="loggedin-container">
+    <div class="loggedin-container">
       <header>
-          <h1>Üdvözöllek, {{ username }}!</h1>
-          <p>Örülünk, hogy újra itt vagy.</p>
+        <h1>Üdvözöllek, {{ username }}!</h1>
+        <p>Örülünk, hogy újra itt vagy.</p>
       </header>
 
       <h2>A rendeléseid</h2>
       <div v-if="orders.length === 0">
-          <p>Nincsenek rendeléseid.</p>
+        <p>Nincsenek rendeléseid.</p>
       </div>
       <div v-else>
-          <div v-for="order in orders" :key="order.order_id" class="order-card">
-              <h3>Rendelés száma: {{ order.order_id }}</h3>
-              <p><strong>Név:</strong> {{ order.name }}</p>
-              <p><strong>Cím:</strong> {{ order.address }}</p>
-              <p><strong>Fizetési mód:</strong> {{ order.payment_method }}</p>
-              <p><strong>Rendelés ideje:</strong> {{ new Date(order.order_date).toLocaleString() }}</p>
-              <h4>Termékek:</h4>
-              <ul>
-                  <li v-for="item in order.items" :key="item.product_name">
-                      {{ item.product_name }} - {{ item.quantity }} db - {{ item.price }} Ft/db
-                  </li>
-              </ul>
-              <p><strong>Végösszeg:</strong> {{ order.total_price }} Ft</p>
-              <button @click="deleteOrder(order.order_id)" class="delete-button">Rendelés törlése</button>
-          </div>
+        <div v-for="order in orders" :key="order.order_id" class="order-card">
+          <h3>Rendelés száma: {{ order.order_id }}</h3>
+          <p><strong>Név:</strong> {{ order.name }}</p>
+          <p><strong>Cím:</strong> {{ order.address }}</p>
+          <p><strong>Fizetési mód:</strong> {{ order.payment_method }}</p>
+          <p><strong>Rendelés ideje:</strong> {{ new Date(order.order_date).toLocaleString() }}</p>
+          <h4>Termékek:</h4>
+          <ul>
+            <li v-for="item in order.items" :key="item.product_name">
+              {{ item.product_name }} - {{ item.quantity }} db - {{ item.price }} Ft/db
+            </li>
+          </ul>
+          <p><strong>Végösszeg:</strong> {{ order.total_price }} Ft</p>
+          <button @click="confirmDelete(order.order_id)" class="delete-button">Rendelés törlése</button>
+        </div>
       </div>
 
       <div class="actions">
-          <button class="logout-button" @click="logout">Kijelentkezés</button>
+        <button class="logout-button" @click="logout">Kijelentkezés</button>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import BaseAlert from '/src/pages/BaseAlert.vue';
 
 export default {
+  components: {
+    BaseAlert
+  },
   data() {
-      return {
-          username: "",
-          orders: []
-      };
+    return {
+      username: "",
+      orders: [],
+      alertMessage: "",
+      alertType: "",
+      orderIdToDelete: null,
+      confirmingDelete: false
+    };
   },
   created() {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-          this.username = user.username;
-          this.fetchOrders(user.user_id);
-      }
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.username = user.username;
+      this.fetchOrders(user.user_id);
+    }
   },
   methods: {
-      fetchOrders(userId) {
-          axios.get(`http://localhost:8000/api/orders/${userId}`)
-              .then(response => {
-                  this.orders = response.data;
-              })
-              .catch(error => {
-                  console.error("Hiba a rendelési adatok lekérésekor:", error);
-              });
-      },
-      async deleteOrder(orderId) {
-        try {
-          await axios.delete(`http://localhost:8000/api/orders/${orderId}`);
-          this.orders = this.orders.filter(order => order.order_id !== orderId);
-        } catch (error) {
-          console.error('Hiba a rendelés törlésekor:', error);
-        }
-      },
+    fetchOrders(userId) {
+      axios.get(`http://localhost:8000/api/orders/${userId}`)
+        .then(response => {
+          this.orders = response.data;
+        })
+        .catch(error => {
+          console.error("Hiba a rendelési adatok lekérésekor:", error);
+        });
+    },
 
-      logout() {
-          localStorage.removeItem('username');
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          this.$router.push("/main");
-      },
-  },
+    confirmDelete(orderId) {
+      this.orderIdToDelete = orderId;
+      this.confirmingDelete = true;
+      this.alertMessage = "Biztosan törlöd ezt a rendelést?";
+      this.alertType = "warning";
+    },
+
+    cancelDelete() {
+      this.confirmingDelete = false;
+      this.alertMessage = "";
+      this.orderIdToDelete = null;
+    },
+
+    async deleteConfirmedOrder() {
+      try {
+        await axios.delete(`http://localhost:8000/api/orders/${this.orderIdToDelete}`);
+        this.orders = this.orders.filter(order => order.order_id !== this.orderIdToDelete);
+        this.alertMessage = "🗑️ A rendelésedet sikeresen töröltük!";
+        this.alertType = "success";
+      } catch (error) {
+        console.error('Hiba a rendelés törlésekor:', error);
+        this.alertMessage = `❌ Hiba a törlés során: ${error.message}`;
+        this.alertType = "error";
+      } finally {
+        this.confirmingDelete = false;
+        this.orderIdToDelete = null;
+      }
+    },
+
+    logout() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.$router.push("/main");
+    }
+  }
 };
 </script>
-  
+
+
+
+
+
+
   <style scoped>
   .delete-button {
     background: linear-gradient(45deg, #f44336, #ff7961);

@@ -10,8 +10,21 @@
         </div>
         <button class="close-btn" @click="closeAlert">✖</button>
       </div>
+
       <div class="message">{{ message }}</div>
-      <div class="progress-bar" :style="{ animationDuration: duration + 'ms' }"></div>
+
+      <!-- Műveleti gombok (igen/nem) -->
+      <div class="actions" v-if="showActions">
+        <button class="yes-button" @click="confirmAction">Igen</button>
+        <button class="no-button" @click="cancelAction">Nem</button>
+      </div>
+
+      <!-- Automatikus eltűnés animáció -->
+      <div
+        v-if="!showActions"
+        class="progress-bar"
+        :style="{ animationDuration: duration + 'ms' }"
+      ></div>
     </div>
   </transition>
 </template>
@@ -27,6 +40,10 @@ export default {
     duration: {
       type: Number,
       default: 2200
+    },
+    showActions: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -37,15 +54,26 @@ export default {
   methods: {
     showAlert() {
       this.visible = true;
-      this.autoHide();
+      if (!this.showActions) {
+        this.autoHide();
+      }
     },
     autoHide() {
       setTimeout(() => {
-        this.visible = false;
+        this.closeAlert();
       }, this.duration);
     },
     closeAlert() {
       this.visible = false;
+      this.$emit('close');
+    },
+    confirmAction() {
+      this.visible = false;
+      this.$emit('confirm');
+    },
+    cancelAction() {
+      this.visible = false;
+      this.$emit('cancel');
     }
   },
   mounted() {
@@ -65,7 +93,7 @@ export default {
   background-color: white;
   border-left: 6px solid;
   padding: 15px 20px 10px;
-  border-radius: 16px; /* Lekerekítés */
+  border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
@@ -114,6 +142,43 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 10px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.yes-button,
+.no-button {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s ease;
+}
+
+.yes-button {
+  background-color: #e53935;
+  color: white;
+}
+
+.no-button {
+  background-color: #cfd8dc;
+  color: #333;
+}
+
+.yes-button:hover {
+  background-color: #c62828;
+}
+
+.no-button:hover {
+  background-color: #b0bec5;
 }
 
 .close-btn {
