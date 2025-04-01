@@ -89,6 +89,7 @@ export default {
         address: '',
         paymentMethod: 'creditCard',
         shippingMethod: 'personal',
+        shippingCost: '0',
         user_id: null,
       },
       shippingCost: 0,

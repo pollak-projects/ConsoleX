@@ -1,23 +1,19 @@
 <template>
   <div>
-    <!-- Erősítés vagy visszajelzés -->
     <BaseAlert
-  v-if="alertMessage"
-  :message="alertMessage"
-  :type="alertType"
-  :show-actions="confirmingDelete"
-  :duration="confirmingDelete ? 0 : 2500"
-  @confirm="deleteConfirmedOrder"
-  @cancel="cancelDelete"
-  @close="alertMessage = ''"
-/>
-
+      v-if="alertMessage"
+      :message="alertMessage"
+      :type="alertType"
+      :show-actions="confirmingDelete"
+      :duration="confirmingDelete ? 0 : 2500"
+      @confirm="deleteConfirmedOrder"
+      @cancel="cancelDelete"
+      @close="alertMessage = ''"
+    />
 
     <header class="header">
-      <router-link to="/adminlogin">
-        <router-link to="/mainloggedin">
-          <img src="../assets/logo.png" class="navlogo"/>
-        </router-link>
+      <router-link to="/mainloggedin">
+        <img src="../assets/logo.png" class="navlogo"/>
       </router-link>
       <div class="navigation">
         <router-link to="/mainloggedin" class="nav-link">Főoldal</router-link>
@@ -42,14 +38,17 @@
           <p><strong>Név:</strong> {{ order.name }}</p>
           <p><strong>Cím:</strong> {{ order.address }}</p>
           <p><strong>Fizetési mód:</strong> {{ order.payment_method }}</p>
-          <p><strong>Rendelés ideje:</strong> {{ new Date(order.order_date).toLocaleString() }}</p>
+          <p><strong>Szállítási mód:</strong> {{ getShippingMethodName(order.shipping_method) }}</p>
+          <p><strong>Rendelés ideje:</strong> {{ formatDate(order.order_date) }}</p>
+          
           <h4>Termékek:</h4>
           <ul>
             <li v-for="item in order.items" :key="item.product_name">
-              {{ item.product_name }} - {{ item.quantity }} db - {{ item.price }} Ft/db
+              {{ item.product_name }} - {{ item.quantity }} db - {{ formatPrice(item.price) }} Ft/db
             </li>
           </ul>
-          <p><strong>Végösszeg:</strong> {{ order.total_price }} Ft</p>
+          <p><strong>Szállítási költség:</strong> {{ formatPrice(order.shipping_cost) }} Ft</p>
+          <p><strong>Végösszeg:</strong> {{ formatPrice(order.total_price + (order.shipping_cost || 0)) }} Ft</p>
           <button @click="confirmDelete(order.order_id)" class="delete-button">Rendelés törlése</button>
         </div>
       </div>
@@ -87,14 +86,25 @@ export default {
     }
   },
   methods: {
-    fetchOrders(userId) {
-      axios.get(`http://localhost:8000/api/orders/${userId}`)
-        .then(response => {
-          this.orders = response.data;
-        })
-        .catch(error => {
-          console.error("Hiba a rendelési adatok lekérésekor:", error);
-        });
+    getShippingMethodName(method) {
+      const shippingMethods = {
+        gls: "GLS (+1500 Ft)",
+        foxpost: "Foxpost (+1200 Ft)",
+        personal: "Személyes átvétel (ingyenes)"
+      };
+      return shippingMethods[method] || "Nincs adat";
+    },
+
+    async fetchOrders(userId) {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/orders/${userId}`);
+        this.orders = response.data.map(order => ({
+          ...order,
+          shipping_method: order.shipping_method || 'Házhozszállítás'
+        }));
+      } catch (error) {
+        console.error("Hiba a rendelési adatok lekérésekor:", error);
+      }
     },
 
     confirmDelete(orderId) {
@@ -126,6 +136,20 @@ export default {
       }
     },
 
+    formatDate(date) {
+      return new Date(date).toLocaleDateString('hu-HU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    },
+
+    formatPrice(price) {
+      return new Intl.NumberFormat('hu-HU').format(price);
+    },
+
     logout() {
       localStorage.removeItem('username');
       localStorage.removeItem('token');
@@ -135,11 +159,6 @@ export default {
   }
 };
 </script>
-
-
-
-
-
 
   <style scoped>
   .delete-button {
