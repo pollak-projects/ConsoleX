@@ -15,6 +15,16 @@
         <router-link to="/cart" class="nav-link">Kosár</router-link>
         <router-link to="/profile" class="nav-link">Profil</router-link>
       </div>
+
+      <div class="hamburger-menu" v-if="isMobile" @click="toggleMenu">
+        &#9776;
+      </div>
+      
+      <div class="mobile-menu" v-if="menuOpen">
+        <router-link to="/main" class="mobile-nav-link" @click="closeMenu">Főoldal</router-link>
+        <router-link to="/cart" class="mobile-nav-link" @click="closeMenu">Kosár</router-link> 
+        <router-link to="/profile" class="mobile-nav-link" @click="closeMenu">Profil</router-link>
+      </div>
     </header>
 
     <main class="main">
@@ -156,6 +166,8 @@ export default {
         message: '',
         type: 'success'
       },
+      isMobile: window.innerWidth < 768,
+      menuOpen: false
     };
   },
   computed: {
@@ -182,8 +194,22 @@ export default {
   mounted() {
     this.fetchProducts();
     this.fetchCategories();
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    toggleMenu() {
+      this.menuOpen = !this.menuOpen;
+    },
+    closeMenu() {
+      this.menuOpen = false;
+    },
+    handleResize() {
+      this.isMobile = window.innerWidth < 768;
+      if (!this.isMobile) this.menuOpen = false;
+    },
     showAlert(message, type = 'success') {
   this.alert.message = message;
   this.alert.type = type;
@@ -312,6 +338,55 @@ body {
   letter-spacing: 3px;
 }
 
+.hamburger-menu {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  padding: 10px;
+}
+
+.mobile-nav-link {
+  padding: 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 18px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards;
+}
+
+.mobile-nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+  }
+}
+
 .main {
   display: flex;
   padding: 20px;
@@ -319,8 +394,6 @@ body {
   margin: 0 auto;
   animation: fadeInContent 0.75s ease-out;
 }
-
-
 
 .sidebar {
   width: 25%;

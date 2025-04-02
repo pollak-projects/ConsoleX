@@ -20,6 +20,16 @@
         <router-link to="/productsloggedin" class="nav-link">Termékek</router-link>
         <router-link to="/cartloggedin" class="nav-link">Kosár</router-link> 
       </div>
+
+      <div class="hamburger-menu" v-if="isMobile" @click="toggleMenu">
+        &#9776;
+      </div>
+      
+      <div class="mobile-menu" v-if="menuOpen">
+        <router-link to="/mainloggedin" class="mobile-nav-link" @click="closeMenu">Főoldal</router-link>
+        <router-link to="/productsloggedin" class="mobile-nav-link" @click="closeMenu">Termékek</router-link> 
+        <router-link to="/cartloggedin" class="mobile-nav-link" @click="closeMenu">Kosár</router-link>
+      </div>
     </header>
 
     <div class="loggedin-container">
@@ -75,7 +85,9 @@ export default {
       alertMessage: "",
       alertType: "",
       orderIdToDelete: null,
-      confirmingDelete: false
+      confirmingDelete: false,
+      isMobile: window.innerWidth < 768,
+      menuOpen: false
     };
   },
   created() {
@@ -86,6 +98,16 @@ export default {
     }
   },
   methods: {
+    toggleMenu() {
+      this.menuOpen = !this.menuOpen;
+    },
+    closeMenu() {
+      this.menuOpen = false;
+    },
+    handleResize() {
+      this.isMobile = window.innerWidth < 768;
+      if (!this.isMobile) this.menuOpen = false;
+    },
     getShippingMethodName(method) {
       const shippingMethods = {
         gls: "GLS (+1500 Ft)",
@@ -156,7 +178,13 @@ export default {
       localStorage.removeItem('user');
       this.$router.push("/main");
     }
-  }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
 };
 </script>
 
@@ -189,15 +217,15 @@ export default {
   }
   
   .header {
-    background-color: #fff;
-    color: #333;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #ddd;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInHeader 0.75s ease-out;
+  background-color: #fff;
+  color: #333;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #ddd;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInHeader 0.75s ease-out;
   }
   
   .header img {
@@ -225,6 +253,55 @@ export default {
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     letter-spacing: 3px;
   }
+
+  .hamburger-menu {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  padding: 10px;
+}
+
+.mobile-nav-link {
+  padding: 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 18px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards;
+}
+
+.mobile-nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+  }
+}
   
   .form-container {
     max-width: 600px;

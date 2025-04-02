@@ -39,6 +39,7 @@ export default {
   align-items: center;
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInHeader 0.75s ease-out;
 }
 
 .header img {
@@ -64,5 +65,54 @@ export default {
   transform: scale(1.1);
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   letter-spacing: 3px;
+}
+
+.hamburger-menu {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  padding: 10px;
+}
+
+.mobile-nav-link {
+  padding: 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 18px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards;
+}
+
+.mobile-nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+  }
 }
 </style>

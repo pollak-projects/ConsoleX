@@ -9,6 +9,15 @@
           <router-link to="/adminproducts" class="nav-link">Termékek</router-link>
           <router-link to="/adminloggedin" class="nav-link">Profil</router-link>
         </div>
+        <div class="hamburger-menu" v-if="isMobile" @click="toggleMenu">
+          &#9776;
+        </div>
+        
+        <div class="mobile-menu" v-if="menuOpen">
+          <router-link to="/admin" class="mobile-nav-link" @click="closeMenu">Admin</router-link>
+          <router-link to="/adminproducts" class="mobile-nav-link" @click="closeMenu">Termékek</router-link> 
+          <router-link to="/adminloggedin" class="mobile-nav-link" @click="closeMenu">Profil</router-link>
+        </div>
       </header>
       <section class="hero-section fade-in">
         <div class="hero-carousel">
@@ -67,7 +76,9 @@
           imagePath3,
         ],
         activeImageIndex: 0,
-        intervalId: null
+        intervalId: null,
+        isMobile: window.innerWidth < 768,
+        menuOpen: false
       };
     },
     methods: {
@@ -83,13 +94,25 @@
       },
       stopImageCarousel() {
         clearInterval(this.intervalId);
-      }
+      },
+      toggleMenu() {
+      this.menuOpen = !this.menuOpen;
+    },
+    closeMenu() {
+      this.menuOpen = false;
+    },
+    handleResize() {
+      this.isMobile = window.innerWidth < 768;
+      if (!this.isMobile) this.menuOpen = false;
+    },
     },
     mounted() {
       this.startImageCarousel();
+      window.addEventListener('resize', this.handleResize);
     },
     beforeDestroy() {
       this.stopImageCarousel();
+      window.removeEventListener('resize', this.handleResize);
     }
   };
   
@@ -108,16 +131,16 @@
   }
   
   .header {
-    background-color: #fff;
-    color: #333;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #ddd;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInHeader 0.75s ease-out;
-  }
+  background-color: #fff;
+  color: #333;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #ddd;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInHeader 0.75s ease-out;
+}
   
   .header img {
     height: 60px;
@@ -179,6 +202,56 @@
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     letter-spacing: 3px;
   }
+
+  .hamburger-menu {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  padding: 10px;
+}
+
+.mobile-nav-link {
+  padding: 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 18px;
+  transition: color 0.3s, transform 0.3s, letter-spacing 0.3s;
+  animation: fadeInLink 0.75s ease-out forwards;
+}
+
+.mobile-nav-link:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 3px;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+  }
+}
+
   .hero-section {
     position: relative;
     overflow: hidden;
