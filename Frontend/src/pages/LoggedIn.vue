@@ -38,6 +38,29 @@
         <p>Örülünk, hogy újra itt vagy.</p>
       </header>
 
+      <div class="profile-info">
+        <h2>Profil adatok</h2>
+        <p><strong>Felhasználónév:</strong> {{ username }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+
+        <button @click="showPasswordChange = !showPasswordChange" v-if="!showPasswordChange" class="change-password">Jelszó megváltoztatása</button>
+        
+        <div v-if="showPasswordChange">
+          <div class="input-group">
+            <label for="new-password">Új jelszó</label>
+            <input type="password" v-model="newPassword" id="new-password" required />
+          </div>
+          <div class="input-group">
+            <label for="confirm-password">Új jelszó mégegyszer</label>
+            <input type="password" v-model="confirmPassword" id="confirm-password" required />
+          </div>
+          <div class="password-buttons">
+            <button @click="saveNewPassword" class="save-password">Mentés</button>
+            <button @click="cancelPasswordChange" class="cancel-change">Mégse</button>
+          </div>
+        </div>
+      </div>
+
       <h2>A rendeléseid</h2>
       <div v-if="orders.length === 0">
         <p>Nincsenek rendeléseid.</p>
@@ -81,6 +104,10 @@ export default {
   data() {
     return {
       username: "",
+      email: "",
+      showPasswordChange: false,
+      newPassword: "",
+      confirmPassword: "",
       orders: [],
       alertMessage: "",
       alertType: "",
@@ -94,10 +121,46 @@ export default {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       this.username = user.username;
+      this.email = user.email;
       this.fetchOrders(user.user_id);
     }
   },
   methods: {
+    async saveNewPassword() {
+      if (this.newPassword !== this.confirmPassword) {
+        this.alertMessage =`A két jelszó nem egyezik.`;
+        this.alertType = 'error';
+        return;
+      }
+
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const response = await axios.put(`http://localhost:8000/api/update-password`, {
+          user_id: user.user_id,
+          newPassword: this.newPassword,
+        });
+
+        if (response.status === 200) {
+          this.alertMessage =`Jelszó sikeresen módosítva.`;
+          this.alertType = 'success';
+          this.showPasswordChange = false;
+        } else {
+          this.alertMessage =`Hiba történt a jelszó módosítása során.`;
+          this.alertType = 'error';
+        }
+      } catch (error) {
+        console.error("Hiba történt:", error);
+        this.alertMessage =`Belső hiba történt.`;
+        this.alertType = 'error';
+      }
+    },
+
+    cancelPasswordChange() {
+      this.showPasswordChange = false;
+      this.newPassword = "";
+      this.confirmPassword = "";
+    },
+
     toggleMenu() {
       this.menuOpen = !this.menuOpen;
     },
@@ -174,6 +237,7 @@ export default {
 
     logout() {
       localStorage.removeItem('username');
+      localStorage.removeItem('email');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       this.$router.push("/main");
@@ -189,6 +253,91 @@ export default {
 </script>
 
   <style scoped>
+  .password-buttons {
+    display: inline-flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .cancel-change,
+  .save-password,
+  .change-password {
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .change-password {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(56, 249, 215, 0.4);
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .change-password:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(56, 249, 215, 0.6);
+    background-color: #388e3c;
+    transform: scale(1.05);
+  }
+
+  .save-password {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(56, 249, 215, 0.4);
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .save-password:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(56, 249, 215, 0.6);
+    background-color: #388e3c;
+    transform: scale(1.05);
+  }
+
+  .cancel-change {
+    background: linear-gradient(135deg, #ff6a6a 0%, #ff0000 100%);
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .cancel-change {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(255, 0, 0, 0.5);
+    background-color: #d32f2f;
+  }
+
+
   .delete-button {
     background: linear-gradient(45deg, #f44336, #ff7961);
     color: white;
@@ -215,7 +364,19 @@ export default {
   .auth-container {
     animation: fadeInAll 0.75s ease-out;
   }
+
+  .change-password {
+    animation: fadeInButton 0.75s ease-out forwards;
+  }
   
+  .save-password {
+    animation: fadeInButton 0.75s ease-out forwards;
+  }
+
+  .cancel-change {
+    animation: fadeInButton 0.75s ease-out forwards;
+  }
+
   .header {
   background-color: #fff;
   color: #333;
@@ -326,6 +487,7 @@ export default {
   
   .input-group {
     margin-bottom: 20px;
+    max-width: 500px;
   }
   
   label {
@@ -334,13 +496,20 @@ export default {
   }
   
   input {
-    width: 96%;
+    width: 100%;
+    max-width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box;
     opacity: 0;
     animation: fadeInInput 0.75s ease-out forwards;
+  }
+
+  .input-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
   }
   
   .actions {

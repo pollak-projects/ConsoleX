@@ -86,8 +86,9 @@ export default {
           this.alertType = 'success';
 
           localStorage.setItem("username", data.username);
+          localStorage.setItem("email", data.email);
           localStorage.setItem("token", data.token);
-          localStorage.setItem('user', JSON.stringify({ user_id: data.user_id, username: data.username }));
+          localStorage.setItem('user', JSON.stringify({ user_id: data.user_id, username: data.username, email: data.email }));
 
           setTimeout(() => {
             if (data.role === 'admin') {

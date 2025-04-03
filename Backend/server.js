@@ -7,6 +7,7 @@ const loginRoute = require('./routes/loginRoute');
 const adminRoute = require('./routes/adminRoute'); 
 const orderRoute = require('./routes/orderRoute');
 const categoryRoute = require('./routes/categoryRoute');
+const userRoute = require('./routes/userRoute');
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api', loginRoute);
 app.use('/api', adminRoute);
 app.use('/api', orderRoute);
 app.use('/api', categoryRoute);
+app.use('/api', userRoute);
 
 app.get('/', (req, res) => {
   res.send('Backend szerver működik!');

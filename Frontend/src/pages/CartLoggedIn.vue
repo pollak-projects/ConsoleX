@@ -28,7 +28,6 @@
       </div>
       <div v-else>
         <div v-for="(item, index) in cart" :key="index" class="cart-item">
-          <!-- Product Image and Name -->
           <img :src="item.image" alt="product image" class="cart-item-image" />
           <div>
             <p>Termék: {{ item.name }}</p>
@@ -297,7 +296,6 @@ export default {
   font-size: 16px;
 }
 
-/* További stílusok */
 .place-order,
 .clear-cart-button {
   padding: 14px 28px;

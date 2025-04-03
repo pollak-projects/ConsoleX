@@ -13,13 +13,11 @@
 
       <div class="message">{{ message }}</div>
 
-      <!-- Műveleti gombok (igen/nem) -->
       <div class="actions" v-if="showActions">
         <button class="yes-button" @click="confirmAction">Igen</button>
         <button class="no-button" @click="cancelAction">Nem</button>
       </div>
 
-      <!-- Automatikus eltűnés animáció -->
       <div
         v-if="!showActions"
         class="progress-bar"
