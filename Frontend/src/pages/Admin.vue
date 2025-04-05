@@ -61,6 +61,7 @@
           <button type="submit" class="submit-button">Termék feltöltése</button>
         </form>
       </div>
+      
 
       <div class="product-list-container">
         <header>
@@ -77,6 +78,41 @@
           </div>
         </div>
       </div>
+
+      <div class="user-list-container">
+      <header><h1>Felhasználók kezelése</h1></header>
+      <div class="search-wrapper">
+      <input
+        v-model="userSearchQuery"
+        type="text"
+        placeholder="Felhasználó keresése név vagy email alapján..."
+        class="search-input"
+      />
+      </div>
+
+
+        <div class="user-group">
+          <h2>Felhasználók</h2>
+          <div class="users">
+              <div class="user-card" v-for="user in filteredRegularUsers" :key="user.user_id">
+              <p><strong>Név:</strong> {{ user.username }}</p>
+              <p><strong>Email:</strong> {{ user.email }}</p>
+              <button @click="deleteUser(user.user_id)">Törlés</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-group">
+          <h2>Adminok</h2>
+          <div class="users">
+              <div class="user-card" v-for="user in filteredAdmins" :key="user.user_id">
+              <p><strong>Név:</strong> {{ user.username }}</p>
+              <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -97,6 +133,8 @@ export default {
         image: '',
         category: '',
       },
+      users: [],
+      userSearchQuery: '',
       products: [],
       categories: [],
       alertMessage: '',
@@ -107,6 +145,29 @@ export default {
   },
 
   methods: {
+    async fetchUsers() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/users');
+        this.users = response.data.users;
+      } catch (error) {
+        console.error('Hiba a felhasználók lekérésekor:', error);
+      }
+    },
+
+    async deleteUser(id) {
+      try {
+        await axios.delete(`http://localhost:8000/api/users/${id}`);
+        this.alertMessage = "Felhasználó sikeresen törölve!";
+        this.alertType = "success";
+        this.fetchUsers();
+      } catch (error) {
+        console.error('Hiba a törlés közben:', error);
+        this.alertMessage = `❌ Hiba: ${error.response?.data || error.message}`;
+        this.alertType = "error";
+      }
+    },
+
+
     toggleMenu() {
       this.menuOpen = !this.menuOpen;
     },
@@ -187,14 +248,30 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
 
+  computed: {
+    filteredUsers() {
+      if (!this.userSearchQuery) return this.users;
+      const query = this.userSearchQuery.toLowerCase();
+      return this.users.filter(user =>
+        user.username.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query)
+      );
+    },
+    filteredAdmins() {
+      return this.filteredUsers.filter(user => user.role === 'admin');
+    },
+    filteredRegularUsers() {
+      return this.filteredUsers.filter(user => user.role === 'user');
+    }
+  },
+
   created() {
+    this.fetchUsers();
     this.fetchProducts();
     this.fetchCategories();
   }
 };
 </script>
-
-
 
 
 <style scoped>
@@ -221,6 +298,67 @@ body {
 
 .header img {
   height: 60px;
+}
+
+.user-list-container {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  margin-top: 30px;
+}
+
+.user-group {
+  margin-bottom: 30px;
+}
+
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.user-card {
+  background-color: #f0f0f0;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 16px;
+  width: 45%;
+}
+
+.user-card button {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.user-card button:hover {
+  background-color: #c62828;
+}
+
+.search-wrapper {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }
 
 .navigation {
@@ -457,6 +595,12 @@ body {
 
   .main-content {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-card {
+    width: 100%;
   }
 }
 

@@ -40,3 +40,35 @@ exports.deleteProduct = (req, res) => {
     res.send('Termék sikeresen törölve');
   });
 };
+
+exports.getAllUsers = (req, res) => {
+  const query = 'SELECT * FROM users';
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Hiba a felhasználók lekérése közben:', err);
+      return res.status(500).json({ message: 'Sikertelen lekérés' });
+    }
+    res.json({ users: results });
+  });
+};
+
+exports.deleteUser = (req, res) => {
+  const { id } = req.params;
+
+  const checkQuery = 'SELECT role FROM users WHERE id = ?';
+  db.query(checkQuery, [id], (err, results) => {
+    if (err) return res.status(500).send('Hiba ellenőrzés közben');
+    if (results.length === 0) return res.status(404).send('Felhasználó nem található');
+
+    const role = results[0].role;
+    if (role === 'admin') {
+      return res.status(403).send('Admin törlése nem engedélyezett');
+    }
+
+    const deleteQuery = 'DELETE FROM users WHERE id = ?';
+    db.query(deleteQuery, [id], (err, result) => {
+      if (err) return res.status(500).send('Törlés sikertelen');
+      res.send('Felhasználó sikeresen törölve');
+    });
+  });
+};
