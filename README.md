@@ -22,13 +22,13 @@
    1. In Visual Studio Code, open up a new terminal.
    2. Once open,  copy these commands into the terminal:
       ```
-       cd .\Frontend\
+      cd .\Frontend\
       ```
       ```
-       npm install 
+      npm install 
       ```
       ```
-        npm run dev 
+      npm run dev 
       ```
 ### Backend server startup:
    1. Start up XAMPP and in PHPmyadmin creat a new database named "vizsgaremek" and after that import the "viszgaremek.sql" into the database.
@@ -37,10 +37,10 @@
       cd .\Backend\
       ```
       ```
-       npm install 
+      npm install 
       ```
       ```
-        npm run start 
+      node server.js 
       ```
  Once everything is setup, you can reach the website here: http://localhost:7777/
 
