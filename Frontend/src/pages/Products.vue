@@ -217,7 +217,7 @@ export default {
 
   setTimeout(() => {
     this.alert.visible = false;
-  }, 2000); // Itt módosíthatod az időtartamot
+  }, 2000);
 },
 
     async fetchProducts() {
@@ -254,7 +254,6 @@ export default {
 
   localStorage.setItem('cart', JSON.stringify(cart));
 
-  // Alert megjelenítése egységes időtartammal
   this.showAlert(`${product.name} sikeresen hozzáadva a kosárhoz!`, 'success');
 },
 
@@ -269,7 +268,6 @@ export default {
       this.filterProducts();
     },
     filterProducts() {
-      // már a computed szűr
     },
   },
 };
@@ -296,13 +294,13 @@ body {
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 0; /* A tetején marad */
-  z-index: 1000; /* Magasabb szintű, hogy a többi elem ne takarja */
+  top: 0;
+  z-index: 1000;
   animation: fadeInHeader 0.75s ease-out;
 }
 
 .header.sticky {
-  background-color: #333; /* Sötétebb szín rögzített állapotban */
+  background-color: #333;
   color: white;
 }
 

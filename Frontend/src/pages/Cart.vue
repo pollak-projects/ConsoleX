@@ -297,8 +297,6 @@
   font-size: 16px;
 }
 
-/* További stílusok */
-/* Alap gombok dizájnja */
 .place-order,
 .clear-cart-button,
 .quantity-button {
@@ -315,7 +313,6 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Kosárba gomb */
 .place-order {
   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   color: white;
@@ -330,7 +327,6 @@
   background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
 }
 
-/* Kosár ürítése gomb */
 .clear-cart-button {
   background: linear-gradient(135deg, #ff6a6a 0%, #ff0000 100%);
   color: white;
@@ -346,9 +342,8 @@
   background: linear-gradient(135deg, #ff0000 0%, #ff6a6a 100%);
 }
 
-/* Mennyiség gombok */
 .quantity-button {
-  background-color: #ff80b3; /* Rózsaszín háttér */
+  background-color: #ff80b3;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -362,15 +357,14 @@
 }
 
 .quantity-button:hover {
-  background-color: #ff4d94; /* Sötétebb rózsaszín hover */
+  background-color: #ff4d94;
   transform: scale(1.1);
 }
 
 .quantity-button:active {
-  background-color: #ff3399; /* Még sötétebb rózsaszín aktív állapotban */
+  background-color: #ff3399;
 }
 
-/* Kosár elemek */
 .cart-item {
   display: flex;
   align-items: center;
@@ -388,7 +382,6 @@
   transform: scale(1.02);
 }
 
-/* Kosár összegzés */
 .cart-summary {
   text-align: center;
   background-color: #f0f4f8;
@@ -402,7 +395,6 @@
   margin-bottom: 10px;
 }
 
-/* Animációk */
 .place-order {
   animation: fadeInButton 0.75s ease-out forwards;
 }
@@ -415,11 +407,9 @@
   animation: fadeInButton 0.75s ease-out forwards;
 }
 
-/* Kosár elem animációk */
 .cart-item {
   animation: fadeInCartItem 0.75s ease-out forwards;
 }
-
 
 .cart-item:hover {
   transform: scale(1.02);
@@ -495,13 +485,13 @@ body {
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 0; /* A tetején marad */
-  z-index: 1000; /* Magasabb szintű, hogy a többi elem ne takarja */
+  top: 0;
+  z-index: 1000;
   animation: fadeInHeader 0.75s ease-out;
 }
 
 .header.sticky {
-  background-color: #333; /* Sötétebb szín rögzített állapotban */
+  background-color: #333;
   color: white;
 }
 .header img {
@@ -620,7 +610,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #38b863 0%, #38f9d7 100%); /* Zöld árnyalat */
+  background: linear-gradient(135deg, #38b863 0%, #38f9d7 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(56, 249, 215, 0.4);
 }
@@ -641,7 +631,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ff6a6a 0%, #ff0000 100%); /* Piros árnyalat */
+  background: linear-gradient(135deg, #ff6a6a 0%, #ff0000 100%);
   color: white;
   box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
   margin-top: 15px;

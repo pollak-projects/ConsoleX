@@ -247,13 +247,11 @@ body {
   z-index: 0;
 }
 
-/* Mobilon kisebb méret */
 @media (max-width: 768px) {
   .hero-carousel {
     height: 250px;
   }
 }
-
 
 .hero-image.active {
   opacity: 1;
@@ -286,17 +284,16 @@ body {
 
 
 .hero-text {
-  position: relative; /* Állítsuk a pozícióját relatívra, hogy alulra helyezkedjen el */
+  position: relative;
   z-index: 1;
   color: white;
   text-align: center;
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
   width: 100%;
-  padding-top: 20px; /* Kisebb távolság a kép alatt */
-  padding-bottom: 20px; /* További távolság a gomb alatt *//* Fekete háttér a jobb láthatóság érdekében */
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
-/* Cím (hero-title) középre igazítása */
 .hero-title {
   font-size: 48px;
   font-weight: 700;
@@ -341,7 +338,7 @@ body {
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  display: inline-block; /* Biztosítja, hogy a gomb középre legyen igazítva */
+  display: inline-block;
 }
 
 .shop-now-button:hover {
