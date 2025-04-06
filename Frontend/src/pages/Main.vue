@@ -28,27 +28,6 @@
       </div>
     </section>
 
-    <section class="featured-section fade-in">
-      <h2 class="section-title">Kiemelt Játékok</h2>
-      <div class="featured-games">
-        <div class="game-card" v-for="(game, index) in featuredGames" :key="index">
-          <img :src="game.image" :alt="game.name" class="game-image" />
-          <div class="game-info">
-            <h3 class="game-name">{{ game.name }}</h3>
-            <p class="game-price">{{ game.price }} Ft</p>
-            <router-link :to="`/games/${game.id}`" class="view-details">Részletek</router-link>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="about-us fade-in">
-      <h2 class="section-title">Rólunk</h2>
-      <p class="about-text">
-        A ConsoleX az egyik vezető online áruház a videojátékok, konzolok és tartozékok terén.
-        Több mint 10 éve biztosítjuk a legjobb termékeket és szolgáltatásokat játékosok számára.
-      </p>
-    </section>
 
     <footer class="footer fade-in">
       <div class="footer-content">
@@ -245,36 +224,36 @@ body {
   }
 }
 
-.hero-section {
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  padding: 0;
-  margin-top: 0;
-  width: 1890px;
-  height: 400px;
-}
-
 .hero-carousel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-    display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 500px;
   overflow: hidden;
 }
 
 .hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
   transition: opacity 1s ease-in-out;
-  position: absolute;
 }
+
+.hero-image.active {
+  opacity: 1;
+  z-index: 0;
+}
+
+/* Mobilon kisebb méret */
+@media (max-width: 768px) {
+  .hero-carousel {
+    height: 250px;
+  }
+}
+
 
 .hero-image.active {
   opacity: 1;
@@ -307,10 +286,27 @@ body {
 
 
 .hero-text {
-  position: relative;
+  position: relative; /* Állítsuk a pozícióját relatívra, hogy alulra helyezkedjen el */
   z-index: 1;
+  color: white;
+  text-align: center;
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+  width: 100%;
+  padding-top: 20px; /* Kisebb távolság a kép alatt */
+  padding-bottom: 20px; /* További távolság a gomb alatt *//* Fekete háttér a jobb láthatóság érdekében */
 }
+
+/* Cím (hero-title) középre igazítása */
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: white;
+  text-shadow: 2px 2px 10px rgb(0, 0, 0);
+  text-align: center;
+  width: 100%;
+}
+
 @keyframes slideUp {
   0% {
     transform: translateY(50px);
@@ -345,6 +341,7 @@ body {
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block; /* Biztosítja, hogy a gomb középre legyen igazítva */
 }
 
 .shop-now-button:hover {
@@ -443,10 +440,20 @@ body {
   color: white;
   text-align: center;
   padding: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
 }
+
 
 .footer-content {
   font-size: 14px;
+}
+
+.main-container {
+  padding-bottom: 80px;
 }
 
 </style>

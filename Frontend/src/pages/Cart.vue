@@ -81,144 +81,144 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
-import BaseAlert from '/src/pages/BaseAlert.vue';
+  <script>
+  import axios from 'axios';
+  import BaseAlert from '/src/pages/BaseAlert.vue';
 
-export default {
-  components: {
-    BaseAlert
-  },
-  data() {
-    return {
-      cart: [],
-      showOrderForm: false,
-      alert: {
-        visible: false,
-        message: '',
-        type: 'success'
-      },
-      orderDetails: {
-        name: '',
-        address: '',
-        paymentMethod: 'creditCard',
-        shippingMethod: 'personal',
-        shippingCost: '0',
-        user_id: null,
-      },
-      shippingCost: 0,
-      isMobile: window.innerWidth < 768,
-      menuOpen: false
-    };
-  },
-  computed: {
-    totalPrice() {
-      return this.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  export default {
+    components: {
+      BaseAlert
     },
-    totalQuantity() {
-      return this.cart.reduce((total, item) => total + item.quantity, 0);
-    },
-    totalWithShipping() {
-      return this.totalPrice + this.shippingCost;
-    }
-  },
-  mounted() {
-    this.loadCart();
-    this.loadUser();
-    window.addEventListener('resize', this.handleResize);
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize);
-  },
-  methods: {
-    toggleMenu() {
-      this.menuOpen = !this.menuOpen;
-    },
-    closeMenu() {
-      this.menuOpen = false;
-    },
-    handleResize() {
-      this.isMobile = window.innerWidth < 768;
-      if (!this.isMobile) this.menuOpen = false;
-    },
-    showAlert(message, type = 'success') {
-      this.alert.message = message;
-      this.alert.type = type;
-      this.alert.visible = true;
-      setTimeout(() => {
-        this.alert.visible = false;
-      }, 3000);
-    },
-    loadCart() {
-      this.cart = JSON.parse(localStorage.getItem('cart')) || [];
-    },
-    loadUser() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.user_id) {
-        this.orderDetails.user_id = user.user_id;
-      } else {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-      }
-    },
-    increaseQuantity(index) {
-      this.cart[index].quantity += 1;
-      localStorage.setItem('cart', JSON.stringify(this.cart));
-    },
-    decreaseQuantity(index) {
-      if (this.cart[index].quantity > 1) {
-        this.cart[index].quantity -= 1;
-      } else {
-        this.cart.splice(index, 1);
-      }
-      localStorage.setItem('cart', JSON.stringify(this.cart));
-    },
-    updateShippingCost() {
-      const shippingPrices = {
-        gls: 1500,
-        foxpost: 1200,
-        personal: 0,
+    data() {
+      return {
+        cart: [],
+        showOrderForm: false,
+        alert: {
+          visible: false,
+          message: '',
+          type: 'success'
+        },
+        orderDetails: {
+          name: '',
+          address: '',
+          paymentMethod: 'creditCard',
+          shippingMethod: 'personal',
+          shippingCost: '0',
+          user_id: null,
+        },
+        shippingCost: 0,
+        isMobile: window.innerWidth < 768,
+        menuOpen: false
       };
-      this.shippingCost = shippingPrices[this.orderDetails.shippingMethod];
     },
-    async submitOrder() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.user_id) {
-        this.orderDetails.user_id = user.user_id;
-      } else {
-        this.orderDetails.user_id = null;
+    computed: {
+      totalPrice() {
+        return this.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+      },
+      totalQuantity() {
+        return this.cart.reduce((total, item) => total + item.quantity, 0);
+      },
+      totalWithShipping() {
+        return this.totalPrice + this.shippingCost;
       }
-
-      const order = {
-        userDetails: this.orderDetails,
-        products: this.cart,
-      };
-
-      try {
-        const response = await axios.post('http://localhost:8000/api/orders', order);
-        if (response.status === 200) {
-          this.clearCart(false);
-          this.showAlert('A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
-          this.showOrderForm = false;
+    },
+    mounted() {
+      this.loadCart();
+      this.loadUser();
+      window.addEventListener('resize', this.handleResize);
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.handleResize);
+    },
+    methods: {
+      toggleMenu() {
+        this.menuOpen = !this.menuOpen;
+      },
+      closeMenu() {
+        this.menuOpen = false;
+      },
+      handleResize() {
+        this.isMobile = window.innerWidth < 768;
+        if (!this.isMobile) this.menuOpen = false;
+      },
+      showAlert(message, type = 'success') {
+        this.alert.message = message;
+        this.alert.type = type;
+        this.alert.visible = true;
+        setTimeout(() => {
+          this.alert.visible = false;
+        }, 3000);
+      },
+      loadCart() {
+        this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+      },
+      loadUser() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.user_id) {
+          this.orderDetails.user_id = user.user_id;
         } else {
-          this.showAlert(`❌ Hiba történt: ${response.data.message}`, 'error');
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
         }
-      } catch (error) {
-        console.error('Hiba:', error);
-        this.showAlert('⚠️ Nem sikerült kapcsolódni a szerverhez. Próbáld meg később újra!', 'error');
+      },
+      increaseQuantity(index) {
+        this.cart[index].quantity += 1;
+        localStorage.setItem('cart', JSON.stringify(this.cart));
+      },
+      decreaseQuantity(index) {
+        if (this.cart[index].quantity > 1) {
+          this.cart[index].quantity -= 1;
+        } else {
+          this.cart.splice(index, 1);
+        }
+        localStorage.setItem('cart', JSON.stringify(this.cart));
+      },
+      updateShippingCost() {
+        const shippingPrices = {
+          gls: 1500,
+          foxpost: 1200,
+          personal: 0,
+        };
+        this.shippingCost = shippingPrices[this.orderDetails.shippingMethod];
+      },
+      async submitOrder() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.user_id) {
+          this.orderDetails.user_id = user.user_id;
+        } else {
+          this.orderDetails.user_id = null;
+        }
+
+        const order = {
+          userDetails: this.orderDetails,
+          products: this.cart,
+        };
+
+        try {
+          const response = await axios.post('http://localhost:8000/api/orders', order);
+          if (response.status === 200) {
+            this.clearCart(false);
+            this.showAlert('A rendelésed sikeresen beérkezett! Köszönjük a vásárlást!', 'success');
+            this.showOrderForm = false;
+          } else {
+            this.showAlert(`❌ Hiba történt: ${response.data.message}`, 'error');
+          }
+        } catch (error) {
+          console.error('Hiba:', error);
+          this.showAlert('⚠️ Nem sikerült kapcsolódni a szerverhez. Próbáld meg később újra!', 'error');
+        }
+      },
+      clearCart(showAlert = true) {
+        this.cart = [];
+        localStorage.removeItem('cart');
+        this.showOrderForm = false;
+        if (showAlert) {
+          this.showAlert('🛒 A kosár kiürítve! Készen állsz egy új bevásárlásra.', 'info');
+        }
       }
     },
-    clearCart(showAlert = true) {
-      this.cart = [];
-      localStorage.removeItem('cart');
-      this.showOrderForm = false;
-      if (showAlert) {
-        this.showAlert('🛒 A kosár kiürítve! Készen állsz egy új bevásárlásra.', 'info');
-      }
-    }
-  },
-};
-</script>
+  };
+  </script>
 
 <style scoped>
 @keyframes fadeInHeader {
@@ -298,8 +298,10 @@ export default {
 }
 
 /* További stílusok */
+/* Alap gombok dizájnja */
 .place-order,
-.clear-cart-button {
+.clear-cart-button,
+.quantity-button {
   padding: 14px 28px;
   font-size: 18px;
   font-weight: 700;
@@ -310,23 +312,28 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Kosárba gomb */
 .place-order {
   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(56, 249, 215, 0.4);
 }
 
 .place-order:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(56, 249, 215, 0.6);
+  box-shadow: 0 6px 20px rgba(56, 249, 215, 0.4);
 }
 
+.place-order:active {
+  background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
+}
+
+/* Kosár ürítése gomb */
 .clear-cart-button {
   background: linear-gradient(135deg, #ff6a6a 0%, #ff0000 100%);
   color: white;
-  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
   margin-top: 15px;
 }
 
@@ -335,15 +342,18 @@ export default {
   box-shadow: 0 6px 16px rgba(255, 0, 0, 0.5);
 }
 
+.clear-cart-button:active {
+  background: linear-gradient(135deg, #ff0000 0%, #ff6a6a 100%);
+}
+
+/* Mennyiség gombok */
 .quantity-button {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #007bff;
+  background-color: #ff80b3; /* Rózsaszín háttér */
   color: white;
-  border: none;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
+  border-radius: 50%;
+  padding: 8px 12px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   display: inline-flex;
@@ -352,13 +362,17 @@ export default {
 }
 
 .quantity-button:hover {
-  background-color: #0056b3;
+  background-color: #ff4d94; /* Sötétebb rózsaszín hover */
   transform: scale(1.1);
 }
 
+.quantity-button:active {
+  background-color: #ff3399; /* Még sötétebb rózsaszín aktív állapotban */
+}
+
+/* Kosár elemek */
 .cart-item {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  display: flex;
   align-items: center;
   gap: 20px;
   background-color: #ffffff;
@@ -369,6 +383,43 @@ export default {
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s;
 }
+
+.cart-item:hover {
+  transform: scale(1.02);
+}
+
+/* Kosár összegzés */
+.cart-summary {
+  text-align: center;
+  background-color: #f0f4f8;
+  border-radius: 10px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+.cart-summary p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Animációk */
+.place-order {
+  animation: fadeInButton 0.75s ease-out forwards;
+}
+
+.clear-cart-button {
+  animation: fadeInButton 0.75s ease-out forwards;
+}
+
+.quantity-button {
+  animation: fadeInButton 0.75s ease-out forwards;
+}
+
+/* Kosár elem animációk */
+.cart-item {
+  animation: fadeInCartItem 0.75s ease-out forwards;
+}
+
 
 .cart-item:hover {
   transform: scale(1.02);
@@ -443,9 +494,16 @@ body {
   align-items: center;
   border-bottom: 3px solid #ddd;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0; /* A tetején marad */
+  z-index: 1000; /* Magasabb szintű, hogy a többi elem ne takarja */
   animation: fadeInHeader 0.75s ease-out;
 }
 
+.header.sticky {
+  background-color: #333; /* Sötétebb szín rögzített állapotban */
+  color: white;
+}
 .header img {
   height: 60px;
 }
@@ -552,43 +610,48 @@ body {
 }
 
 .place-order {
-  background-color: #4caf50;
-  color: white;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 700;
   border: none;
-  padding: 15px 30px;
-  font-size: 16px;
-  border-radius: 5px;
+  border-radius: 12px;
   cursor: pointer;
-  opacity: 0.6;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #38b863 0%, #38f9d7 100%); /* Zöld árnyalat */
+  color: white;
+  box-shadow: 0 4px 12px rgba(56, 249, 215, 0.4);
 }
 
 .place-order:hover {
-  background-color: #388e3c;
   transform: scale(1.05);
-}
-
-.place-order:disabled {
-  background-color: #b0bec5;
-  cursor: not-allowed;
+  box-shadow: 0 6px 20px rgba(56, 249, 215, 0.6);
 }
 
 .clear-cart-button {
-  background-color: #f44336;
-  color: white;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 700;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
+  border-radius: 12px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff6a6a 0%, #ff0000 100%); /* Piros árnyalat */
+  color: white;
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+  margin-top: 15px;
 }
 
 .clear-cart-button:hover {
-  background-color: #d32f2f;
   transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 0, 0, 0.5);
 }
+
 
 .cart-sidebar {
   width: 28%;
