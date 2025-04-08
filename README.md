@@ -47,8 +47,7 @@
 
 **Admin page:**
 - How to access the admin page:
-  Click on the logo on the top right of the website. This will redirect you to the Admin Login page.
-  these are needed to login into the Admin page:
+  On the login page you can login to the admin user with this username and password:
 
    - username: admin
    - password: admin
