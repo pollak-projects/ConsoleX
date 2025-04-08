@@ -298,8 +298,8 @@ body {
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: white;
-  text-shadow: 2px 2px 10px rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 7px rgb(0, 0, 0);
   text-align: center;
   width: 100%;
 }
@@ -313,14 +313,6 @@ body {
     transform: translateY(0);
     opacity: 1;
   }
-}
-
-.hero-title {
-  font-size: 48px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: white;
-  text-shadow: 2px 2px 10px rgb(0, 0, 0);
 }
 
 .hero-subtitle {

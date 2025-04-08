@@ -24,7 +24,7 @@
       </div>
       <div class="hero-text slide-up">
         <h1 class="hero-title">Üdvözlünk a ConsoleX-en!</h1>
-        <router-link to="/products" class="shop-now-button">Vásárolj most</router-link>
+        <router-link to="/adminproducts" class="shop-now-button">Vásárolj most</router-link>
       </div>
     </section>
 
