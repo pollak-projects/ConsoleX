@@ -71,7 +71,6 @@
           <p><strong>Név:</strong> {{ order.name }}</p>
           <p><strong>Cím:</strong> {{ order.address }}</p>
           <p><strong>Fizetési mód:</strong> {{ order.payment_method }}</p>
-          <p><strong>Szállítási mód:</strong> {{ getShippingMethodName(order.shipping_method) }}</p>
           <p><strong>Rendelés ideje:</strong> {{ formatDate(order.order_date) }}</p>
           
           <h4>Termékek:</h4>
@@ -80,7 +79,6 @@
               {{ item.product_name }} - {{ item.quantity }} db - {{ formatPrice(item.price) }} Ft/db
             </li>
           </ul>
-          <p><strong>Szállítási költség:</strong> {{ formatPrice(order.shipping_cost) }} Ft</p>
           <p><strong>Végösszeg:</strong> {{ formatPrice(order.total_price + (order.shipping_cost || 0)) }} Ft</p>
           <button @click="confirmDelete(order.order_id)" class="delete-button">Rendelés törlése</button>
         </div>
