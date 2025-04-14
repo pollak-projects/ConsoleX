@@ -54,21 +54,11 @@ exports.getAllUsers = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   const { id } = req.params;
-
-  const checkQuery = 'SELECT role FROM users WHERE id = ?';
-  db.query(checkQuery, [id], (err, results) => {
-    if (err) return res.status(500).send('Hiba ellenőrzés közben');
-    if (results.length === 0) return res.status(404).send('Felhasználó nem található');
-
-    const role = results[0].role;
-    if (role === 'admin') {
-      return res.status(403).send('Admin törlése nem engedélyezett');
-    }
-
-    const deleteQuery = 'DELETE FROM users WHERE id = ?';
+    const deleteQuery = 'DELETE FROM users WHERE user_id = ?';
     db.query(deleteQuery, [id], (err, result) => {
-      if (err) return res.status(500).send('Törlés sikertelen');
+      if (err) {
+        return res.status(500).send('Törlés sikertelen');
+      }
       res.send('Felhasználó sikeresen törölve');
     });
-  });
-};
+  };
