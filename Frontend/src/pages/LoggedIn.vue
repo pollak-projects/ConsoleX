@@ -93,7 +93,7 @@
 
 <script>
 import axios from 'axios';
-import BaseAlert from '/src/pages/BaseAlert.vue';
+import BaseAlert from '/src/components/BaseAlert.vue';
 
 export default {
   components: {
