@@ -39,53 +39,29 @@
       </header>
 
       <div class="profile-info">
-        <h2>Profil adatok</h2>
-        <p><strong>Felhasználónév:</strong> {{ username }}</p>
-        <p><strong>Email:</strong> {{ email }}</p>
+        <header>
+          <h2>Profil adatok</h2>
+          <p><strong>Felhasználónév:</strong> {{ username }}</p>
+          <p><strong>Email:</strong> {{ email }}</p>
 
-        <button @click="showPasswordChange = !showPasswordChange" v-if="!showPasswordChange" class="change-password">Jelszó megváltoztatása</button>
-        
-        <div v-if="showPasswordChange">
-          <div class="input-group">
-            <label for="new-password">Új jelszó</label>
-            <input type="password" v-model="newPassword" id="new-password" required />
-          </div>
-          <div class="input-group">
-            <label for="confirm-password">Új jelszó mégegyszer</label>
-            <input type="password" v-model="confirmPassword" id="confirm-password" required />
-          </div>
-          <div class="password-buttons">
-            <button @click="saveNewPassword" class="save-password">Mentés</button>
-            <button @click="cancelPasswordChange" class="cancel-change">Mégse</button>
-          </div>
-        </div>
-      </div>
-
-      <h2>A rendeléseid</h2>
-      <div v-if="orders.length === 0">
-        <p>Nincsenek rendeléseid.</p>
-      </div>
-      <div v-else>
-        <div v-for="order in orders" :key="order.order_id" class="order-card">
-          <h3>Rendelés száma: {{ order.order_id }}</h3>
-          <p><strong>Név:</strong> {{ order.name }}</p>
-          <p><strong>Cím:</strong> {{ order.address }}</p>
-          <p><strong>Fizetési mód:</strong> {{ order.payment_method }}</p>
-          <p><strong>Szállítási mód:</strong> {{ getShippingMethodName(order.shipping_method) }}</p>
-          <p><strong>Rendelés ideje:</strong> {{ formatDate(order.order_date) }}</p>
+          <button @click="showPasswordChange = !showPasswordChange" v-if="!showPasswordChange" class="change-password">Jelszó megváltoztatása</button>
           
-          <h4>Termékek:</h4>
-          <ul>
-            <li v-for="item in order.items" :key="item.product_name">
-              {{ item.product_name }} - {{ item.quantity }} db - {{ formatPrice(item.price) }} Ft/db
-            </li>
-          </ul>
-          <p><strong>Szállítási költség:</strong> {{ formatPrice(order.shipping_cost) }} Ft</p>
-          <p><strong>Végösszeg:</strong> {{ formatPrice(order.total_price + (order.shipping_cost || 0)) }} Ft</p>
-          <button @click="confirmDelete(order.order_id)" class="delete-button">Rendelés törlése</button>
-        </div>
+          <div v-if="showPasswordChange">
+            <div class="input-group">
+              <label for="new-password">Új jelszó</label>
+              <input type="password" v-model="newPassword" id="new-password" required />
+            </div>
+            <div class="input-group">
+              <label for="confirm-password">Új jelszó mégegyszer</label>
+              <input type="password" v-model="confirmPassword" id="confirm-password" required />
+            </div>
+            <div class="password-buttons">
+              <button @click="saveNewPassword" class="save-password">Mentés</button>
+              <button @click="cancelPasswordChange" class="cancel-change">Mégse</button>
+            </div>
+          </div>
+        </header>
       </div>
-
       <div class="actions">
         <button class="logout-button" @click="logout">Kijelentkezés</button>
       </div>
@@ -253,6 +229,7 @@ export default {
 </script>
 
   <style scoped>
+
   .password-buttons {
     display: inline-flex;
     gap: 10px;
@@ -392,6 +369,17 @@ export default {
   animation: fadeInHeader 0.75s ease-out;
 }
 
+.profile-info{
+  background-color: #fff;
+  color: #333;
+  padding: 20px 30px;
+  display: block;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  animation: fadeInHeader 0.75s ease-out;
+}
+
 .header.sticky {
   background-color: #333;
   color: white;
@@ -496,6 +484,11 @@ export default {
   .input-group {
     margin-bottom: 20px;
     max-width: 500px;
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    animation: fadeInButton 0.75s ease-out forwards;
   }
   
   label {
@@ -520,6 +513,7 @@ export default {
     margin-bottom: 5px;
   }
   
+
   .actions {
     display: flex;
     justify-content: center;
@@ -540,7 +534,7 @@ export default {
   }
   
   .logout-button:hover {
-    background: linear-gradient(45deg, #d32f2f, #ff5252);
+    background: linear-gradient(45deg, #f80d0d, #ff5252);
     transform: scale(1.05);
   }
   
