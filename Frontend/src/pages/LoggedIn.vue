@@ -39,28 +39,30 @@
       </header>
 
       <div class="profile-info">
-        <h2>Profil adatok</h2>
-        <p><strong>Felhasználónév:</strong> {{ username }}</p>
-        <p><strong>Email:</strong> {{ email }}</p>
+        <header>
+          <h2>Profil adatok</h2>
+          <p><strong>Felhasználónév:</strong> {{ username }}</p>
+          <p><strong>Email:</strong> {{ email }}</p>
 
-        <button @click="showPasswordChange = !showPasswordChange" v-if="!showPasswordChange" class="change-password">Jelszó megváltoztatása</button>
-        
-        <div v-if="showPasswordChange">
-          <div class="input-group">
-            <label for="new-password">Új jelszó</label>
-            <input type="password" v-model="newPassword" id="new-password" required />
+          <button @click="showPasswordChange = !showPasswordChange" v-if="!showPasswordChange" class="change-password">Jelszó megváltoztatása</button>
+          
+          <div v-if="showPasswordChange">
+            <div class="input-group">
+              <label for="new-password">Új jelszó</label>
+              <input type="password" v-model="newPassword" id="new-password" required />
+            </div>
+            <div class="input-group">
+              <label for="confirm-password">Új jelszó mégegyszer</label>
+              <input type="password" v-model="confirmPassword" id="confirm-password" required />
+            </div>
+            <div class="password-buttons">
+              <button @click="saveNewPassword" class="save-password">Mentés</button>
+              <button @click="cancelPasswordChange" class="cancel-change">Mégse</button>
+            </div>
           </div>
-          <div class="input-group">
-            <label for="confirm-password">Új jelszó mégegyszer</label>
-            <input type="password" v-model="confirmPassword" id="confirm-password" required />
-          </div>
-          <div class="password-buttons">
-            <button @click="saveNewPassword" class="save-password">Mentés</button>
-            <button @click="cancelPasswordChange" class="cancel-change">Mégse</button>
-          </div>
-        </div>
+        </header>
       </div>
-
+      
       <h2>A rendeléseid</h2>
       <div v-if="orders.length === 0">
         <p>Nincsenek rendeléseid.</p>
@@ -251,6 +253,18 @@ export default {
 </script>
 
   <style scoped>
+  .profile-info{
+    background-color: #fff;
+    color: #333;
+    padding: 20px 30px;
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    animation: fadeInHeader 0.75s ease-out;
+  }
+
+
   .password-buttons {
     display: inline-flex;
     gap: 10px;
@@ -390,6 +404,7 @@ export default {
   animation: fadeInHeader 0.75s ease-out;
 }
 
+
 .header.sticky {
   background-color: #333;
   color: white;
@@ -494,6 +509,11 @@ export default {
   .input-group {
     margin-bottom: 20px;
     max-width: 500px;
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    animation: fadeInButton 0.75s ease-out forwards;
   }
   
   label {
